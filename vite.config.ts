@@ -15,6 +15,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: "/Lokestays-host-dashboard/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
