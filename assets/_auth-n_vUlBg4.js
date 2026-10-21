@@ -1,0 +1,1 @@
+import{r as e,t}from"./index-8VfV8pbk.js";var n=e();function r(){return(0,n.jsx)(n.Fragment,{children:(0,n.jsx)(`main`,{children:(0,n.jsx)(t,{})})})}var i=r;export{i as component};

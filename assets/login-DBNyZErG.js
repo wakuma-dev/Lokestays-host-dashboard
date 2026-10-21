@@ -1,0 +1,1 @@
+import{r as e}from"./index-8VfV8pbk.js";var t=e();function n(){return(0,t.jsx)(`main`,{children:(0,t.jsx)(`h1`,{children:`Login page`})})}var r=n;export{r as component};
