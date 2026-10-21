@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./index-CpMknZc0.js";var n=t();function r(){return(0,n.jsx)(`main`,{children:(0,n.jsx)(`h1`,{children:`sign up`})})}var i=e(`/_auth/signup`)({component:r});export{i as Route};
