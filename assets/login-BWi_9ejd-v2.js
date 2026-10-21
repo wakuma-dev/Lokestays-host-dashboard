@@ -1,1 +1,0 @@
-import{r as e}from"./index-CpMknZc0.js";var t=e();function n(){return(0,t.jsx)(`main`,{children:(0,t.jsx)(`h1`,{children:`Login page`})})}var r=n;export{r as component};
