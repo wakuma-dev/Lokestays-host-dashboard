@@ -1,0 +1,1 @@
+import{n as e,t}from"./index-CeZqB9UQ.js";var n=e();function r(){return(0,n.jsx)(`main`,{children:(0,n.jsx)(`h1`,{children:`sign up`})})}var i=t(`/_auth/signup`)({component:r});export{i as Route};
