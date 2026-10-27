@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -19,6 +20,11 @@ import { Route as MainTermsOfServicesRouteImport } from './routes/_main/terms-of
 
 const AuthSignupLazyRouteImport = createFileRoute('/_auth/signup')()
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -49,14 +55,14 @@ const MainTermsOfServicesRoute = MainTermsOfServicesRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof MainRouteWithChildren
+  '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
   '/signup': typeof AuthSignupLazyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof MainRouteWithChildren
+  '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
@@ -64,6 +70,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
@@ -79,6 +86,7 @@ export interface FileRouteTypes {
   to: '/' | '/login' | '/privacy-policy' | '/terms-of-services' | '/signup'
   id:
     | '__root__'
+    | '/'
     | '/_auth'
     | '/_main'
     | '/_auth/login'
@@ -88,12 +96,20 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   MainRoute: typeof MainRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -164,6 +180,7 @@ const MainRouteChildren: MainRouteChildren = {
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
 }
