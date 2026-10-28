@@ -194,7 +194,19 @@ function ToastList() {
     </Toast>
   ))
 }
-
+function useToast(){
+  const toastManager = ToastPrimitive.useToastManager();
+  return {
+    ...toastManager,
+    add: (options: {type?: string; title?: React.ReactNode; description?: React.ReactNode; priority?: string}) => {
+      return toastManager.add({
+        type: options.type,
+        title: options.title,
+        description: options.description
+      })
+    }
+  }
+}
 function Toaster({
   children,
   toastManager = toast,
@@ -228,5 +240,6 @@ export {
   ToastViewport,
   createToastManager,
   toast,
+  useToast,
   useToastManager,
 }
