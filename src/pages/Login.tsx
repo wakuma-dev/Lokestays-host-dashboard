@@ -72,7 +72,7 @@ export default function Login(){
         add({
           type: "error",
           title: "Error",
-          description: "User could login"
+          description: "User couldn't login"
         });
         if(error instanceof FirebaseError){
           setLoginError(getFirebaseLoginError(error));
@@ -85,7 +85,8 @@ export default function Login(){
   });
 
   return (
-    <main className="w-full min-h-screen h-auto">
+    <main className="w-full fixed inset-0 h-dvh flex items-center justify-center w-full 
+                     overflow-hidden overscroll-none">
       <Helmet>
         <title>Log in - Host dashboard | LokeStays</title>
         <meta
@@ -97,7 +98,8 @@ export default function Login(){
         <Card aria-labelledby="login-form-title"
              className="bg-white/80 backdrop-blur-sm shadow-xl w-full max-w-lg mx-auto flex flex-col space-y-2">
           <CardHeader className="flex flex-col items-center justify-center text-center -space-y-1.5">
-            <CardTitle id="login-form-title" className="text-black text-[24px] leading-[32px] lg:text-[40px] font-semibold lg:leading-[44px] tracking-tight">
+            <CardTitle id="login-form-title" 
+                      className="text-black text-[24px] leading-[32px] lg:text-[40px] font-semibold lg:leading-[44px] tracking-tight">
               Welcome Back
             </CardTitle>
             <CardDescription className="font-normal text-[#222222] tracking-normal text-[13px] leading-[17px] md:text-[15px] md:leading-[20px]">
@@ -113,14 +115,13 @@ export default function Login(){
                 event.stopPropagation();
                 void form.handleSubmit();
               }}
-              className="flex flex-col space-y-3">
+              className="flex flex-col space-y-2.5">
               <form.Field name="email">
                 {(field) => (
                   <MyInput 
                     field={field}
-                    label="Email address"
                     type="email"
-                    placeholder="Enter your email address"
+                    placeholder="Email address"
                     autoComplete={AUTO_COMPLETE.email}
                   />
                 )}
@@ -129,9 +130,8 @@ export default function Login(){
                 {(field) => (
                   <MyInput 
                     field={field}
-                    label="Password"
                     isPasswordField
-                    placeholder="Enter your password"
+                    placeholder="Password"
                     autoComplete={AUTO_COMPLETE.password}
                   />
                 )}
@@ -145,7 +145,7 @@ export default function Login(){
               )}
             </form>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-1.5">
+          <CardFooter className="flex flex-col space-y-1.5 -mt-3">
             <form.Subscribe selector={(state) => [state.isSubmitting, state.isValidating] as const}>
               {([isSubmitting, isValidating]) => (
                 <Button 
@@ -158,10 +158,9 @@ export default function Login(){
                 </Button>
               )}
             </form.Subscribe>
-              <span aria-label="Already account"
-                     className="text-[13px] text-[#222222] font-normal tracking-normal leading-[17px]">
+              <span className="text-[13px] text-[#222222] font-normal tracking-normal leading-[17px]">
                 Don't have an account?<Link to="/signup"
-                 className="ml-1.5 font-semibold text-[#0f766e]">Sign up</Link>
+                 className="ml-1.5 font-semibold text-[#0f766e] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 focus-visible:ring-offset-2 rounded-sm transition-colors">Sign up</Link>
                </span>
           </CardFooter>
         </Card>

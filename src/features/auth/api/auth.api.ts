@@ -1,4 +1,10 @@
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -9,9 +15,19 @@ import {
   type User,
   getRedirectResult,
 } from "firebase/auth";
-import { auth, googleProvider, facebookProvider } from "@/lib/firebase/auth";
+
+import {
+  auth,
+  googleProvider,
+  facebookProvider,
+} from "@/lib/firebase/auth";
+
 import { db } from "@/lib/firebase/firestore";
-import type { RegisterDataType, LoginDataType } from "@/features/auth";
+
+import type {
+  RegisterDataType,
+  LoginDataType,
+} from "@/features/auth";
 
 type UserProfile = {
   readonly uid: string;
@@ -44,13 +60,29 @@ const syncUserProfile = async (
   const fullName =
     existingFullName || requestedFullName || providerFullName;
 
-  const profile: UserProfile = {
+  // Preserve existing profiles and their protected fields.
+  if (snapshot.exists()) {
+    if (fullName && fullName !== existingFullName) {
+      await setDoc(
+        userRef,
+        { fullName },
+        { merge: true },
+      );
+    }
+
+    return;
+  }
+
+  // Create a complete host profile.
+  await setDoc(userRef, {
     uid: user.uid,
     email: user.email,
     ...(fullName ? { fullName } : {}),
-  };
-
-  await setDoc(userRef, profile, { merge: true });
+    roles: ["host"],
+    status: "active",
+    suspension: null,
+    createdAt: serverTimestamp(),
+  });
 };
 
 export const signup = async (
@@ -69,14 +101,21 @@ export const signup = async (
       fullName,
     });
   } catch (error: unknown) {
-    console.error("Failed to synchronize the user profile:", error);
+    console.error(
+      "Failed to synchronize the user profile:",
+      error,
+    );
+
     throw error;
   }
 
   try {
     await signOut(auth);
   } catch (error: unknown) {
-    console.error("Failed to sign out after registration:", error);
+    console.error(
+      "Failed to sign out after registration:",
+      error,
+    );
   }
 };
 

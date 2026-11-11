@@ -1,15 +1,22 @@
-// MainLayout.tsx
 import type { ReactNode } from "react";
 import { Outlet } from "@tanstack/react-router";
-import Sidebar from "./Sidebar";
+import { Navbar } from "@/components/navigation";
+import { Sidebar } from "@/components/sidebar";
 
-export default function MainLayout({ children }: { children?: ReactNode }) {
+type MainLayoutProps = {
+  readonly children?: ReactNode;
+};
+
+export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background">
+    <div className="flex min-h-screen w-full">
       <Sidebar />
-      <main className="flex flex-1 flex-col h-full overflow-y-auto">
-        {children ?? <Outlet />}
-      </main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Navbar />
+        <main className="min-w-0 flex-1">
+          {children ?? <Outlet />}
+        </main>
+      </div>
     </div>
   );
 }

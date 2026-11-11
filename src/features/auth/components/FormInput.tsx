@@ -1,6 +1,6 @@
 import {useState, type HTMLInputTypeAttribute } from "react";
 import { Input } from "@/components/ui/input";
-import { Field, FieldLabel, FieldError } from "@/components/ui/field";
+import { Field, FieldError } from "@/components/ui/field";
 import { Eye, EyeOff } from "lucide-react";
 function getErrorMessage(errors: readonly unknown[]): string | undefined {
     const messages = errors
@@ -43,18 +43,16 @@ export interface InputProps {
     placeholder: string;
     type?: HTMLInputTypeAttribute;
     isPasswordField?: boolean;
-    label: string;
     autoComplete: string;
 }
-export function MyInput({field, placeholder, autoComplete, type="string", isPasswordField=false, label}: InputProps){
+export function MyInput({field, placeholder, autoComplete, type="string", isPasswordField=false}: InputProps){
   const [showPassword, setShowPassword] = useState(false);
   const inputType: HTMLInputTypeAttribute = isPasswordField ? showPassword ? "text" : "password" : type
   const hasError = field.state.meta.isTouched && field.state.meta.errors.length > 0;
   const errorMessage = hasError ? getErrorMessage(field.state.meta.errors) : undefined;
 return(
   <Field className="flex flex-col space-y-0.5">
-    <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
-    <div className="relative">
+   <div className="relative">
         <Input 
          id={field.name}
          name={field.name}
@@ -65,8 +63,8 @@ return(
          aria-describedby={hasError ? `${field.name}-errors` : undefined}
          onBlur={field.handleBlur}
          onChange={(e) => field.handleChange(e.target.value)}
-         className="data-[invalid]:border-red-400 p-5 
-          placeholder:text-[15px] placeholder:leading-[20px] placeholder:text-[#222222]"
+         className="data-[invalid]:border-red-400 p-4 
+          placeholder:text-[15px] placeholder:leading-[21px] placeholder:text-[#222222]"
          />
          {isPasswordField && (
             <button type="button"

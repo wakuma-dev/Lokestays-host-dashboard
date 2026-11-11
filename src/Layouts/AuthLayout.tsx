@@ -5,8 +5,8 @@ const bgStyle: React.CSSProperties = {
    backgroundImage: `
   linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.8) 60%,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
     rgba(0, 0, 0, 0.4) 85%,
     rgba(0, 0, 0, 0.2) 100%
   ),
