@@ -1,13 +1,24 @@
+import { useState } from "react"
+import { MobileMenu } from "./MobileMenu";
+import { ProfileMenu } from "@/features/profile";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar(){
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     return (
-        <header className="flex h-16 shrink-0 items-center justify-between border-b bg-background px-6">
-            <div>
-                <p className="text-sm font-medium text-muted-foreground">Lokestays Host</p>
-                <h1 className="text-lg font-semibold">Dashboard</h1>
-            </div>
+        <header className="sticky top-0 z-50 backdrop-blur-md p-4 lg:p-6 h-16 
+         flex h-16 shrink-0 items-center justify-between  dark:bg-[#111111] 
+        dark:text-[#cec8b2] bg-[#FFFFFF] text-[#3e3529] border-b bg-background w-full">
+        <div className="flex items-center gap-3">
+         <MobileMenu 
+           isOpen={isMenuOpen}
+           onOpenChange={setIsMenuOpen}
+           />
+         </div>
+            <div className="flex items-center gap-5">
             <ThemeToggle />
+            <ProfileMenu />
+            </div>
         </header>
     );
 }

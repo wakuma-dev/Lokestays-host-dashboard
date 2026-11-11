@@ -29,11 +29,11 @@ import type {
   LoginDataType,
 } from "@/features/auth";
 
-type UserProfile = {
+/* type UserProfile = {
   readonly uid: string;
   readonly email: string;
   readonly fullName?: string;
-};
+}; */
 
 const syncUserProfile = async (
   user: User,

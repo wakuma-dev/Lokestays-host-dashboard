@@ -65,7 +65,7 @@ export default function Login(){
           description: "User login successfully"
         });
         await navigate({
-          to: "/",
+          to: "/en",
           replace: true
         });
       } catch (error) {

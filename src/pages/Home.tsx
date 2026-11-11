@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   return (
-    <div className=" bg-white  min-h-full">
+    <div className="min-w-0  text-[#fff] min-h-screen h-auto bg-[#FDFDFD] dark:bg-[#0A0A0A] ">
       <Helmet>
         <title>Dashboard | Lokestays Host</title>
         <meta

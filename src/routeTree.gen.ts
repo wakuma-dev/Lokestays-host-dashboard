@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as MainRouteImport } from './routes/_main'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as MainEnRouteImport } from './routes/_main/en'
 import { Route as MainPrivacyPolicyRouteImport } from './routes/_main/privacy-policy'
 import { Route as MainTermsOfServicesRouteImport } from './routes/_main/terms-of-services'
 
@@ -43,6 +44,11 @@ const AuthSignupLazyRoute = AuthSignupLazyRouteImport.update({
   path: '/signup',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/signup.lazy').then((d) => d.Route))
+const MainEnRoute = MainEnRouteImport.update({
+  id: '/en',
+  path: '/en',
+  getParentRoute: () => MainRoute,
+} as any)
 const MainPrivacyPolicyRoute = MainPrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
@@ -57,6 +63,7 @@ const MainTermsOfServicesRoute = MainTermsOfServicesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
+  '/en': typeof MainEnRoute
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
   '/signup': typeof AuthSignupLazyRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
+  '/en': typeof MainEnRoute
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
   '/signup': typeof AuthSignupLazyRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
+  '/_main/en': typeof MainEnRoute
   '/_main/privacy-policy': typeof MainPrivacyPolicyRoute
   '/_main/terms-of-services': typeof MainTermsOfServicesRoute
   '/_auth/signup': typeof AuthSignupLazyRoute
@@ -81,15 +90,27 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/login' | '/privacy-policy' | '/terms-of-services' | '/signup'
+    | '/'
+    | '/login'
+    | '/en'
+    | '/privacy-policy'
+    | '/terms-of-services'
+    | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/privacy-policy' | '/terms-of-services' | '/signup'
+  to:
+    | '/'
+    | '/login'
+    | '/en'
+    | '/privacy-policy'
+    | '/terms-of-services'
+    | '/signup'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/_main'
     | '/_auth/login'
+    | '/_main/en'
     | '/_main/privacy-policy'
     | '/_main/terms-of-services'
     | '/_auth/signup'
@@ -138,6 +159,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupLazyRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_main/en': {
+      id: '/_main/en'
+      path: '/en'
+      fullPath: '/en'
+      preLoaderRoute: typeof MainEnRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/privacy-policy': {
       id: '/_main/privacy-policy'
       path: '/privacy-policy'
@@ -168,11 +196,13 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainRouteChildren {
+  MainEnRoute: typeof MainEnRoute
   MainPrivacyPolicyRoute: typeof MainPrivacyPolicyRoute
   MainTermsOfServicesRoute: typeof MainTermsOfServicesRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainEnRoute: MainEnRoute,
   MainPrivacyPolicyRoute: MainPrivacyPolicyRoute,
   MainTermsOfServicesRoute: MainTermsOfServicesRoute,
 }

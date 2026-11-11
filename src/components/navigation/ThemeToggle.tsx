@@ -15,7 +15,7 @@ export default function ThemeToggle() {
             size="icon"
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
             onClick={themeToggle}
-            className="bg-[#ffffff] border-none cursor-pointer text-[#222222] dark:bg-[#0a0a0a] dark:text-[#f9fafb] hover:bg-[#f3f4f6] hover:dark:bg-[#18181b]"
+            className="hover:bg-transparent border-none cursor-pointer text-[#222222] dark:text-[#f9fafb] hover:dark:bg-transparent"
         >
             <ThemeIcon aria-hidden="true" className="size-5" />
         </Button>

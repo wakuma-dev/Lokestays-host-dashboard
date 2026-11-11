@@ -1,11 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
-import Home from '@/pages/Home';
-import MainLayout from '@/Layouts/MainLayout';
-
+import { createFileRoute, redirect } from '@tanstack/react-router'
 export const Route = createFileRoute('/')({
-   component: () => (
-      <MainLayout>
-         <Home />
-      </MainLayout>
-   )
-});
+  beforeLoad: () => {
+    throw redirect({
+      to: "/login"
+    })
+  }
+})
