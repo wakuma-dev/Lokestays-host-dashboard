@@ -4,7 +4,7 @@ export default function NotFound(){
     return(
     <main
      aria-labelledby="not-found-title"
-     className="flex flex-col items-start md:items-center justify-center gap-2 md:gap-3 p-4 min-h-screen">
+     className="fixed inset-0 overflow-hidden overscroll-none flex flex-col items-start md:items-center justify-center gap-2 md:gap-3 p-4 min-h-screen">
     <Helmet>
     <title>404 Page Not Found - Lokestays Host</title>
     <meta name="description"

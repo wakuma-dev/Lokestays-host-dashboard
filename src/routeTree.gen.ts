@@ -18,8 +18,51 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as MainEnRouteImport } from './routes/_main/en'
 import { Route as MainPrivacyPolicyRouteImport } from './routes/_main/privacy-policy'
 import { Route as MainTermsOfServicesRouteImport } from './routes/_main/terms-of-services'
+import { Route as MainPropertiesRouterRouteImport } from './routes/_main/properties/router'
+import { Route as MainReservationsIndexRouteImport } from './routes/_main/reservations/index'
+import { Route as MainReservationsRouterRouteImport } from './routes/_main/reservations/router'
 
 const AuthSignupLazyRouteImport = createFileRoute('/_auth/signup')()
+const MainMessagesLazyRouteImport = createFileRoute('/_main/messages')()
+const MainNotificationsLazyRouteImport = createFileRoute(
+  '/_main/notifications',
+)()
+const MainSettingsLazyRouteImport = createFileRoute('/_main/settings')()
+const MainAccountProfileLazyRouteImport = createFileRoute(
+  '/_main/account/profile',
+)()
+const MainAccountVerificationLazyRouteImport = createFileRoute(
+  '/_main/account/verification',
+)()
+const MainFinanceEarningsLazyRouteImport = createFileRoute(
+  '/_main/finance/earnings',
+)()
+const MainFinancePayoutsLazyRouteImport = createFileRoute(
+  '/_main/finance/payouts',
+)()
+const MainFinanceTransactionsLazyRouteImport = createFileRoute(
+  '/_main/finance/transactions',
+)()
+const MainPropertiesIndexLazyRouteImport =
+  createFileRoute('/_main/properties/')()
+const MainPropertiesPropertyIdLazyRouteImport = createFileRoute(
+  '/_main/properties/$propertyId',
+)()
+const MainPropertiesCreateLazyRouteImport = createFileRoute(
+  '/_main/properties/create',
+)()
+const MainReservationsReservationIdLazyRouteImport = createFileRoute(
+  '/_main/reservations/$reservationId',
+)()
+const MainReservationsConfirmedLazyRouteImport = createFileRoute(
+  '/_main/reservations/confirmed',
+)()
+const MainReservationsPendingLazyRouteImport = createFileRoute(
+  '/_main/reservations/pending',
+)()
+const MainPropertiesPropertyIdEditLazyRouteImport = createFileRoute(
+  '/_main/properties/$propertyId/edit',
+)()
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -49,16 +92,148 @@ const MainEnRoute = MainEnRouteImport.update({
   path: '/en',
   getParentRoute: () => MainRoute,
 } as any)
+const MainMessagesLazyRoute = MainMessagesLazyRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/messages.lazy').then((d) => d.Route),
+)
+const MainNotificationsLazyRoute = MainNotificationsLazyRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/notifications.lazy').then((d) => d.Route),
+)
 const MainPrivacyPolicyRoute = MainPrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
   getParentRoute: () => MainRoute,
 } as any)
+const MainSettingsLazyRoute = MainSettingsLazyRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/settings.lazy').then((d) => d.Route),
+)
 const MainTermsOfServicesRoute = MainTermsOfServicesRouteImport.update({
   id: '/terms-of-services',
   path: '/terms-of-services',
   getParentRoute: () => MainRoute,
 } as any)
+const MainAccountProfileLazyRoute = MainAccountProfileLazyRouteImport.update({
+  id: '/account/profile',
+  path: '/account/profile',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/account/profile.lazy').then((d) => d.Route),
+)
+const MainAccountVerificationLazyRoute =
+  MainAccountVerificationLazyRouteImport.update({
+    id: '/account/verification',
+    path: '/account/verification',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/account/verification.lazy').then((d) => d.Route),
+  )
+const MainFinanceEarningsLazyRoute = MainFinanceEarningsLazyRouteImport.update({
+  id: '/finance/earnings',
+  path: '/finance/earnings',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/finance/earnings.lazy').then((d) => d.Route),
+)
+const MainFinancePayoutsLazyRoute = MainFinancePayoutsLazyRouteImport.update({
+  id: '/finance/payouts',
+  path: '/finance/payouts',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/finance/payouts.lazy').then((d) => d.Route),
+)
+const MainFinanceTransactionsLazyRoute =
+  MainFinanceTransactionsLazyRouteImport.update({
+    id: '/finance/transactions',
+    path: '/finance/transactions',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/finance/transactions.lazy').then((d) => d.Route),
+  )
+const MainPropertiesIndexLazyRoute = MainPropertiesIndexLazyRouteImport.update({
+  id: '/properties/',
+  path: '/properties/',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/properties/index.lazy').then((d) => d.Route),
+)
+const MainPropertiesPropertyIdLazyRoute =
+  MainPropertiesPropertyIdLazyRouteImport.update({
+    id: '/properties/$propertyId',
+    path: '/properties/$propertyId',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/properties/$propertyId.lazy').then((d) => d.Route),
+  )
+const MainPropertiesCreateLazyRoute =
+  MainPropertiesCreateLazyRouteImport.update({
+    id: '/properties/create',
+    path: '/properties/create',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/properties/create.lazy').then((d) => d.Route),
+  )
+const MainPropertiesRouterRoute = MainPropertiesRouterRouteImport.update({
+  id: '/properties/router',
+  path: '/properties/router',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainReservationsIndexRoute = MainReservationsIndexRouteImport.update({
+  id: '/reservations/',
+  path: '/reservations/',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainReservationsReservationIdLazyRoute =
+  MainReservationsReservationIdLazyRouteImport.update({
+    id: '/reservations/$reservationId',
+    path: '/reservations/$reservationId',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/reservations/$reservationId.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const MainReservationsConfirmedLazyRoute =
+  MainReservationsConfirmedLazyRouteImport.update({
+    id: '/reservations/confirmed',
+    path: '/reservations/confirmed',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/reservations/confirmed.lazy').then((d) => d.Route),
+  )
+const MainReservationsPendingLazyRoute =
+  MainReservationsPendingLazyRouteImport.update({
+    id: '/reservations/pending',
+    path: '/reservations/pending',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/reservations/pending.lazy').then((d) => d.Route),
+  )
+const MainReservationsRouterRoute = MainReservationsRouterRouteImport.update({
+  id: '/reservations/router',
+  path: '/reservations/router',
+  getParentRoute: () => MainRoute,
+} as any)
+const MainPropertiesPropertyIdEditLazyRoute =
+  MainPropertiesPropertyIdEditLazyRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => MainPropertiesPropertyIdLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/properties/$propertyId.edit..lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +242,24 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
   '/signup': typeof AuthSignupLazyRoute
+  '/messages': typeof MainMessagesLazyRoute
+  '/notifications': typeof MainNotificationsLazyRoute
+  '/settings': typeof MainSettingsLazyRoute
+  '/properties/router': typeof MainPropertiesRouterRoute
+  '/reservations/router': typeof MainReservationsRouterRoute
+  '/account/profile': typeof MainAccountProfileLazyRoute
+  '/account/verification': typeof MainAccountVerificationLazyRoute
+  '/finance/earnings': typeof MainFinanceEarningsLazyRoute
+  '/finance/payouts': typeof MainFinancePayoutsLazyRoute
+  '/finance/transactions': typeof MainFinanceTransactionsLazyRoute
+  '/properties/$propertyId': typeof MainPropertiesPropertyIdLazyRouteWithChildren
+  '/properties/create': typeof MainPropertiesCreateLazyRoute
+  '/reservations/$reservationId': typeof MainReservationsReservationIdLazyRoute
+  '/reservations/confirmed': typeof MainReservationsConfirmedLazyRoute
+  '/reservations/pending': typeof MainReservationsPendingLazyRoute
+  '/reservations/': typeof MainReservationsIndexRoute
+  '/properties/': typeof MainPropertiesIndexLazyRoute
+  '/properties/$propertyId/edit': typeof MainPropertiesPropertyIdEditLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +268,24 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof MainPrivacyPolicyRoute
   '/terms-of-services': typeof MainTermsOfServicesRoute
   '/signup': typeof AuthSignupLazyRoute
+  '/messages': typeof MainMessagesLazyRoute
+  '/notifications': typeof MainNotificationsLazyRoute
+  '/settings': typeof MainSettingsLazyRoute
+  '/properties/router': typeof MainPropertiesRouterRoute
+  '/reservations/router': typeof MainReservationsRouterRoute
+  '/account/profile': typeof MainAccountProfileLazyRoute
+  '/account/verification': typeof MainAccountVerificationLazyRoute
+  '/finance/earnings': typeof MainFinanceEarningsLazyRoute
+  '/finance/payouts': typeof MainFinancePayoutsLazyRoute
+  '/finance/transactions': typeof MainFinanceTransactionsLazyRoute
+  '/properties/$propertyId': typeof MainPropertiesPropertyIdLazyRouteWithChildren
+  '/properties/create': typeof MainPropertiesCreateLazyRoute
+  '/reservations/$reservationId': typeof MainReservationsReservationIdLazyRoute
+  '/reservations/confirmed': typeof MainReservationsConfirmedLazyRoute
+  '/reservations/pending': typeof MainReservationsPendingLazyRoute
+  '/reservations': typeof MainReservationsIndexRoute
+  '/properties': typeof MainPropertiesIndexLazyRoute
+  '/properties/$propertyId/edit': typeof MainPropertiesPropertyIdEditLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +297,24 @@ export interface FileRoutesById {
   '/_main/privacy-policy': typeof MainPrivacyPolicyRoute
   '/_main/terms-of-services': typeof MainTermsOfServicesRoute
   '/_auth/signup': typeof AuthSignupLazyRoute
+  '/_main/messages': typeof MainMessagesLazyRoute
+  '/_main/notifications': typeof MainNotificationsLazyRoute
+  '/_main/settings': typeof MainSettingsLazyRoute
+  '/_main/properties/router': typeof MainPropertiesRouterRoute
+  '/_main/reservations/router': typeof MainReservationsRouterRoute
+  '/_main/account/profile': typeof MainAccountProfileLazyRoute
+  '/_main/account/verification': typeof MainAccountVerificationLazyRoute
+  '/_main/finance/earnings': typeof MainFinanceEarningsLazyRoute
+  '/_main/finance/payouts': typeof MainFinancePayoutsLazyRoute
+  '/_main/finance/transactions': typeof MainFinanceTransactionsLazyRoute
+  '/_main/properties/$propertyId': typeof MainPropertiesPropertyIdLazyRouteWithChildren
+  '/_main/properties/create': typeof MainPropertiesCreateLazyRoute
+  '/_main/reservations/$reservationId': typeof MainReservationsReservationIdLazyRoute
+  '/_main/reservations/confirmed': typeof MainReservationsConfirmedLazyRoute
+  '/_main/reservations/pending': typeof MainReservationsPendingLazyRoute
+  '/_main/reservations/': typeof MainReservationsIndexRoute
+  '/_main/properties/': typeof MainPropertiesIndexLazyRoute
+  '/_main/properties/$propertyId/edit': typeof MainPropertiesPropertyIdEditLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,6 +325,24 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-services'
     | '/signup'
+    | '/messages'
+    | '/notifications'
+    | '/settings'
+    | '/properties/router'
+    | '/reservations/router'
+    | '/account/profile'
+    | '/account/verification'
+    | '/finance/earnings'
+    | '/finance/payouts'
+    | '/finance/transactions'
+    | '/properties/$propertyId'
+    | '/properties/create'
+    | '/reservations/$reservationId'
+    | '/reservations/confirmed'
+    | '/reservations/pending'
+    | '/reservations/'
+    | '/properties/'
+    | '/properties/$propertyId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -104,6 +351,24 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-services'
     | '/signup'
+    | '/messages'
+    | '/notifications'
+    | '/settings'
+    | '/properties/router'
+    | '/reservations/router'
+    | '/account/profile'
+    | '/account/verification'
+    | '/finance/earnings'
+    | '/finance/payouts'
+    | '/finance/transactions'
+    | '/properties/$propertyId'
+    | '/properties/create'
+    | '/reservations/$reservationId'
+    | '/reservations/confirmed'
+    | '/reservations/pending'
+    | '/reservations'
+    | '/properties'
+    | '/properties/$propertyId/edit'
   id:
     | '__root__'
     | '/'
@@ -114,6 +379,24 @@ export interface FileRouteTypes {
     | '/_main/privacy-policy'
     | '/_main/terms-of-services'
     | '/_auth/signup'
+    | '/_main/messages'
+    | '/_main/notifications'
+    | '/_main/settings'
+    | '/_main/properties/router'
+    | '/_main/reservations/router'
+    | '/_main/account/profile'
+    | '/_main/account/verification'
+    | '/_main/finance/earnings'
+    | '/_main/finance/payouts'
+    | '/_main/finance/transactions'
+    | '/_main/properties/$propertyId'
+    | '/_main/properties/create'
+    | '/_main/reservations/$reservationId'
+    | '/_main/reservations/confirmed'
+    | '/_main/reservations/pending'
+    | '/_main/reservations/'
+    | '/_main/properties/'
+    | '/_main/properties/$propertyId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -166,11 +449,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainEnRouteImport
       parentRoute: typeof MainRoute
     }
+    '/_main/messages': {
+      id: '/_main/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MainMessagesLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/notifications': {
+      id: '/_main/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof MainNotificationsLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
     '/_main/privacy-policy': {
       id: '/_main/privacy-policy'
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof MainPrivacyPolicyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/settings': {
+      id: '/_main/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainSettingsLazyRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/terms-of-services': {
@@ -179,6 +483,111 @@ declare module '@tanstack/react-router' {
       fullPath: '/terms-of-services'
       preLoaderRoute: typeof MainTermsOfServicesRouteImport
       parentRoute: typeof MainRoute
+    }
+    '/_main/account/profile': {
+      id: '/_main/account/profile'
+      path: '/account/profile'
+      fullPath: '/account/profile'
+      preLoaderRoute: typeof MainAccountProfileLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/account/verification': {
+      id: '/_main/account/verification'
+      path: '/account/verification'
+      fullPath: '/account/verification'
+      preLoaderRoute: typeof MainAccountVerificationLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/finance/earnings': {
+      id: '/_main/finance/earnings'
+      path: '/finance/earnings'
+      fullPath: '/finance/earnings'
+      preLoaderRoute: typeof MainFinanceEarningsLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/finance/payouts': {
+      id: '/_main/finance/payouts'
+      path: '/finance/payouts'
+      fullPath: '/finance/payouts'
+      preLoaderRoute: typeof MainFinancePayoutsLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/finance/transactions': {
+      id: '/_main/finance/transactions'
+      path: '/finance/transactions'
+      fullPath: '/finance/transactions'
+      preLoaderRoute: typeof MainFinanceTransactionsLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/properties/': {
+      id: '/_main/properties/'
+      path: '/properties'
+      fullPath: '/properties/'
+      preLoaderRoute: typeof MainPropertiesIndexLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/properties/$propertyId': {
+      id: '/_main/properties/$propertyId'
+      path: '/properties/$propertyId'
+      fullPath: '/properties/$propertyId'
+      preLoaderRoute: typeof MainPropertiesPropertyIdLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/properties/create': {
+      id: '/_main/properties/create'
+      path: '/properties/create'
+      fullPath: '/properties/create'
+      preLoaderRoute: typeof MainPropertiesCreateLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/properties/router': {
+      id: '/_main/properties/router'
+      path: '/properties/router'
+      fullPath: '/properties/router'
+      preLoaderRoute: typeof MainPropertiesRouterRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reservations/': {
+      id: '/_main/reservations/'
+      path: '/reservations'
+      fullPath: '/reservations/'
+      preLoaderRoute: typeof MainReservationsIndexRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reservations/$reservationId': {
+      id: '/_main/reservations/$reservationId'
+      path: '/reservations/$reservationId'
+      fullPath: '/reservations/$reservationId'
+      preLoaderRoute: typeof MainReservationsReservationIdLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reservations/confirmed': {
+      id: '/_main/reservations/confirmed'
+      path: '/reservations/confirmed'
+      fullPath: '/reservations/confirmed'
+      preLoaderRoute: typeof MainReservationsConfirmedLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reservations/pending': {
+      id: '/_main/reservations/pending'
+      path: '/reservations/pending'
+      fullPath: '/reservations/pending'
+      preLoaderRoute: typeof MainReservationsPendingLazyRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/reservations/router': {
+      id: '/_main/reservations/router'
+      path: '/reservations/router'
+      fullPath: '/reservations/router'
+      preLoaderRoute: typeof MainReservationsRouterRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/properties/$propertyId/edit': {
+      id: '/_main/properties/$propertyId/edit'
+      path: '/edit'
+      fullPath: '/properties/$propertyId/edit'
+      preLoaderRoute: typeof MainPropertiesPropertyIdEditLazyRouteImport
+      parentRoute: typeof MainPropertiesPropertyIdLazyRoute
     }
   }
 }
@@ -195,16 +604,67 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MainPropertiesPropertyIdLazyRouteChildren {
+  MainPropertiesPropertyIdEditLazyRoute: typeof MainPropertiesPropertyIdEditLazyRoute
+}
+
+const MainPropertiesPropertyIdLazyRouteChildren: MainPropertiesPropertyIdLazyRouteChildren =
+  {
+    MainPropertiesPropertyIdEditLazyRoute:
+      MainPropertiesPropertyIdEditLazyRoute,
+  }
+
+const MainPropertiesPropertyIdLazyRouteWithChildren =
+  MainPropertiesPropertyIdLazyRoute._addFileChildren(
+    MainPropertiesPropertyIdLazyRouteChildren,
+  )
+
 interface MainRouteChildren {
   MainEnRoute: typeof MainEnRoute
   MainPrivacyPolicyRoute: typeof MainPrivacyPolicyRoute
   MainTermsOfServicesRoute: typeof MainTermsOfServicesRoute
+  MainMessagesLazyRoute: typeof MainMessagesLazyRoute
+  MainNotificationsLazyRoute: typeof MainNotificationsLazyRoute
+  MainSettingsLazyRoute: typeof MainSettingsLazyRoute
+  MainPropertiesRouterRoute: typeof MainPropertiesRouterRoute
+  MainReservationsRouterRoute: typeof MainReservationsRouterRoute
+  MainAccountProfileLazyRoute: typeof MainAccountProfileLazyRoute
+  MainAccountVerificationLazyRoute: typeof MainAccountVerificationLazyRoute
+  MainFinanceEarningsLazyRoute: typeof MainFinanceEarningsLazyRoute
+  MainFinancePayoutsLazyRoute: typeof MainFinancePayoutsLazyRoute
+  MainFinanceTransactionsLazyRoute: typeof MainFinanceTransactionsLazyRoute
+  MainPropertiesPropertyIdLazyRoute: typeof MainPropertiesPropertyIdLazyRouteWithChildren
+  MainPropertiesCreateLazyRoute: typeof MainPropertiesCreateLazyRoute
+  MainReservationsReservationIdLazyRoute: typeof MainReservationsReservationIdLazyRoute
+  MainReservationsConfirmedLazyRoute: typeof MainReservationsConfirmedLazyRoute
+  MainReservationsPendingLazyRoute: typeof MainReservationsPendingLazyRoute
+  MainReservationsIndexRoute: typeof MainReservationsIndexRoute
+  MainPropertiesIndexLazyRoute: typeof MainPropertiesIndexLazyRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainEnRoute: MainEnRoute,
   MainPrivacyPolicyRoute: MainPrivacyPolicyRoute,
   MainTermsOfServicesRoute: MainTermsOfServicesRoute,
+  MainMessagesLazyRoute: MainMessagesLazyRoute,
+  MainNotificationsLazyRoute: MainNotificationsLazyRoute,
+  MainSettingsLazyRoute: MainSettingsLazyRoute,
+  MainPropertiesRouterRoute: MainPropertiesRouterRoute,
+  MainReservationsRouterRoute: MainReservationsRouterRoute,
+  MainAccountProfileLazyRoute: MainAccountProfileLazyRoute,
+  MainAccountVerificationLazyRoute: MainAccountVerificationLazyRoute,
+  MainFinanceEarningsLazyRoute: MainFinanceEarningsLazyRoute,
+  MainFinancePayoutsLazyRoute: MainFinancePayoutsLazyRoute,
+  MainFinanceTransactionsLazyRoute: MainFinanceTransactionsLazyRoute,
+  MainPropertiesPropertyIdLazyRoute:
+    MainPropertiesPropertyIdLazyRouteWithChildren,
+  MainPropertiesCreateLazyRoute: MainPropertiesCreateLazyRoute,
+  MainReservationsReservationIdLazyRoute:
+    MainReservationsReservationIdLazyRoute,
+  MainReservationsConfirmedLazyRoute: MainReservationsConfirmedLazyRoute,
+  MainReservationsPendingLazyRoute: MainReservationsPendingLazyRoute,
+  MainReservationsIndexRoute: MainReservationsIndexRoute,
+  MainPropertiesIndexLazyRoute: MainPropertiesIndexLazyRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)

@@ -8,6 +8,7 @@ import { MyInput, useLogin, loginSchema, type LoginDataType } from "@/features/a
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast";
+import { getHostDestination } from "@/features/properties";
 
 const AUTO_COMPLETE: Record<keyof LoginDataType, string> = {
   email: "email",
@@ -58,14 +59,15 @@ export default function Login(){
     onSubmit: async ({ value }) => {
       setLoginError("");
       try {
-        await loginMutation.mutateAsync(value);
+        const user = await loginMutation.mutateAsync(value);
         add({
           type: "success",
           title: "Success",
           description: "User login successfully"
         });
+        const destination = await getHostDestination(user.uid)
         await navigate({
-          to: "/en",
+          to: destination,
           replace: true
         });
       } catch (error) {

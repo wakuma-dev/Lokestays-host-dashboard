@@ -209,8 +209,8 @@ export default function SidebarMenu({ onItemClick, variant }: SidebarMenuProps):
                       ? "bg-gray-100 text-gray-900 font-semibold dark:bg-gray-800 dark:text-white"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                     : isActive
-                    ? "bg-white/10 text-white font-semibold"
-                    : "text-[#222222] dark:text-[#f9fafb] hover:dark:bg-[#181818] hover:bg-[#f3f4f6] hover:text-black"
+                    ? "bg-white/10 text-[#3e3529] font-semibold"
+                    : "text-[#222222] dark:text-[#cec8b2] hover:dark:bg-[#1B1B1B] hover:bg-[#FAFAFA] hover:dark:text-white hover:text-black"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -251,7 +251,7 @@ export default function SidebarMenu({ onItemClick, variant }: SidebarMenuProps):
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                     : isActive
                     ? "bg-white/10 text-white font-semibold"
-                    : "text-[#222222] dark:text-[#f9fafb] hover:dark:bg-[#181818] hover:bg-[#f3f4f6] hover:text-black"
+                    : "text-[#222222] dark:text-[#cec8b2] hover:dark:text-white hover:dark:bg-[#1b1b1b] hover:bg-[#FAFAFA] hover:text-black"
                 }`}
               >
                 {Icon && <Icon className="h-5 w-5 shrink-0" />}

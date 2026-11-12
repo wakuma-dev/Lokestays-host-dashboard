@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   return (
-    <div className="min-w-0  text-[#fff] min-h-screen h-auto bg-[#FDFDFD] dark:bg-[#0A0A0A] ">
+    <main className="min-w-0 text-[#fff] min-h-screen h-auto bg-[#FDFDFD] dark:bg-[#0A0A0A] ">
       <Helmet>
         <title>Dashboard | Lokestays Host</title>
         <meta
@@ -14,7 +14,6 @@ export default function Home() {
         <p>
           Welcome back. Here is what's happening with your properties today.
         </p>
-      </div>
-    
-  );
+      </main>
+    );
 }

@@ -9,7 +9,7 @@ type MainLayoutProps = {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="flex min-h-screen overflow-y-auto w-full">
+    <div className="flex min-h-screen w-full">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Navbar />
