@@ -1,0 +1,2 @@
+import{n as e,p as t}from"./fileRoute-DOkYbZyG-v2.js";import{h as n}from"./index-CsKYG3XI.js";var r=t();function i(){return(0,r.jsxs)(`main`,{className:`min-w-0 text-[#201b15] min-h-screen h-auto\r
+                       bg-[#FDFDFD] dark:text-[#ffffff] dark:bg-[#0A0A0A]`,children:[(0,r.jsxs)(n,{children:[(0,r.jsx)(`title`,{}),(0,r.jsx)(`meta`,{name:`description`,content:``})]}),(0,r.jsx)(`div`,{className:``,children:`abebe`})]})}var a=e(`/_main/properties/create`)({component:i});export{a as Route};

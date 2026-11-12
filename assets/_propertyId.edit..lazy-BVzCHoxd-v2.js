@@ -1,0 +1,1 @@
+import{n as e,p as t}from"./fileRoute-DOkYbZyG-v2.js";var n=t(),r=e(`/_main/properties/$propertyId/edit`)({component:i});function i(){return(0,n.jsx)(`div`,{children:`Hello "/_main/properties/$propertyId/edit"!`})}export{r as Route};

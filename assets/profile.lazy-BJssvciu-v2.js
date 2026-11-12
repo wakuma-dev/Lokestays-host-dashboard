@@ -1,0 +1,1 @@
+import{n as e,p as t}from"./fileRoute-DOkYbZyG-v2.js";var n=t(),r=e(`/_main/account/profile`)({component:i});function i(){return(0,n.jsx)(`div`,{children:`Hello "/_main/account/profile"!`})}export{r as Route};
