@@ -2,7 +2,6 @@ import { type ReactElement, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import image from "../assets/image.png";
 
-
 export interface AboutProps {
     readonly stepNumber?: number;
     readonly title?: string;
@@ -19,17 +18,18 @@ function AboutComponent({
     title = DEFAULT_TITLE,
     description = DEFAULT_DESCRIPTION,
 }: AboutProps): ReactElement {
+    
     const stepLabel = `Step ${stepNumber}`;
     const metaTitle = `Step ${stepNumber}: ${title}`;
 
     return (
-        <main className="min-h-screen w-full overflow-y-auto p-4 text-[#201b15] bg-[#FDFDFD] dark:text-[#ffffff] dark:bg-[#0A0A0A]">
+        <main className="min-h-screen w-full overflow-y-auto p-4 pb-36 text-[#201b15] bg-[#FDFDFD] dark:text-[#ffffff] dark:bg-[#0A0A0A] md:h-full md:min-h-0 md:overflow-hidden md:pb-4 flex flex-col justify-between">
             <Helmet>
                 <title>{metaTitle}</title>
                 <meta name="description" content={description} />
             </Helmet>
-            <div className="mx-auto flex w-full max-w-6xl flex-col-reverse items-center justify-between gap-4 md:flex-row md:gap-12">
-                <div className="flex flex-1 flex-col items-start justify-center gap-2.5 md:gap-4">
+            <div className="mx-auto flex w-full max-w-6xl flex-col-reverse items-center justify-center gap-6 md:h-full md:flex-row md:justify-between md:gap-12 my-auto">
+                <div className="flex w-full flex-1 flex-col items-start justify-center gap-2.5 md:gap-4">
                     <span className="font-medium text-[16px] leading-[24px] tracking-normal md:text-[18px] md:leading-[28px]">
                         {stepLabel}
                     </span>
@@ -48,7 +48,7 @@ function AboutComponent({
                         height={500}
                         loading="eager"
                         decoding="async"
-                        className="h-auto w-full aspect-square select-none object-contain"
+                        className="h-auto w-full aspect-square select-none object-contain md:max-h-[calc(100dvh-12rem)]"
                     />
                 </div>
             </div>

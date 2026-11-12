@@ -8,7 +8,6 @@ import { MyInput, useLogin, loginSchema, type LoginDataType } from "@/features/a
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast";
-import { getHostDestination } from "@/features/properties";
 import bgBanner from "../assets/21623311c7ad4b1db37c519b394f0eeb.jpg";
 
 const bgStyle: React.CSSProperties = {
@@ -78,15 +77,15 @@ export default function Login(){
     onSubmit: async ({ value }) => {
       setLoginError("");
       try {
-        const user = await loginMutation.mutateAsync(value);
+        await loginMutation.mutateAsync(value);
         add({
           type: "success",
           title: "Success",
           description: "User login successfully"
         });
-        const destination = await getHostDestination(user.uid)
+
         await navigate({
-          to: destination,
+          to: "/en",
           replace: true
         });
       } catch (error) {
