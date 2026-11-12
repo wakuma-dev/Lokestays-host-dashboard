@@ -1,0 +1,8 @@
+import { Outlet } from "@tanstack/react-router"
+export default function OnBoardingLayout(){
+    return(
+    <main>
+        <Outlet />
+    </main>
+    )
+}

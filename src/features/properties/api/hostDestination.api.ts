@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { hasHostProperties } from "@/features/properties";
-export type HostDestinationRoute = "/en" | "/properties/create";
+
+export type HostDestinationRoute = "/en" | "/properties/about";
 
 const HostIdSchema = z.string().min(1, { message: "Host ID cannot be empty or whitespace" });
 
@@ -14,7 +15,7 @@ export async function getHostDestination(hostId: unknown): Promise<HostDestinati
 
   try {
     const hasProperties = await hasHostProperties(sanitizedHostId);
-    return hasProperties ? "/en" : "/properties/create";
+    return hasProperties ? "/en" : "/properties/about";
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "Unknown persistence layer fault";
     throw new Error(`[RoutingError] Failed to determine destination for host [${sanitizedHostId}]: ${errorMessage}`);

@@ -54,7 +54,7 @@ const sidebarLinks: readonly LinkItem[] = [
         icon: House,
       },
       {
-        path: "/properties/create",
+        path: "/properties/about",
         label: "Add Property",
         icon: Plus,
       },

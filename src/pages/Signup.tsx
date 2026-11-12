@@ -15,6 +15,25 @@ const AUTO_COMPLETE: Record<keyof RegisterDataType, string> = {
      confirmPassword: "new-password",
      agreeTerms: "off"
 }
+import bgBanner from "../assets/21623311c7ad4b1db37c519b394f0eeb.jpg";
+
+const bgStyle: React.CSSProperties = {
+   backgroundImage: `
+  linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 0.4) 85%,
+    rgba(0, 0, 0, 0.2) 100%
+  ),
+  url(${bgBanner})
+`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    width: "100vw",
+    height: "100vh"
+}
 function getFirebaseRegisterError(error: FirebaseError): string {
   switch (error.code) {
     case "auth/email-already-in-use":
@@ -92,7 +111,8 @@ export default function Signup(){
     })
     return(
         <main className="fixed inset-0 w-full flex items-center justify-center h-dvh
-                          overscroll-none overflow-hidden">
+                          overscroll-none overflow-hidden"
+                          style={bgStyle}>
             <Helmet>
                 <title></title>
                 <meta name="description"

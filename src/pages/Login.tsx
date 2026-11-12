@@ -9,6 +9,25 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast";
 import { getHostDestination } from "@/features/properties";
+import bgBanner from "../assets/21623311c7ad4b1db37c519b394f0eeb.jpg";
+
+const bgStyle: React.CSSProperties = {
+   backgroundImage: `
+  linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 0.4) 85%,
+    rgba(0, 0, 0, 0.2) 100%
+  ),
+  url(${bgBanner})
+`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    width: "100vw",
+    height: "100vh"
+}
 
 const AUTO_COMPLETE: Record<keyof LoginDataType, string> = {
   email: "email",
@@ -87,8 +106,9 @@ export default function Login(){
   });
 
   return (
-    <main className="w-full fixed inset-0 h-dvh flex items-center justify-center w-full 
-                     overflow-hidden overscroll-none">
+    <main className="w-full fixed inset-0 h-dvh flex items-center justify-center
+                     overflow-hidden overscroll-none"
+                     style={bgStyle}>
       <Helmet>
         <title>Log in - Host dashboard | LokeStays</title>
         <meta
