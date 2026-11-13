@@ -71,7 +71,7 @@ function StructureComponent() {
   const setStructure = useOnboardingStore((state) => state.setStructure);
 
   return (
-    <main className="min-h-dvh w-full bg-[#FDFDFD] p-4 pb-36 text-[#201b15] dark:bg-[#0A0A0A] dark:text-white">
+    <main className="min-h-dvh w-full bg-[#FDFDFD] p-4 pb-14 text-[#201b15] dark:bg-[#0A0A0A] dark:text-white">
       <Helmet>
         <title>Property structure | Lokestays</title>
         <meta
@@ -82,12 +82,12 @@ function StructureComponent() {
 
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
         {/* Page heading */}
-        <header className="flex flex-col items-center gap-3 text-center">
-          <h1 className="text-[26px] leading-[30px] font-semibold md:text-[32px] md:leading-[36px]">
+        <header className="flex flex-col items-center space-y-1 text-center">
+          <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             Which of these best describes your place?
           </h1>
 
-          <p className="text-sm text-[#777777] dark:text-[#A6ADBB]">
+          <p className="text-[18px] leading-[24px] text-[#6c6c6c] font-normal">
             Select the property type you want to host.
           </p>
         </header>
@@ -110,7 +110,7 @@ function StructureComponent() {
                 onClick={() => setStructure(option.value)}
                 className={`
                   flex min-h-14 flex-col items-start justify-between
-                  gap-5 rounded-xl border p-4 text-left
+                  gap-2 rounded-xl border p-4 text-left
                   transition-colors duration-200
                   focus-visible:outline-2 focus-visible:outline-offset-2
                   focus-visible:outline-[#222222]

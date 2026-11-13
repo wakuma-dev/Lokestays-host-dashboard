@@ -10,14 +10,27 @@ import {
   where,
 } from "firebase/firestore";
 import { z } from "zod";
+
 import { auth } from "@/lib/firebase/auth";
 import { db } from "@/lib/firebase/firestore";
-import { propertyDraftSchema, type PropertyDraft } from "../store/property-draft.schema";
-import { updatePropertyDraftSchema, 
-        type UpdatePropertyDraft } from "../store/update-property-draft.schema";
 
-const hostIdSchema = z.string().trim().min(1, { message: "Host ID must not be empty" });
-const draftIdSchema = z.string().trim().min(1, { message: "Draft ID must not be empty" });
+import {
+  propertyDraftSchema,
+  type PropertyDraft,
+} from "../schema/property-draft.schema";
+
+import {
+  updatePropertyDraftSchema,
+  type UpdatePropertyDraft,
+} from "../schema/update-property-draft.schema";
+
+const hostIdSchema = z.string().trim().min(1, {
+  message: "Host ID must not be empty",
+});
+
+const draftIdSchema = z.string().trim().min(1, {
+  message: "Draft ID must not be empty",
+});
 
 export interface CreatePropertyDraftInput {
   readonly hostId: string;
@@ -34,15 +47,11 @@ export type PropertyDraftWithId = PropertyDraft & {
 
 /**
  * @name updatePropertyDraft
- * @description Enterprise-grade service function for updating an existing property onboarding draft.
- * 
+ * @description Updates an existing property onboarding draft.
+ *
  * Algorithmic Complexity:
- * - Validation: O(K) where K is the number of updated fields.
+ * - Validation: O(K), where K is the number of updated fields.
  * - Firestore Write: O(1) network operation.
- * 
- * Architectural Trade-offs:
- * - Authentication Guard: Enforces active Firebase Auth session verification prior to mutation 
- *   to align with strict zero-trust Firestore security rules.
  */
 export async function updatePropertyDraft(
   draftId: string,
@@ -52,8 +61,11 @@ export async function updatePropertyDraft(
   const validatedData = updatePropertyDraftSchema.parse(data);
 
   const currentUser = auth.currentUser;
+
   if (!currentUser) {
-    throw new Error("Authentication required: Active user session is missing.");
+    throw new Error(
+      "Authentication required: Active user session is missing.",
+    );
   }
 
   const draftRef = doc(db, "propertyDrafts", validatedDraftId);
@@ -64,14 +76,18 @@ export async function updatePropertyDraft(
       updatedAt: serverTimestamp(),
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown database error";
-    throw new Error(`Failed to update property draft [${validatedDraftId}]: ${errorMessage}`);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown database error";
+
+    throw new Error(
+      `Failed to update property draft [${validatedDraftId}]: ${errorMessage}`,
+    );
   }
 }
 
 /**
  * @name getPropertyDraftById
- * @description Retrieves and validates a single property draft document by its unique ID with authorization checking.
+ * @description Retrieves and validates a single property draft document.
  */
 export async function getPropertyDraftById(
   draftId: string,
@@ -81,9 +97,10 @@ export async function getPropertyDraftById(
   const validatedDraftId = draftIdSchema.parse(draftId);
 
   const draftRef = doc(db, "propertyDrafts", validatedDraftId);
-  
+
   try {
     const snapshot = await getDoc(draftRef);
+
     if (!snapshot.exists()) {
       return null;
     }
@@ -92,7 +109,9 @@ export async function getPropertyDraftById(
     const draft = propertyDraftSchema.parse(rawData);
 
     if (draft.hostId !== validatedHostId) {
-      throw new Error("Authorization failure: You are not authorized to access this property draft.");
+      throw new Error(
+        "Authorization failure: You are not authorized to access this property draft.",
+      );
     }
 
     return {
@@ -100,17 +119,25 @@ export async function getPropertyDraftById(
       ...draft,
     };
   } catch (error: unknown) {
-    if (error instanceof Error && error.message.includes("Authorization failure")) {
+    if (
+      error instanceof Error &&
+      error.message.includes("Authorization failure")
+    ) {
       throw error;
     }
-    const errorMessage = error instanceof Error ? error.message : "Unknown database error";
-    throw new Error(`Failed to retrieve property draft [${validatedDraftId}]: ${errorMessage}`);
+
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown database error";
+
+    throw new Error(
+      `Failed to retrieve property draft [${validatedDraftId}]: ${errorMessage}`,
+    );
   }
 }
 
 /**
  * @name getPropertyDraftsByHostId
- * @description Retrieves all active draft property onboarding documents for a specific host.
+ * @description Retrieves all active draft property onboarding documents.
  */
 export async function getPropertyDraftsByHostId(
   hostId: string,
@@ -125,7 +152,7 @@ export async function getPropertyDraftsByHostId(
 
   try {
     const snapshot = await getDocs(draftsQuery);
-    
+
     return snapshot.docs.map((docSnap) => {
       const rawData = docSnap.data();
       const parsedDraft = propertyDraftSchema.parse(rawData);
@@ -136,14 +163,18 @@ export async function getPropertyDraftsByHostId(
       };
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown database error";
-    throw new Error(`Failed to query property drafts for host [${validatedHostId}]: ${errorMessage}`);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown database error";
+
+    throw new Error(
+      `Failed to query property drafts for host [${validatedHostId}]: ${errorMessage}`,
+    );
   }
 }
 
 /**
  * @name createPropertyDraft
- * @description Instantiates a new property onboarding draft document in Firestore.
+ * @description Creates a new property onboarding draft document.
  */
 export async function createPropertyDraft({
   hostId,
@@ -154,12 +185,17 @@ export async function createPropertyDraft({
 
   const draftRef = doc(collection(db, "propertyDrafts"));
 
-  const draftPayload: Omit<PropertyDraft, "id" | "createdAt" | "updatedAt"> & {
+  const draftPayload: Omit<
+    PropertyDraft,
+    "id" | "createdAt" | "updatedAt"
+  > & {
     readonly createdAt: ReturnType<typeof serverTimestamp>;
     readonly updatedAt: ReturnType<typeof serverTimestamp>;
   } = {
     hostId: validatedHostId,
     structure: null,
+    privacyType: null,
+    location: null,
     currentStep: validatedStep,
     status: "draft",
     createdAt: serverTimestamp(),
@@ -169,8 +205,12 @@ export async function createPropertyDraft({
   try {
     await setDoc(draftRef, draftPayload);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown database error";
-    throw new Error(`Failed to initialize property draft for host [${validatedHostId}]: ${errorMessage}`);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown database error";
+
+    throw new Error(
+      `Failed to initialize property draft for host [${validatedHostId}]: ${errorMessage}`,
+    );
   }
 
   return {

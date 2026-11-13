@@ -4,7 +4,7 @@ import { Outlet } from "@tanstack/react-router"
 export default function OnBoardingLayout(){
     return(
         <main className="flex flex-col py-4 md:h-dvh md:py-0 md:pb-3">
-        <header className="sticky top-0 z-50 h-16 w-full border-b bg-[#FDFDFD] dark:bg-[#0A0A0A] md:bg-[#FDFDFD]/90 md:backdrop-blur-sm md:dark:bg-[#0A0A0A]/90">
+        <header className="fixed inset-x-0 top-0 z-50 h-16 w-full border-b bg-[#FDFDFD] dark:bg-[#0A0A0A] md:sticky md:inset-x-auto md:top-0 md:bg-[#FDFDFD]/90 md:backdrop-blur-sm md:dark:bg-[#0A0A0A]/90">
         <div className="h-full flex items-center justify-between px-4 md:px-6">
             <span className="text-[] font-medium tracking-tight">Lokestays</span>
         </div>

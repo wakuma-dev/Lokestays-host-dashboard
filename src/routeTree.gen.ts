@@ -23,6 +23,7 @@ import { Route as MainReservationsRouteRouteImport } from './routes/_main/reserv
 import { Route as MainTermsOfServicesRouteImport } from './routes/_main/terms-of-services'
 import { Route as MainReservationsIndexRouteImport } from './routes/_main/reservations/index'
 import { Route as OnboardingPropertiesAboutRouteImport } from './routes/_onboarding/properties/about'
+import { Route as OnboardingPropertiesLocationRouteImport } from './routes/_onboarding/properties/location'
 import { Route as OnboardingPropertiesPrivacyRouteImport } from './routes/_onboarding/properties/privacy'
 import { Route as OnboardingPropertiesStructureRouteImport } from './routes/_onboarding/properties/structure'
 
@@ -227,6 +228,12 @@ const OnboardingPropertiesAboutRoute =
     path: '/properties/about',
     getParentRoute: () => OnboardingRouteRoute,
   } as any)
+const OnboardingPropertiesLocationRoute =
+  OnboardingPropertiesLocationRouteImport.update({
+    id: '/properties/location',
+    path: '/properties/location',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
 const OnboardingPropertiesPrivacyRoute =
   OnboardingPropertiesPrivacyRouteImport.update({
     id: '/properties/privacy',
@@ -263,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof MainNotificationsLazyRoute
   '/settings': typeof MainSettingsLazyRoute
   '/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/properties/location': typeof OnboardingPropertiesLocationRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
@@ -289,6 +297,7 @@ export interface FileRoutesByTo {
   '/notifications': typeof MainNotificationsLazyRoute
   '/settings': typeof MainSettingsLazyRoute
   '/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/properties/location': typeof OnboardingPropertiesLocationRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
@@ -321,6 +330,7 @@ export interface FileRoutesById {
   '/_main/notifications': typeof MainNotificationsLazyRoute
   '/_main/settings': typeof MainSettingsLazyRoute
   '/_onboarding/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/_onboarding/properties/location': typeof OnboardingPropertiesLocationRoute
   '/_onboarding/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/_onboarding/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/_main/account/profile': typeof MainAccountProfileLazyRoute
@@ -351,6 +361,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings'
     | '/properties/about'
+    | '/properties/location'
     | '/properties/privacy'
     | '/properties/structure'
     | '/account/profile'
@@ -377,6 +388,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings'
     | '/properties/about'
+    | '/properties/location'
     | '/properties/privacy'
     | '/properties/structure'
     | '/account/profile'
@@ -408,6 +420,7 @@ export interface FileRouteTypes {
     | '/_main/notifications'
     | '/_main/settings'
     | '/_onboarding/properties/about'
+    | '/_onboarding/properties/location'
     | '/_onboarding/properties/privacy'
     | '/_onboarding/properties/structure'
     | '/_main/account/profile'
@@ -615,6 +628,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPropertiesAboutRouteImport
       parentRoute: typeof OnboardingRouteRoute
     }
+    '/_onboarding/properties/location': {
+      id: '/_onboarding/properties/location'
+      path: '/properties/location'
+      fullPath: '/properties/location'
+      preLoaderRoute: typeof OnboardingPropertiesLocationRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
     '/_onboarding/properties/privacy': {
       id: '/_onboarding/properties/privacy'
       path: '/properties/privacy'
@@ -641,12 +661,14 @@ declare module '@tanstack/react-router' {
 
 interface OnboardingRouteRouteChildren {
   OnboardingPropertiesAboutRoute: typeof OnboardingPropertiesAboutRoute
+  OnboardingPropertiesLocationRoute: typeof OnboardingPropertiesLocationRoute
   OnboardingPropertiesPrivacyRoute: typeof OnboardingPropertiesPrivacyRoute
   OnboardingPropertiesStructureRoute: typeof OnboardingPropertiesStructureRoute
 }
 
 const OnboardingRouteRouteChildren: OnboardingRouteRouteChildren = {
   OnboardingPropertiesAboutRoute: OnboardingPropertiesAboutRoute,
+  OnboardingPropertiesLocationRoute: OnboardingPropertiesLocationRoute,
   OnboardingPropertiesPrivacyRoute: OnboardingPropertiesPrivacyRoute,
   OnboardingPropertiesStructureRoute: OnboardingPropertiesStructureRoute,
 }

@@ -23,7 +23,8 @@ function AboutComponent({
     const metaTitle = `Step ${stepNumber}: ${title}`;
 
     return (
-        <main className="flex min-h-[calc(100dvh-4rem)] w-full flex-col justify-between bg-[#FDFDFD] p-4 pb-36 text-[#201b15] dark:bg-[#0A0A0A] dark:text-[#ffffff] md:h-full md:min-h-0 md:pb-4">
+        <main className="fixed inset-0 overscroll-none overflow-hidden h-dvh
+         w-full flex-col justify-between bg-[#FDFDFD] p-4  text-[#201b15] dark:bg-[#0A0A0A] dark:text-[#ffffff] md:pb-4">
             <Helmet>
                 <title>{metaTitle}</title>
                 <meta name="description" content={description} />
