@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-WkwZ5CU--v2.js";import{a as t,i as n,n as r,p as i,w as a}from"./fileRoute-DOkYbZyG-v2.js";import{_ as o,a as s,c,d as l,f as u,g as d,h as f,i as p,l as m,m as h,n as g,o as _,p as v,r as y,s as b,t as x,u as S}from"./index-iabTjJOY.js";var C=e(a(),1),w=i(),T={fullName:`name`,email:`email`,password:`new-password`,confirmPassword:`new-password`,agreeTerms:`off`},E={backgroundImage:`
+import{n as e}from"./rolldown-runtime-WkwZ5CU--v2.js";import{a as t,i as n,n as r,p as i,w as a}from"./fileRoute-DOkYbZyG-v2.js";import{_ as o,a as s,c,d as l,f as u,g as d,h as f,i as p,l as m,m as h,n as g,o as _,p as v,r as y,s as b,t as x,u as S}from"./index--PKoiHP-.js";var C=e(a(),1),w=i(),T={fullName:`name`,email:`email`,password:`new-password`,confirmPassword:`new-password`,agreeTerms:`off`},E={backgroundImage:`
   linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.6) 0%,
