@@ -10,7 +10,7 @@ const firebaseConfig = {
     messagingSenderId: env.firebase.messagingSenderId,
     appId: env.firebase.appId,
 }
-const app: FirebaseApp = getApps.length > 0  ? getApp() : initializeApp(firebaseConfig);
+const app: FirebaseApp = getApps().length > 0  ? getApp() : initializeApp(firebaseConfig);
 export const analytics: Promise<Analytics | null> = isSupported().then((supported) => 
    supported ? getAnalytics(app) : null
 )

@@ -1,9 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-
+import Structure from '@/pages/Structure'
 export const Route = createFileRoute('/_onboarding/properties/structure')({
-  component: RouteComponent,
+  component: Structure,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_onboarding/properties/structure"!</div>
-}
+

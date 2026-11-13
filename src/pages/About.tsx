@@ -23,7 +23,7 @@ function AboutComponent({
     const metaTitle = `Step ${stepNumber}: ${title}`;
 
     return (
-        <main className="min-h-screen w-full overflow-y-auto p-4 pb-36 text-[#201b15] bg-[#FDFDFD] dark:text-[#ffffff] dark:bg-[#0A0A0A] md:h-full md:min-h-0 md:overflow-hidden md:pb-4 flex flex-col justify-between">
+        <main className="flex min-h-[calc(100dvh-4rem)] w-full flex-col justify-between bg-[#FDFDFD] p-4 pb-36 text-[#201b15] dark:bg-[#0A0A0A] dark:text-[#ffffff] md:h-full md:min-h-0 md:pb-4">
             <Helmet>
                 <title>{metaTitle}</title>
                 <meta name="description" content={description} />
@@ -43,10 +43,11 @@ function AboutComponent({
                 <div className="flex w-full max-w-[450px] flex-1 justify-center md:max-w-[500px] md:justify-end">
                     <img 
                         src={image} 
-                        alt="about-image"
+                        alt="Illustration of a furnished multi-level home interior"
                         width={500}
                         height={500}
                         loading="eager"
+                        fetchPriority="high"
                         decoding="async"
                         className="h-auto w-full aspect-square select-none object-contain md:max-h-[calc(100dvh-12rem)]"
                     />

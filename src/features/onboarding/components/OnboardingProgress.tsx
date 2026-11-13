@@ -14,7 +14,7 @@ function OnboardingProgressComponent(): ReactElement {
   const activeTitle = onboardingSteps[currentIndex]?.title ?? onboardingSteps[0].title;
   return (
     <div className="w-full space-y-3">
-      <div className="px-4 md:px-6 flex items-center justify-between text-sm p-4">
+      <div className="w-full md:px-6 flex items-center justify-between text-sm p-4">
         <span className="font-medium">
           {activeTitle}
         </span>
