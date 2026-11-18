@@ -13,7 +13,7 @@ import {
   type PropertyDraftWithId,
 } from "../api/onboarding.api";
 
-import type { UpdatePropertyDraft } from "../store/update-property-draft.schema";
+import type { UpdatePropertyDraft } from "../schema/update-property-draft.schema";
 
 export const propertyDraftKeys = {
   all: ["property-drafts"] as const,

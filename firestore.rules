@@ -13,5 +13,10 @@ service cloud.firestore {
         function isOwner({userId}){
             return request.auth.uid == userId
         }
+
+        match /propertyDrafts/{propertyDraftId} {
+            allow get, list: if isAdmin()
+                || (isAuthenticated() && request.auth.uid == resource.data.hostId);
+        }
     }
 }

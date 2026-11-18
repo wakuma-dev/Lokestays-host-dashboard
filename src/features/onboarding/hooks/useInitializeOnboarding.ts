@@ -15,17 +15,11 @@ export function useInitializeOnboarding(
   draftId: string
 ): UseInitializeOnboardingResult {
   const [_, startTransition] = useTransition();
-
-  // 1. Core Authentication State Selectors
   const user = useAuthStore((state) => state.user);
   const authLoading = useAuthStore((state) => state.loading);
-
-  // 2. Zustand Store Actions
   const hydrateDraft = useOnboardingStore((state) => state.hydrateDraft);
   const resetStore = useOnboardingStore((state) => state.resetOnboarding);
-
-  // 3. Normalized Host & Draft ID parameters
-  const hostId = user?.uid?.trim() ?? "";
+   const hostId = user?.uid?.trim() ?? "";
   const sanitizedDraftId = draftId?.trim() ?? "";
 
   // 4. Data Fetching Hook
@@ -70,6 +64,8 @@ export function useInitializeOnboarding(
       hydrateDraft({
         id: hydratedDraft.id,
         structure: hydratedDraft.structure,
+        privacyType: hydratedDraft.privacyType,
+        location: hydratedDraft.location,
         currentStep: hydratedDraft.currentStep,
         status: hydratedDraft.status,
       });

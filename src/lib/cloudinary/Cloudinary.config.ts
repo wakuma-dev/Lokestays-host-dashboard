@@ -28,4 +28,4 @@ export const cloudinaryConfig = Object.freeze({
   uploadUrl: `https://api.cloudinary.com/v1_1/${env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
 } as const);
 
-export type CloudinaryConfig = typeof cloudinaryConfig;
+export type CloudinaryConfig = typeof cloudinaryConfig; 

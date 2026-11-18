@@ -23,8 +23,13 @@ import { Route as MainReservationsRouteRouteImport } from './routes/_main/reserv
 import { Route as MainTermsOfServicesRouteImport } from './routes/_main/terms-of-services'
 import { Route as MainReservationsIndexRouteImport } from './routes/_main/reservations/index'
 import { Route as OnboardingPropertiesAboutRouteImport } from './routes/_onboarding/properties/about'
+import { Route as OnboardingPropertiesAmenitiesRouteImport } from './routes/_onboarding/properties/amenities'
+import { Route as OnboardingPropertiesBasicsRouteImport } from './routes/_onboarding/properties/basics'
 import { Route as OnboardingPropertiesLocationRouteImport } from './routes/_onboarding/properties/location'
+import { Route as OnboardingPropertiesPhotosRouteImport } from './routes/_onboarding/properties/photos'
+import { Route as OnboardingPropertiesPricingRouteImport } from './routes/_onboarding/properties/pricing'
 import { Route as OnboardingPropertiesPrivacyRouteImport } from './routes/_onboarding/properties/privacy'
+import { Route as OnboardingPropertiesRoomsRouteImport } from './routes/_onboarding/properties/rooms'
 import { Route as OnboardingPropertiesStructureRouteImport } from './routes/_onboarding/properties/structure'
 
 const AuthSignupLazyRouteImport = createFileRoute('/_auth/signup')()
@@ -228,16 +233,46 @@ const OnboardingPropertiesAboutRoute =
     path: '/properties/about',
     getParentRoute: () => OnboardingRouteRoute,
   } as any)
+const OnboardingPropertiesAmenitiesRoute =
+  OnboardingPropertiesAmenitiesRouteImport.update({
+    id: '/properties/amenities',
+    path: '/properties/amenities',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
+const OnboardingPropertiesBasicsRoute =
+  OnboardingPropertiesBasicsRouteImport.update({
+    id: '/properties/basics',
+    path: '/properties/basics',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
 const OnboardingPropertiesLocationRoute =
   OnboardingPropertiesLocationRouteImport.update({
     id: '/properties/location',
     path: '/properties/location',
     getParentRoute: () => OnboardingRouteRoute,
   } as any)
+const OnboardingPropertiesPhotosRoute =
+  OnboardingPropertiesPhotosRouteImport.update({
+    id: '/properties/photos',
+    path: '/properties/photos',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
+const OnboardingPropertiesPricingRoute =
+  OnboardingPropertiesPricingRouteImport.update({
+    id: '/properties/pricing',
+    path: '/properties/pricing',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
 const OnboardingPropertiesPrivacyRoute =
   OnboardingPropertiesPrivacyRouteImport.update({
     id: '/properties/privacy',
     path: '/properties/privacy',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
+const OnboardingPropertiesRoomsRoute =
+  OnboardingPropertiesRoomsRouteImport.update({
+    id: '/properties/rooms',
+    path: '/properties/rooms',
     getParentRoute: () => OnboardingRouteRoute,
   } as any)
 const OnboardingPropertiesStructureRoute =
@@ -270,8 +305,13 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof MainNotificationsLazyRoute
   '/settings': typeof MainSettingsLazyRoute
   '/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
+  '/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/properties/photos': typeof OnboardingPropertiesPhotosRoute
+  '/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
+  '/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
   '/account/verification': typeof MainAccountVerificationLazyRoute
@@ -297,8 +337,13 @@ export interface FileRoutesByTo {
   '/notifications': typeof MainNotificationsLazyRoute
   '/settings': typeof MainSettingsLazyRoute
   '/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
+  '/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/properties/photos': typeof OnboardingPropertiesPhotosRoute
+  '/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
+  '/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
   '/account/verification': typeof MainAccountVerificationLazyRoute
@@ -330,8 +375,13 @@ export interface FileRoutesById {
   '/_main/notifications': typeof MainNotificationsLazyRoute
   '/_main/settings': typeof MainSettingsLazyRoute
   '/_onboarding/properties/about': typeof OnboardingPropertiesAboutRoute
+  '/_onboarding/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
+  '/_onboarding/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/_onboarding/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/_onboarding/properties/photos': typeof OnboardingPropertiesPhotosRoute
+  '/_onboarding/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/_onboarding/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
+  '/_onboarding/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/_onboarding/properties/structure': typeof OnboardingPropertiesStructureRoute
   '/_main/account/profile': typeof MainAccountProfileLazyRoute
   '/_main/account/verification': typeof MainAccountVerificationLazyRoute
@@ -361,8 +411,13 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings'
     | '/properties/about'
+    | '/properties/amenities'
+    | '/properties/basics'
     | '/properties/location'
+    | '/properties/photos'
+    | '/properties/pricing'
     | '/properties/privacy'
+    | '/properties/rooms'
     | '/properties/structure'
     | '/account/profile'
     | '/account/verification'
@@ -388,8 +443,13 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings'
     | '/properties/about'
+    | '/properties/amenities'
+    | '/properties/basics'
     | '/properties/location'
+    | '/properties/photos'
+    | '/properties/pricing'
     | '/properties/privacy'
+    | '/properties/rooms'
     | '/properties/structure'
     | '/account/profile'
     | '/account/verification'
@@ -420,8 +480,13 @@ export interface FileRouteTypes {
     | '/_main/notifications'
     | '/_main/settings'
     | '/_onboarding/properties/about'
+    | '/_onboarding/properties/amenities'
+    | '/_onboarding/properties/basics'
     | '/_onboarding/properties/location'
+    | '/_onboarding/properties/photos'
+    | '/_onboarding/properties/pricing'
     | '/_onboarding/properties/privacy'
+    | '/_onboarding/properties/rooms'
     | '/_onboarding/properties/structure'
     | '/_main/account/profile'
     | '/_main/account/verification'
@@ -628,6 +693,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPropertiesAboutRouteImport
       parentRoute: typeof OnboardingRouteRoute
     }
+    '/_onboarding/properties/amenities': {
+      id: '/_onboarding/properties/amenities'
+      path: '/properties/amenities'
+      fullPath: '/properties/amenities'
+      preLoaderRoute: typeof OnboardingPropertiesAmenitiesRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
+    '/_onboarding/properties/basics': {
+      id: '/_onboarding/properties/basics'
+      path: '/properties/basics'
+      fullPath: '/properties/basics'
+      preLoaderRoute: typeof OnboardingPropertiesBasicsRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
     '/_onboarding/properties/location': {
       id: '/_onboarding/properties/location'
       path: '/properties/location'
@@ -635,11 +714,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPropertiesLocationRouteImport
       parentRoute: typeof OnboardingRouteRoute
     }
+    '/_onboarding/properties/photos': {
+      id: '/_onboarding/properties/photos'
+      path: '/properties/photos'
+      fullPath: '/properties/photos'
+      preLoaderRoute: typeof OnboardingPropertiesPhotosRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
+    '/_onboarding/properties/pricing': {
+      id: '/_onboarding/properties/pricing'
+      path: '/properties/pricing'
+      fullPath: '/properties/pricing'
+      preLoaderRoute: typeof OnboardingPropertiesPricingRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
     '/_onboarding/properties/privacy': {
       id: '/_onboarding/properties/privacy'
       path: '/properties/privacy'
       fullPath: '/properties/privacy'
       preLoaderRoute: typeof OnboardingPropertiesPrivacyRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
+    '/_onboarding/properties/rooms': {
+      id: '/_onboarding/properties/rooms'
+      path: '/properties/rooms'
+      fullPath: '/properties/rooms'
+      preLoaderRoute: typeof OnboardingPropertiesRoomsRouteImport
       parentRoute: typeof OnboardingRouteRoute
     }
     '/_onboarding/properties/structure': {
@@ -661,15 +761,25 @@ declare module '@tanstack/react-router' {
 
 interface OnboardingRouteRouteChildren {
   OnboardingPropertiesAboutRoute: typeof OnboardingPropertiesAboutRoute
+  OnboardingPropertiesAmenitiesRoute: typeof OnboardingPropertiesAmenitiesRoute
+  OnboardingPropertiesBasicsRoute: typeof OnboardingPropertiesBasicsRoute
   OnboardingPropertiesLocationRoute: typeof OnboardingPropertiesLocationRoute
+  OnboardingPropertiesPhotosRoute: typeof OnboardingPropertiesPhotosRoute
+  OnboardingPropertiesPricingRoute: typeof OnboardingPropertiesPricingRoute
   OnboardingPropertiesPrivacyRoute: typeof OnboardingPropertiesPrivacyRoute
+  OnboardingPropertiesRoomsRoute: typeof OnboardingPropertiesRoomsRoute
   OnboardingPropertiesStructureRoute: typeof OnboardingPropertiesStructureRoute
 }
 
 const OnboardingRouteRouteChildren: OnboardingRouteRouteChildren = {
   OnboardingPropertiesAboutRoute: OnboardingPropertiesAboutRoute,
+  OnboardingPropertiesAmenitiesRoute: OnboardingPropertiesAmenitiesRoute,
+  OnboardingPropertiesBasicsRoute: OnboardingPropertiesBasicsRoute,
   OnboardingPropertiesLocationRoute: OnboardingPropertiesLocationRoute,
+  OnboardingPropertiesPhotosRoute: OnboardingPropertiesPhotosRoute,
+  OnboardingPropertiesPricingRoute: OnboardingPropertiesPricingRoute,
   OnboardingPropertiesPrivacyRoute: OnboardingPropertiesPrivacyRoute,
+  OnboardingPropertiesRoomsRoute: OnboardingPropertiesRoomsRoute,
   OnboardingPropertiesStructureRoute: OnboardingPropertiesStructureRoute,
 }
 

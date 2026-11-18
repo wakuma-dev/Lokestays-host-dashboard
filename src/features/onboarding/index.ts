@@ -1,3 +1,6 @@
 export type { OnboardingLink, PropertyStructure} from "./types/onboarding.types"
 export { onboardingSteps } from "./constants/onboardingSteps"
 export { OnboardingProgress } from "./components/OnboardingProgress"
+export {useOnboardingStore} from "./store/onboardingStore"
+export { propertyDraftSchema, type PropertyDraft, type PropertyDraftInput, propertyPhotosSchema} from "./schema/property-draft.schema"
+export { updatePropertyDraftSchema, type UpdatePropertyDraft} from "./schema/update-property-draft.schema"

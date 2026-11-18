@@ -4,11 +4,13 @@ import {
   getDoc,
   getDocs,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
+
 import { z } from "zod";
 
 import { auth } from "@/lib/firebase/auth";
@@ -25,11 +27,47 @@ import {
 } from "../schema/update-property-draft.schema";
 
 const hostIdSchema = z.string().trim().min(1, {
-  message: "Host ID must not be empty",
+  message: "Host ID must not be empty.",
 });
 
 const draftIdSchema = z.string().trim().min(1, {
-  message: "Draft ID must not be empty",
+  message: "Draft ID must not be empty.",
+});
+
+const initialStepSchema = z.string().trim().min(1);
+
+const submissionRequirementsSchema = z.object({
+  structure: z.string().min(1),
+
+  privacyType: z.string().min(1),
+
+  location: z.object({
+    latitude: z.number().min(-90).max(90),
+    longitude: z.number().min(-180).max(180),
+    address: z.string().trim().min(1),
+    city: z.string().trim().min(1),
+    neighborhood: z.string(),
+  }),
+
+  photos: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        url: z.url(),
+        publicId: z.string().min(1),
+        width: z.number().int().positive(),
+        height: z.number().int().positive(),
+        format: z.string().min(1),
+        bytes: z.number().int().positive(),
+        position: z.number().int().min(0),
+      }),
+    )
+    .min(1)
+    .max(20),
+
+  pricePerNight: z.number().int().min(1).max(1_000_000_000),
+
+  currency: z.literal("ETB"),
 });
 
 export interface CreatePropertyDraftInput {
@@ -37,21 +75,21 @@ export interface CreatePropertyDraftInput {
   readonly initialStep?: string;
 }
 
-export type CreatePropertyDraftResult = {
+export interface CreatePropertyDraftResult {
   readonly draftId: string;
-};
+}
 
 export type PropertyDraftWithId = PropertyDraft & {
   readonly id: string;
 };
 
 /**
- * @name updatePropertyDraft
- * @description Updates an existing property onboarding draft.
+ * Updates an existing property draft.
  *
- * Algorithmic Complexity:
- * - Validation: O(K), where K is the number of updated fields.
- * - Firestore Write: O(1) network operation.
+ * Ownership and permitted field changes must also be enforced
+ * by Firestore security rules.
+ *
+ * Complexity: O(1) document write.
  */
 export async function updatePropertyDraft(
   draftId: string,
@@ -63,9 +101,7 @@ export async function updatePropertyDraft(
   const currentUser = auth.currentUser;
 
   if (!currentUser) {
-    throw new Error(
-      "Authentication required: Active user session is missing.",
-    );
+    throw new Error("Authentication required.");
   }
 
   const draftRef = doc(db, "propertyDrafts", validatedDraftId);
@@ -86,8 +122,9 @@ export async function updatePropertyDraft(
 }
 
 /**
- * @name getPropertyDraftById
- * @description Retrieves and validates a single property draft document.
+ * Retrieves a property draft by its document ID.
+ *
+ * Complexity: O(1) document read.
  */
 export async function getPropertyDraftById(
   draftId: string,
@@ -95,6 +132,12 @@ export async function getPropertyDraftById(
 ): Promise<PropertyDraftWithId | null> {
   const validatedHostId = hostIdSchema.parse(hostId);
   const validatedDraftId = draftIdSchema.parse(draftId);
+
+  const currentUser = auth.currentUser;
+
+  if (!currentUser || currentUser.uid !== validatedHostId) {
+    throw new Error("Authorization failure: Invalid host.");
+  }
 
   const draftRef = doc(db, "propertyDrafts", validatedDraftId);
 
@@ -105,18 +148,15 @@ export async function getPropertyDraftById(
       return null;
     }
 
-    const rawData = snapshot.data();
-    const draft = propertyDraftSchema.parse(rawData);
+    const draft = propertyDraftSchema.parse(snapshot.data());
 
     if (draft.hostId !== validatedHostId) {
-      throw new Error(
-        "Authorization failure: You are not authorized to access this property draft.",
-      );
+      throw new Error("Authorization failure: You do not own this draft.");
     }
 
     return {
-      id: snapshot.id,
       ...draft,
+      id: snapshot.id,
     };
   } catch (error: unknown) {
     if (
@@ -136,13 +176,20 @@ export async function getPropertyDraftById(
 }
 
 /**
- * @name getPropertyDraftsByHostId
- * @description Retrieves all active draft property onboarding documents.
+ * Retrieves all editable drafts belonging to an authenticated host.
+ *
+ * Complexity: O(n), where n is the number of returned documents.
  */
 export async function getPropertyDraftsByHostId(
   hostId: string,
 ): Promise<PropertyDraftWithId[]> {
   const validatedHostId = hostIdSchema.parse(hostId);
+
+  const currentUser = auth.currentUser;
+
+  if (!currentUser || currentUser.uid !== validatedHostId) {
+    throw new Error("Authorization failure: Invalid host.");
+  }
 
   const draftsQuery = query(
     collection(db, "propertyDrafts"),
@@ -154,12 +201,11 @@ export async function getPropertyDraftsByHostId(
     const snapshot = await getDocs(draftsQuery);
 
     return snapshot.docs.map((docSnap) => {
-      const rawData = docSnap.data();
-      const parsedDraft = propertyDraftSchema.parse(rawData);
+      const parsedDraft = propertyDraftSchema.parse(docSnap.data());
 
       return {
-        id: docSnap.id,
         ...parsedDraft,
+        id: docSnap.id,
       };
     });
   } catch (error: unknown) {
@@ -167,53 +213,134 @@ export async function getPropertyDraftsByHostId(
       error instanceof Error ? error.message : "Unknown database error";
 
     throw new Error(
-      `Failed to query property drafts for host [${validatedHostId}]: ${errorMessage}`,
+      `Failed to retrieve drafts for host [${validatedHostId}]: ${errorMessage}`,
     );
   }
 }
 
 /**
- * @name createPropertyDraft
- * @description Creates a new property onboarding draft document.
+ * Creates a new property draft.
+ *
+ * This service only handles Firestore persistence.
+ * Zustand synchronization belongs to the application layer.
+ *
+ * Complexity: O(1) document write.
  */
 export async function createPropertyDraft({
   hostId,
   initialStep = "structure",
 }: CreatePropertyDraftInput): Promise<CreatePropertyDraftResult> {
   const validatedHostId = hostIdSchema.parse(hostId);
-  const validatedStep = z.string().trim().min(1).parse(initialStep);
+  const validatedStep = initialStepSchema.parse(initialStep);
+
+  const currentUser = auth.currentUser;
+
+  if (!currentUser || currentUser.uid !== validatedHostId) {
+    throw new Error("Authorization failure: Invalid host.");
+  }
 
   const draftRef = doc(collection(db, "propertyDrafts"));
 
-  const draftPayload: Omit<
-    PropertyDraft,
-    "id" | "createdAt" | "updatedAt"
-  > & {
-    readonly createdAt: ReturnType<typeof serverTimestamp>;
-    readonly updatedAt: ReturnType<typeof serverTimestamp>;
-  } = {
+  const draftPayload = {
     hostId: validatedHostId,
+
     structure: null,
     privacyType: null,
     location: null,
+
+    guestCapacity: 1,
+    bedrooms: 0,
+    beds: 0,
+    bathrooms: 0,
+
+    amenities: [],
+    roomAmenities: [],
+    photos: [],
+
+    pricePerNight: 0,
+    currency: "ETB" as const,
+
     currentStep: validatedStep,
-    status: "draft",
+    status: "draft" as const,
+
+    submittedAt: null,
+
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
 
   try {
     await setDoc(draftRef, draftPayload);
+
+    return {
+      draftId: draftRef.id,
+    };
   } catch (error: unknown) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown database error";
 
     throw new Error(
-      `Failed to initialize property draft for host [${validatedHostId}]: ${errorMessage}`,
+      `Failed to create property draft: ${errorMessage}`,
     );
   }
+}
 
-  return {
-    draftId: draftRef.id,
-  };
+/**
+ * Submits an existing draft for administrator review.
+ *
+ * Lifecycle:
+ * draft -> pending
+ *
+ * Firestore transaction prevents concurrent submissions
+ * from successfully transitioning the same document twice.
+ *
+ * Complexity: O(1) document read and write per successful attempt.
+ */
+export async function submitPropertyDraft(
+  draftId: string,
+): Promise<void> {
+  const validatedDraftId = draftIdSchema.parse(draftId);
+
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) {
+    throw new Error("Authentication required.");
+  }
+
+  const draftRef = doc(db, "propertyDrafts", validatedDraftId);
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const snapshot = await transaction.get(draftRef);
+
+      if (!snapshot.exists()) {
+        throw new Error("Property draft was not found.");
+      }
+
+      const draft = propertyDraftSchema.parse(snapshot.data());
+
+      if (draft.hostId !== currentUser.uid) {
+        throw new Error("Authorization failure: You do not own this draft.");
+      }
+
+      if (draft.status !== "draft") {
+        throw new Error("This property is no longer an editable draft.");
+      }
+
+      submissionRequirementsSchema.parse(draft);
+
+      transaction.update(draftRef, {
+        status: "pending",
+        submittedAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown database error";
+
+    throw new Error(
+      `Failed to submit property draft [${validatedDraftId}]: ${errorMessage}`,
+    );
+  }
 }

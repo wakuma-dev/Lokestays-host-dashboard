@@ -2,6 +2,7 @@ import { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useOnboardingStore } from "../features/onboarding/store/onboardingStore";
 import { PRIVACY_TYPE_OPTIONS } from "@/features/onboarding/constants/privacy.constants";
+
 function PrivacyComponent() {
   const privacyType = useOnboardingStore(
     (state) => state.privacyType,
@@ -19,7 +20,7 @@ function PrivacyComponent() {
 
   return (
     <main
-      className="fixed inset-0 flex items-center justify-center h-dvh w-full overflow-hidden overscroll-none
+      className="flex flex-1 h-full min-h-full overflow-hidden overscroll-none w-full flex-col justify-start md:items-center md:justify-center
         bg-[#FDFDFD] p-4 text-[#201b15]
         dark:bg-[#0A0A0A] dark:text-white md:pb-4"
     >
@@ -29,15 +30,17 @@ function PrivacyComponent() {
           name="description"
           content="Choose the type of accommodation your guests will have."
         />
+        <html className="overflow-hidden overscroll-none h-dvh" />
+        <body className="overflow-hidden overscroll-none h-dvh" />
       </Helmet>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-8">
+      <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-6 md:items-center md:gap-8">
         <header className="flex flex-col items-start space-y-1">
           <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             What type of place will guests have?
           </h1>
 
-          <p className="text-[18px] leading-[24px] text-[#6c6c6c] font-normal">
+          <p className="text-[16px] leading-[20px] md:text-[18px] md:leading-[24px] text-[#6c6c6c] font-normal">
             Choose the type of accommodation you want to offer.
           </p>
         </header>
@@ -54,14 +57,14 @@ function PrivacyComponent() {
                 aria-pressed={isSelected}
                 onClick={() => handlePrivacySelection(option.value)}
                 className={`flex w-full items-center justify-between gap-2
-                  rounded-xl border p-5 text-left transition-all duration-200
+                  rounded-xl border p-7 text-left transition-all duration-200
                   ${
                     isSelected
                       ? "border-2 border-[#222222] bg-[#F7F7F7] dark:border-white dark:bg-[#181818]"
                       : "border-[#DDDDDD] hover:border-[#222222] dark:border-[#333333] dark:hover:border-white"
                   }`}
               >
-                <div className="flex min-w-0 flex-col gap-2">
+                <div className="flex min-w-0 flex-col gap-1.5">
                   <h2 className="text-[18px] leading-[24px] text-[#222222] font-medium tracking-normal">
                     {option.label}
                   </h2>
