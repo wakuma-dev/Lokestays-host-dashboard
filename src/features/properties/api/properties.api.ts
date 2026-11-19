@@ -6,6 +6,7 @@ import { getDocs,
          updateDoc,
          deleteDoc,
          doc,
+         getDoc,
          orderBy,
          startAfter,
          documentId,
@@ -20,7 +21,30 @@ import { db } from "@/lib/firebase/firestore";
 import { propertiesSchema } from "../schema/propertiesSchema";
 import type { UpdatePropertyParams } from "../types/UpdatePropery.types";
 import type { GetAllProperties, Properties } from "../types/properties.types";
+const propertyIdSchema = z.string().trim().min(1, {message: "Property id is required"});
+export async function getPropertyById(propertyId: string): Promise<Properties>{
+     const validatedId = propertyIdSchema.parse(propertyId);
+     const currentUser = auth.currentUser;
+     if(!currentUser){
+        throw new Error("Authentication is required to load property");
+     }
+    const { claims } = await getIdTokenResult(currentUser);
+    const propertyRef = doc(db, "propertyDrafts", validatedId);
+    const propertySnapshot = await getDoc(propertyRef);
+    if (!propertySnapshot.exists()) {
+    throw new Error("Property not found.");
+   }
+   const property = propertiesSchema.parse({
+    ...propertySnapshot.data(),
+    id: propertySnapshot.id,
+  }) as Properties;
 
+  if (claims.admin !== true && property.hostId !== currentUser.uid) {
+    throw new Error("You are not authorized to access this property.");
+  }
+
+  return property;
+}
 export async function deleteProperty(propertyDraftId: string): Promise<void>{
     const normalizedPropertyDraftId = propertyDraftId.trim();
     if(!normalizedPropertyDraftId){

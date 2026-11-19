@@ -1,9 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-
+import PropertyDetails from '@/pages/PropertyDetails'
 export const Route = createLazyFileRoute('/_main/properties/$propertyId')({
-  component: RouteComponent,
-})
+  component: PropertyDetails,
+});
 
-function RouteComponent() {
-  return <div>Hello "/_main/properties/$propertyId"!</div>
-}
+

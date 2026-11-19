@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { type DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { useNavigate } from "@tanstack/react-router";
 import { useTable, FlexRender } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
@@ -14,8 +15,7 @@ import {
   usePropertiesQuery,
   PropertiesTableSkeleton,
   PropertiesTablePagination,
-  PropertiesDetailsDialogue,
-  PropertiesToolbar,
+   PropertiesToolbar,
   useDeletePropertyMutation,
 } from "@/features/properties";
 import PropertiesUpdate from "./PropertiesUpdate";
@@ -34,23 +34,24 @@ function SortIcon({direction,}: {direction: false | "asc" | "desc";}) {
   );
 }
 export default function PropertiesTable(){
+    const navigate = useNavigate();
     const [selectedPropertyId, setSelectedPropertyId] =
     useState<string | null>(null);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false)
     const [pageIndex, setPageIndex] = useState(0);
     const [pageCursors, setPageCursors] = useState<Array<QueryDocumentSnapshot<DocumentData> | null>>([null]);
     const deletePropertyMutation = useDeletePropertyMutation();
     const lastDocument = pageCursors[pageIndex] ?? null;
-    const {data, isPending, isError, error, isFetching, refetch} = usePropertiesQuery({
+    const {data, isPending, isError, error, isFetching} = usePropertiesQuery({
         pageSize: PAGE_SIZE,
         lastDocument
     });
     const columns = usePropertiesTableColumns() as ColumnDef<typeof propertiesTableFeatures, Properties, any>[]
     function handleViewProperty(property: Properties) {
-    setSelectedPropertyId(property.id);
-    setIsDetailsOpen(true);
-    void refetch();
+    void navigate({
+      to: "/properties/$propertyId",
+      params: { propertyId: property.id },
+    });
   }
    function handleEditProperty(property: Properties) {
   setSelectedPropertyId(property.id);
@@ -69,7 +70,6 @@ export default function PropertiesTable(){
 
       if (selectedProperty?.id === property.id) {
         setSelectedPropertyId(null);
-        setIsDetailsOpen(false);
         setIsUpdateOpen(false);
       }
     } catch (error) {
@@ -130,11 +130,6 @@ export default function PropertiesTable(){
    
     return(
      <>
-       <PropertiesDetailsDialogue
-        property={selectedProperty}
-        open={isDetailsOpen}
-        onOpenChange={setIsDetailsOpen}
-      />
        {selectedProperty ? (
         <PropertiesUpdate
           key={selectedProperty.id}

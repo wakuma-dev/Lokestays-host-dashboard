@@ -5,7 +5,7 @@ export default function AllProperties(){
     const paragraph = "Manage your listings, update property details, and keep track of your accommodation on Lokestays.";
     return(
         <main 
-          className="min-w-0 text-[#fff] min-h-screen h-auto bg-[#FDFDFD] dark:bg-[#0A0A0A]">
+          className="min-w-0 min-h-screen h-auto text-[#111] dark:text-[#fff] bg-[#ffffff] dark:bg-[#141A15]">
         <Helmet>
             <title></title>
             <meta name="description"
@@ -13,8 +13,8 @@ export default function AllProperties(){
                   />
         </Helmet>
         <div className="flex flex-col gap-1 p-4 pb-2">
-                <h1 className="text-xl font-semibold tracking-tight">{header}</h1>
-                <span className="text-[15px] font-normal leading-[20px] tracking-normal">
+                <h1 className="text-[20px] leading-[25px] text-[#111] dark:text-[#fff] font-semibold tracking-tight">{header}</h1>
+                <span className="text-[15px] text-[#3e3529] dark:text-[#cec8b2] font-normal leading-[20px] tracking-normal">
                   {paragraph}
                 </span>
             </div>

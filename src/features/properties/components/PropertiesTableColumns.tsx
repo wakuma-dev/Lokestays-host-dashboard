@@ -16,6 +16,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import PropertiesStatusBadge from "./PropertiesStatusBadge";
 
 const columnHelper = createColumnHelper<typeof propertiesTableFeatures, Properties>();
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
@@ -66,6 +67,20 @@ export default function usePropertiesTableColumns(){
       cell: (info) => info.getValue() || "—",
       enableGlobalFilter: true,
       sortFn: "text"
+     }),
+     columnHelper.accessor("status", {
+     header: "Status",
+     cell: ({getValue, row, table}) => (
+      <button 
+        type="button"
+        className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={`Edit status for ${row.original.structure ?? "property"}`}
+            onClick={() => table.options.meta?.onEdit?.(row.original)}
+          >
+        <PropertiesStatusBadge status={getValue()} />
+        </button>
+
+     )
      }),
      columnHelper.accessor("createdAt", {
         header: "Created",
