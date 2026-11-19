@@ -1,0 +1,1 @@
+import{m as e,n as t}from"./fileRoute-C3dsVi0N-v2.js";var n=e(),r=t(`/_main/messages`)({component:i});function i(){return(0,n.jsx)(`div`,{children:`Hello "/_main/messages"!`})}export{r as Route};
