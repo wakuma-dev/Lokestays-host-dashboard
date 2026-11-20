@@ -1,1 +1,0 @@
-import{m as e,n as t}from"./fileRoute-C3dsVi0N-v2.js";var n=e(),r=t(`/_main/account/profile`)({component:i});function i(){return(0,n.jsx)(`div`,{children:`Hello "/_main/account/profile"!`})}export{r as Route};
