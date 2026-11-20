@@ -1,11 +1,14 @@
 import { useState } from "react"
 import { MobileMenu } from "./MobileMenu";
-import { ProfileMenu } from "@/features/profile";
+import { ProfileAvatar, useProfileQuery } from "@/features/profile";
+import { useAuthStore } from "@/features/auth";
 import ThemeToggle from "./ThemeToggle";
-
 export default function Navbar(){
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    return (
+    const user = useAuthStore((state) => state.user);
+    const { data: profile } = useProfileQuery(user?.uid ?? "");
+    const fullName = profile?.fullName ?? user?.displayName ?? "";
+   return (
         <header className="sticky top-0 z-50 backdrop-blur-md p-4 lg:p-6 h-16 
          flex h-16 shrink-0 items-center justify-between  dark:bg-[#111111] 
         dark:text-[#cec8b2] bg-[#FFFFFF] text-[#3e3529] border-b bg-background w-full">
@@ -15,9 +18,9 @@ export default function Navbar(){
            onOpenChange={setIsMenuOpen}
            />
          </div>
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-2.5">
             <ThemeToggle />
-            <ProfileMenu />
+            <ProfileAvatar fullName={fullName} userId={user?.uid} />
             </div>
         </header>
     );

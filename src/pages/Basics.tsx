@@ -1,8 +1,8 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Helmet } from "react-helmet-async";
-import { Minus, Plus, Loader2 } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { useOnboardingStore } from "@/features/onboarding/store/onboardingStore";
-import { updatePropertyDraft } from "@/features/onboarding/api/onboarding.api"
+
 interface CounterConfig {
   readonly key: "guestCapacity" | "bedrooms" | "beds" | "bathrooms";
   readonly label: string;
@@ -10,6 +10,7 @@ interface CounterConfig {
   readonly min: number;
   readonly max: number;
 }
+
 const COUNTERS: readonly CounterConfig[] = [
   {
     key: "guestCapacity",
@@ -35,18 +36,17 @@ const COUNTERS: readonly CounterConfig[] = [
     min: 0,
     max: 50,
   },
-]
-function BasicsComponent(){
-    const {
-    draftId,
+];
+
+function BasicsComponent() {
+  const {
     guestCapacity,
     bedrooms,
     beds,
     bathrooms,
     setPropertyBasics,
   } = useOnboardingStore();
-  const [isSaving, setIsSaving] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const basics = {
     guestCapacity,
     bedrooms,
@@ -77,51 +77,39 @@ function BasicsComponent(){
     });
   }
 
-  async function handleContinue() {
-    if (!draftId || isSaving) return;
-
-    setIsSaving(true);
-    setErrorMessage(null);
-
-    try {
-      await updatePropertyDraft(draftId, {
-        ...basics,
-        currentStep: "basics",
-      });
-
-      // The next onboarding route will be connected here.
-    } catch (error: unknown) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong while saving your property.",
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  }
-  return(
-        <main className="flex flex-1 h-full min-h-full overflow-hidden overscroll-none w-full flex-col justify-start md:items-center md:justify-center
+  return (
+    <main
+      className="
+        flex flex-1 h-full min-h-full overflow-hidden
+        overscroll-none w-full flex-col justify-start
         bg-[#FDFDFD] p-4 text-[#201b15]
-        dark:bg-[#0A0A0A] dark:text-white md:pb-4">
-            <Helmet>
-                <title>Select the total guest | Lokestays</title>
-                <meta name="description"
-                      content="Tell us about the guest capacity, bedrooms, beds and bathrooms of your property."
-                      />
-                 <html className="overflow-hidden overscroll-none h-dvh" />
-                 <body className="overflow-hidden overscroll-none h-dvh" />
-            </Helmet>
-        <div className="mx-auto flex w-full max-w-xl flex-col items-start gap-6 md:gap-8">
+        dark:bg-[#0A0A0A] dark:text-white
+        md:items-center md:justify-center md:pb-4
+      "
+    >
+      <Helmet>
+        <title>Select the total guest | Lokestays</title>
+
+        <meta
+          name="description"
+          content="Tell us about the guest capacity, bedrooms, beds and bathrooms of your property."
+        />
+
+        <html className="overflow-hidden overscroll-none h-dvh" />
+        <body className="overflow-hidden overscroll-none h-dvh" />
+      </Helmet>
+
+      <div className="mx-auto flex w-full max-w-xl flex-col items-start gap-6 md:gap-8">
         <header className="flex flex-col items-start space-y-1">
-        <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
+          <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             Share some basics about your place
           </h1>
 
           <p className="text-[16px] leading-[20px] md:text-[18px] md:leading-[24px] text-[#6c6c6c] font-normal">
             You'll add more details later, like bed types.
           </p>
-        </header> 
+        </header>
+
         <section
           aria-label="Property basics"
           className="flex w-full max-w-2xl mx-auto flex-col"
@@ -145,21 +133,17 @@ function BasicsComponent(){
                   }
                 `}
               >
-                {/* Counter label */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[18px] leading-[24px] font-normal text-[#222222] leading-6">
+                  <span className="text-[18px] leading-6 font-normal text-[#222222] dark:text-white">
                     {counter.label}
                   </span>
                 </div>
 
-                {/* Counter controls */}
                 <div className="flex shrink-0 items-center gap-2.5">
-
-                  {/* Decrement */}
                   <button
                     type="button"
                     aria-label={`Decrease ${counter.label}`}
-                    disabled={isMinimum || isSaving}
+                    disabled={isMinimum}
                     onClick={() =>
                       handleCounterChange(counter.key, "decrement")
                     }
@@ -178,7 +162,6 @@ function BasicsComponent(){
                     <Minus size={16} strokeWidth={1.8} />
                   </button>
 
-                  {/* Value */}
                   <output
                     aria-live="polite"
                     aria-label={`${counter.label}: ${value}`}
@@ -190,11 +173,10 @@ function BasicsComponent(){
                     {value}
                   </output>
 
-                  {/* Increment */}
                   <button
                     type="button"
                     aria-label={`Increase ${counter.label}`}
-                    disabled={isMaximum || isSaving}
+                    disabled={isMaximum}
                     onClick={() =>
                       handleCounterChange(counter.key, "increment")
                     }
@@ -217,19 +199,11 @@ function BasicsComponent(){
             );
           })}
         </section>
-
-        {/* Error message */}
-        {errorMessage && (
-          <p
-            role="alert"
-            className="text-sm text-red-600 dark:text-red-400"
-          >
-            {errorMessage}
-          </p>
-        )}
       </div>
-        </main>
-    )  
+    </main>
+  );
 }
+
 export const Basics = memo(BasicsComponent);
+
 export default Basics;

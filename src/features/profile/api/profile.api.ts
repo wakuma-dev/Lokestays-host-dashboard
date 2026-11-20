@@ -1,6 +1,7 @@
 import { updateDoc, doc, getDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase/firestore";
-import { profileSchema, updateProfileSchema, type Profile, type ProfileUpdate} from "@/features/profile"
+import { profileSchema, updateProfileSchema } from "@/features/profile/schema/profileSchema";
+import type { Profile, ProfileUpdate } from "@/features/profile/types/profile.types";
 export async function getUserProfile(uid: string): Promise<Profile>{
      if(!uid.trim()){
         throw new Error("A valid uid is required to fetch the profile")

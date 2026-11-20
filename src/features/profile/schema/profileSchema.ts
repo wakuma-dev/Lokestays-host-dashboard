@@ -1,10 +1,6 @@
 import { z } from "zod";
-
-// --- Domain Constants ---
-// 
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 255;
-
 export const profileSchema = z.object({
   uid: z.string().min(1, { message: "UID is required" }),
   fullName: z

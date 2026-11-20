@@ -1,9 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-
+import Profile from '@/pages/Profile'
 export const Route = createLazyFileRoute('/_main/account/profile')({
-  component: RouteComponent,
-})
+  component: Profile,
+});
 
-function RouteComponent() {
-  return <div>Hello "/_main/account/profile"!</div>
-}
+
