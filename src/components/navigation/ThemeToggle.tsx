@@ -8,7 +8,6 @@ export default function ThemeToggle() {
         setTheme(isDark ? "light" : "dark");
     };
     const ThemeIcon = isDark ? Sun : Moon;
-
     return (
         <Button
             variant="outline"

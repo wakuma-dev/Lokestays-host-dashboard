@@ -12,7 +12,6 @@ import { businessDraftSchema, type BusinessDraftValues} from "@/features/Busines
 import {validateBusinessCompletionWithOwner, 
         type ValidatedBusinessDraft} from "../utils/businessCompletion";
 import { BUSINESS_STATUS_VALUES, type BusinessStatus } from "../types/business.types";
-
 export type BusinessDocument = Readonly<
   BusinessDraftValues & {
     ownerId: string;
@@ -30,7 +29,6 @@ export type BusinessApiErrorCode =
   | "INVALID_STATE";
 export class BusinessApiError extends Error {
     public readonly code: BusinessApiErrorCode;
-
     constructor(
         message: string,
         code: BusinessApiErrorCode
@@ -48,7 +46,6 @@ function getAuthenticatedOwnerId(): string {
       "UNAUTHENTICATED"
     );
   }
-
   return currentUser.uid;
 }
 function getBusinessRef(ownerId: string): DocumentReference<DocumentData>{
@@ -78,7 +75,6 @@ function parseBusinessDocument(rawDocData: DocumentData, expectedOwnerId: string
       "INVALID_DOCUMENT"
     );
   }
-
   const parsedDraft = parseDraftInput(draftFields);
   return {
     ...parsedDraft,
@@ -96,39 +92,32 @@ function assertEditableState(status: BusinessStatus): void {
     );
   }
 }
-
 async function readExistingBusinessInTransaction(
   transaction: Transaction,
   businessRef: DocumentReference<DocumentData>,
   expectedOwnerId: string
 ): Promise<BusinessDocument> {
   const snapshot = await transaction.get(businessRef);
-
   if (!snapshot.exists()) {
     throw new BusinessApiError(
       "Business profile not found.",
       "NOT_FOUND"
     );
   }
-
   return parseBusinessDocument(snapshot.data(), expectedOwnerId);
 }
-
 export async function createBusiness(input: BusinessDraftValues): Promise<void> {
   const ownerId = getAuthenticatedOwnerId();
   const validatedDraft = parseDraftInput(input);
   const businessRef = getBusinessRef(ownerId);
-
   await runTransaction(db, async (transaction) => {
     const snapshot = await transaction.get(businessRef);
-
     if (snapshot.exists()) {
       throw new BusinessApiError(
         "Business profile already exists.",
         "ALREADY_EXISTS"
       );
     }
-
     transaction.set(businessRef, {
       ...validatedDraft,
       ownerId,
@@ -138,50 +127,40 @@ export async function createBusiness(input: BusinessDraftValues): Promise<void> 
     });
   });
 }
-
 export async function getBusiness(): Promise<BusinessDocument | null> {
   const ownerId = getAuthenticatedOwnerId();
   const businessRef = getBusinessRef(ownerId);
    const snapshot = await getDoc(businessRef);
-
   if (!snapshot.exists()) {
     return null;
   }
-
   return parseBusinessDocument(snapshot.data(), ownerId);
 }
-
 export async function updateBusiness(input: BusinessDraftValues): Promise<void> {
   const ownerId = getAuthenticatedOwnerId();
   const validatedDraft = parseDraftInput(input);
   const businessRef = getBusinessRef(ownerId);
-
   await runTransaction(db, async (transaction) => {
     const existing = await readExistingBusinessInTransaction(
       transaction,
       businessRef,
       ownerId
     );
-
     assertEditableState(existing.status);
-
     transaction.update(businessRef, {
       ...validatedDraft,
       updatedAt: serverTimestamp(),
     });
   });
 }
-
 export async function saveBusinessDraft(
   input: BusinessDraftValues
 ): Promise<void> {
   const ownerId = getAuthenticatedOwnerId();
   const validatedDraft = parseDraftInput(input);
   const businessRef = getBusinessRef(ownerId);
-
   await runTransaction(db, async (transaction) => {
     const snapshot = await transaction.get(businessRef);
-
     if (!snapshot.exists()) {
       transaction.set(businessRef, {
         ...validatedDraft,
@@ -192,42 +171,34 @@ export async function saveBusinessDraft(
       });
       return;
     }
-
     const existing = parseBusinessDocument(snapshot.data(), ownerId);
     assertEditableState(existing.status);
-
     transaction.update(businessRef, {
       ...validatedDraft,
       updatedAt: serverTimestamp(),
     });
   });
 }
-
 export async function completeBusiness(
   input: BusinessDraftValues
 ): Promise<void> {
   const ownerId = getAuthenticatedOwnerId();
   const completionResult = validateBusinessCompletionWithOwner(input, ownerId);
-
   if (!completionResult.isComplete) {
     throw new BusinessApiError(
       "Please complete all required business information.",
       "INVALID_DATA"
     );
   }
-
   const completedPayload: ValidatedBusinessDraft = completionResult.data;
   const businessRef = getBusinessRef(ownerId);
-
   await runTransaction(db, async (transaction) => {
     const existing = await readExistingBusinessInTransaction(
       transaction,
       businessRef,
       ownerId
     );
-
     assertEditableState(existing.status);
-
     transaction.update(businessRef, {
       ...completedPayload,
       ownerId,
@@ -236,20 +207,16 @@ export async function completeBusiness(
     });
   });
 }
-
 export async function deleteBusiness(): Promise<void> {
   const ownerId = getAuthenticatedOwnerId();
   const businessRef = getBusinessRef(ownerId);
-
   await runTransaction(db, async (transaction) => {
     const existing = await readExistingBusinessInTransaction(
       transaction,
       businessRef,
       ownerId
     );
-
     assertEditableState(existing.status);
-
     transaction.delete(businessRef);
   });
 }

@@ -8,5 +8,6 @@ export const onboardingSteps: readonly OnboardingLink[] = [
   {path: "/properties/amenities", stepNumber: 6, title: "Amenities"},
   {path: "/properties/photos", stepNumber: 7, title: "Photos"},
   {path: "/properties/rooms", stepNumber: 8, title: "Rooms"},
-  {path: "/properties/pricing", stepNumber: 9, title: "Pricing"}
+  {path: "/properties/pricing", stepNumber: 9, title: "Pricing"},
+  {path: "/properties/payment", stepNumber: 10, title: "Payment"}
 ] as const;

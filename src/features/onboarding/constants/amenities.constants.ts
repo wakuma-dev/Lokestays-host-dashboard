@@ -4,12 +4,10 @@ export interface AmenityOption {
   readonly label: string;
   readonly description?: string;
 }
-
 export interface AmenityCategory {
   readonly title: string;
   readonly amenities: readonly AmenityOption[];
 }
-
 export const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
   {
     title: "Basics",
@@ -30,7 +28,6 @@ export const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
       { value: "wifi", label: "Wifi" },
     ],
   },
-
   {
     title: "Popular",
     amenities: [
@@ -46,7 +43,6 @@ export const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
       { value: "shampoo", label: "Shampoo" },
     ],
   },
-
   {
     title: "Features",
     amenities: [
@@ -61,7 +57,6 @@ export const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
       { value: "pool", label: "Pool" },
     ],
   },
-
   {
     title: "Location",
     amenities: [
@@ -69,7 +64,6 @@ export const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
       { value: "waterfront", label: "Waterfront" },
     ],
   },
-
   {
     title: "Safety",
     amenities: [

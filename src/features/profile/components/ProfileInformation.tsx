@@ -25,11 +25,9 @@ const legalNameSchema = z.object({
     .min(1, "Last name is required")
     .max(100, "Last name cannot exceed 100 characters"),
 });
-
 const emailSchema = z.object({
   email: profileSchema.shape.email,
 });
-
 type LegalNameValues = z.infer<typeof legalNameSchema>;
 type EmailValues = z.infer<typeof emailSchema>;
 type EditableField = "fullName" | "email" | null;
@@ -43,14 +41,12 @@ type ProfileInformationProps = {
   email: string;
   phoneNumber?: string | null;
 };
-
 type DetailInfoProps = {
   label: string;
   value: string;
   isDisabled?: boolean;
   onEdit: () => void;
 };
-
 function DetailInfo({
   label,
   value,
@@ -79,7 +75,6 @@ function DetailInfo({
     </div>
   );
 }
-
 type LegalNameFormProps = {
   fullName: string;
   isMutationPending: boolean;
@@ -93,7 +88,6 @@ function LegalNameForm({
   onSave,
 }: LegalNameFormProps) {
   const normalizedParts = fullName.trim().split(/\s+/).filter(Boolean);
-
   const form = useForm({
     defaultValues: {
       firstName: normalizedParts[0] ?? "",
@@ -107,14 +101,11 @@ function LegalNameForm({
       if (!parsedResult.success) {
         return;
       }
-
       const formattedName = `${parsedResult.data.firstName} ${parsedResult.data.lastName}`.trim();
       await onSave(formattedName);
     },
   });
-
   const isBusy = isMutationPending;
-
   return (
     <form
       className="flex flex-col gap-5"
@@ -156,7 +147,6 @@ function LegalNameForm({
               </div>
             )}
           </form.Field>
-
           <form.Field name="lastName">
             {(field) => (
               <div className="min-h-14 flex flex-col justify-center space-y-0.5 rounded-lg border border-[#222222] px-3 py-1.5 dark:border-input">
@@ -186,7 +176,6 @@ function LegalNameForm({
           </form.Field>
         </div>
       </div>
-
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
           const isSubmitting = isFormSubmitting || isBusy;
@@ -215,14 +204,12 @@ function LegalNameForm({
     </form>
   );
 }
-
 type EmailFormProps = {
   email: string;
   isMutationPending: boolean;
   onCancel: () => void;
   onSave: (email: string) => Promise<void>;
 };
-
 /**
  * Validates and submits email address updates via runtime schema verification.
  * Time complexity: O(1) | Space complexity: O(1).
@@ -245,13 +232,10 @@ function EmailForm({
       if (!parsedResult.success) {
         return;
       }
-
       await onSave(parsedResult.data.email);
     },
   });
-
   const isBusy = isMutationPending;
-
   return (
     <form
       className="flex flex-col gap-5"
@@ -289,7 +273,6 @@ function EmailForm({
           </div>
         )}
       </form.Field>
-
       <form.Subscribe selector={(state) => state.isSubmitting}>
         {(isFormSubmitting) => {
           const isSubmitting = isFormSubmitting || isBusy;
@@ -318,7 +301,6 @@ function EmailForm({
     </form>
   );
 }
-
 export default function ProfileInformation({
   uid,
   fullName,
@@ -328,7 +310,6 @@ export default function ProfileInformation({
   const [editingField, setEditingField] = useState<EditableField>(null);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const updateProfileMutation = useUpdateProfileMutation(uid);
-
   const handlePersistProfile = async (payload: ProfileUpdatePayload): Promise<void> => {
     setSubmissionError(null);
     try {
@@ -341,7 +322,6 @@ export default function ProfileInformation({
       throw error;
     }
   };
-
   return (
     <Card className="border-0 ring-0 shadow-none">
       <CardHeader>
@@ -355,7 +335,6 @@ export default function ProfileInformation({
             {submissionError}
           </p>
         )}
-
         {editingField === "fullName" ? (
           <LegalNameForm
             fullName={fullName}
@@ -379,9 +358,7 @@ export default function ProfileInformation({
             }}
           />
         )}
-
         <Separator />
-
         {editingField === "email" ? (
           <EmailForm
             email={email}
@@ -405,9 +382,7 @@ export default function ProfileInformation({
             }}
           />
         )}
-
         <Separator />
-
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col space-y-1.5">
             <span className="text-[16px] leading-[20px] tracking-tight font-medium">

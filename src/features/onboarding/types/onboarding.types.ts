@@ -49,7 +49,6 @@ export const PROPERTY_STRUCTURES = [
   "Windmill",
   "Yurt",
 ] as const;
-
 export type PropertyStructure = (typeof PROPERTY_STRUCTURES)[number];
 export const ROOM_AMENITIES = [
 "Air conditioning",
@@ -116,5 +115,4 @@ export const PROPERTY_AMENITIES = [
   "carbon-monoxide-alarm",
   "smoke-alarm",
 ] as const;
-
 export type PropertyAmenity = (typeof PROPERTY_AMENITIES)[number];

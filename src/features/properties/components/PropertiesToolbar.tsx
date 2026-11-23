@@ -4,7 +4,6 @@ type PropertiesTableToolbarProps = {
     state: {
       globalFilter?: unknown;
     };
-
     setGlobalFilter: (value: string) => void;
   };
 };

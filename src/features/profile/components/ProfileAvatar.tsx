@@ -18,7 +18,6 @@ export default function ProfileAvatar({ fullName, userId }: ProfileAvatarProps) 
           .map((part) => part.charAt(0).toUpperCase())
           .join("")
       : "";
-
     return {
       initials: extractedInitials,
       backgroundColor: getProfileAvatarBackgroundColor(
@@ -26,7 +25,6 @@ export default function ProfileAvatar({ fullName, userId }: ProfileAvatarProps) 
       ),
     };
   }, [fullName, userId]);
-
   const handleNavigateToProfile = () => {
     navigate({ to: "/account/profile" });
   };

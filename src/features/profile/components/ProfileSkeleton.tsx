@@ -8,7 +8,6 @@ export default function ProfileSkeleton() {
       aria-busy="true"
       aria-label="Loading profile"
       className="flex flex-col space-y-4">
-      
       <div aria-hidden="true" className="flex flex-col gap-3">
         <div className="w-full flex flex-1 flex-col items-center gap-8 lg:flex-row lg:items-stretch">
           <div className="flex w-full flex-col items-center gap-4 lg:w-[400px] lg:items-start">
@@ -16,7 +15,6 @@ export default function ProfileSkeleton() {
               <Skeleton className="h-9 w-36 rounded-md" />
               <Skeleton className="h-7 w-10 rounded-md" />
             </div>
-
             <Card className="w-full dark:bg-[#0C1016] overflow-hidden shadow-md lg:w-[400px]">
               <CardContent className="flex w-full flex-col items-center justify-center gap-2.5 p-4">
                 <Skeleton className="size-24 rounded-full" />
@@ -27,7 +25,6 @@ export default function ProfileSkeleton() {
               </CardContent>
             </Card>
           </div>
-
           <div className="max-w-xs hidden lg:flex flex-col justify-center gap-2.5">
             <Skeleton className="h-[26px] w-48 rounded-md" />
             <div className="space-y-1.5">
@@ -38,11 +35,9 @@ export default function ProfileSkeleton() {
             <Skeleton className="h-10 w-28 rounded-md" />
           </div>
         </div>
-
         <div className="hidden lg:block border border-b dark:border-[#CDC6B9] mt-4" />
       </div>
-
-      {/* ProfileInformation skeleton */}
+      { }
       <div aria-hidden="true" className="lg:py-2">
         <Card className="border-0 ring-0 shadow-none">
           <CardHeader>
@@ -56,9 +51,7 @@ export default function ProfileSkeleton() {
               </div>
               <Skeleton className="h-5 w-8 rounded-md" />
             </div>
-
             <Separator />
-
             <div className="flex items-center justify-between gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Skeleton className="h-5 w-28 rounded-md" />
@@ -66,9 +59,7 @@ export default function ProfileSkeleton() {
               </div>
               <Skeleton className="h-5 w-8 rounded-md" />
             </div>
-
             <Separator />
-
             <div className="flex items-center justify-between gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Skeleton className="h-5 w-28 rounded-md" />

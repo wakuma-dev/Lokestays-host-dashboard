@@ -14,7 +14,6 @@ import { tableFeatures,
          filterFn_includesString
  } from "@tanstack/react-table";
 import type { PropertiesTableMeta } from "./propertiesTable.meta";
-
 export const propertiesTableFeatures = tableFeatures({
     rowSortingFeature,
     rowSelectionFeature,
@@ -33,6 +32,5 @@ export const propertiesTableFeatures = tableFeatures({
         includesString: filterFn_includesString,
     },
     tableMeta: metaHelper<PropertiesTableMeta>(),
-
 });
 export type PropertiesTableFeatures = typeof propertiesTableFeatures;

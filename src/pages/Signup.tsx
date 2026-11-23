@@ -16,7 +16,6 @@ const AUTO_COMPLETE: Record<keyof RegisterDataType, string> = {
      agreeTerms: "off"
 }
 import bgBanner from "../assets/21623311c7ad4b1db37c519b394f0eeb.jpg";
-
 const bgStyle: React.CSSProperties = {
    backgroundImage: `
   linear-gradient(
@@ -38,28 +37,21 @@ function getFirebaseRegisterError(error: FirebaseError): string {
   switch (error.code) {
     case "auth/email-already-in-use":
       return "This email is already registered. Please log in.";
-
     case "auth/invalid-email":
       return "Please enter a valid email address.";
-
     case "auth/weak-password":
       return "Your password is too weak.";
-
     case "auth/network-request-failed":
       return "Network error. Please check your connection.";
-
     case "auth/operation-not-allowed":
       return "Email registration is currently disabled.";
-
     case "auth/too-many-requests":
       return "Too many attempts. Please try again later.";
-
     default:
       console.error("Firebase registration error:", {
         code: error.code,
         message: error.message,
       });
-
       return "Something went wrong. Please try again.";
   }
 }
@@ -93,7 +85,6 @@ export default function Signup(){
                  to: "/login",
                  replace: true
              });
-             
             } catch(error: unknown){
                add({
                 type: "error",
@@ -221,7 +212,6 @@ export default function Signup(){
                          </span>
                 </CardFooter>
                 </Card>
-                   
             </div>
         </main>
     )

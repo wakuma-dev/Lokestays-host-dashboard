@@ -31,12 +31,10 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
   timeStyle: "short",
 });
-
 function formatDate(value: Properties["createdAt"]): string {
   if (!value || typeof value.toDate !== "function") {
     return "—";
   }
-
   return dateFormatter.format(value.toDate());
 }
 function DetailItem({label,value,}: {label: string; value: string | number | null | undefined;}){
@@ -169,22 +167,18 @@ if(!property) return null;
              <div className="w-full grid grid-cols-2 gap-2.5 lg:gap-4 md:grid-cols-4">
             <DetailItem label="City" 
                        value={property.location?.city} />
-
             <DetailItem
                 label="Neighborhood"
                 value={property.location?.neighborhood}
               />
-
             <DetailItem
                 label="Address"
                 value={property.location?.address}
               />
-
               <DetailItem
                 label="Latitude"
                 value={property.location?.latitude}
               />
-
               <DetailItem
                 label="Longitude"
                 value={property.location?.longitude}
@@ -200,7 +194,6 @@ if(!property) return null;
               <p className="text-sm text-muted-foreground">
                 Property amenities
               </p>
-
               {property.amenities?.length ? (
                 <div className="flex flex-wrap gap-2">
                   {property.amenities.map((amenity) => (
@@ -222,7 +215,6 @@ if(!property) return null;
               <p className="text-sm text-muted-foreground">
                 Room amenities
               </p>
-
               {property.roomAmenities?.length ? (
                 <div className="flex flex-wrap gap-2">
                   {property.roomAmenities.map((amenity, index) => (
@@ -254,12 +246,10 @@ if(!property) return null;
                 label="Created"
                 value={formatDate(property.createdAt)}
               />
-
               <DetailItem
                 label="Last updated"
                 value={formatDate(property.updatedAt)}
               />
-
               <DetailItem
                 label="Submitted"
                 value={

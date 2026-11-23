@@ -5,7 +5,6 @@ interface UpdatePropertyDraftVariables {
   readonly draftId: string;
   readonly data: UpdatePropertyDraft;
 }
-
 export function useUpdatePropertyDraft() {
   return useMutation<void, Error, UpdatePropertyDraftVariables>({
     mutationFn: ({ draftId, data }) =>

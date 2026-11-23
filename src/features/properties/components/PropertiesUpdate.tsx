@@ -27,7 +27,6 @@ export default function PropertiesUpdate({
 }: PropertiesUpdateProps) {
   const updateMutation = useUpdatePropertyMutation();
   const { add } = useToast();
-
   const form = useForm({
     defaultValues: {
       pricePerNight: property.pricePerNight,
@@ -38,30 +37,23 @@ export default function PropertiesUpdate({
       structure: property.structure ?? "",
       privacyType: property.privacyType ?? "",
     } satisfies UpdatePropertyFormValues,
-
     validators: {
       onSubmit: updatePropertySchema,
     },
-
     onSubmit: async ({ value }) => {
       const payload: UpdatePropertyParams = {
         propertyDraftId: property.id,
         ...value,
       };
-
       try {
         await updateMutation.mutateAsync(payload);
-
         add({ title: "Property updated successfully." });
-
         onOpenChange(false);
       } catch {
         add({ title: "Failed to update property. Please try again.", type: "error" });
       }
     },
   });
-
-  // Reset the form whenever a different property is selected.
   useEffect(() => {
     form.reset({
       pricePerNight: property.pricePerNight,
@@ -73,7 +65,6 @@ export default function PropertiesUpdate({
       privacyType: property.privacyType ?? "",
     });
   }, [property, form]);
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
@@ -81,12 +72,10 @@ export default function PropertiesUpdate({
           <DialogTitle className="text-xl font-semibold">
             Update property
           </DialogTitle>
-
           <DialogDescription>
             Update your accommodation information.
           </DialogDescription>
         </DialogHeader>
-
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -95,12 +84,11 @@ export default function PropertiesUpdate({
           }}
           className="space-y-5"
         >
-          {/* Price */}
+          { }
           <form.Field name="pricePerNight">
             {(field) => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Price per night</Label>
-
                 <Input
                   id={field.name}
                   type="number"
@@ -111,7 +99,6 @@ export default function PropertiesUpdate({
                     field.handleChange(Number(event.target.value))
                   }
                 />
-
                 {field.state.meta.errors.map((error, index) => (
                   <p key={index} className="text-sm text-destructive">
                     {String(error)}
@@ -120,14 +107,12 @@ export default function PropertiesUpdate({
               </div>
             )}
           </form.Field>
-
-          {/* Bedrooms, bathrooms and guests */}
+          { }
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
             <form.Field name="bedrooms">
               {(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Bedrooms</Label>
-
                   <Input
                     id={field.name}
                     type="number"
@@ -141,12 +126,10 @@ export default function PropertiesUpdate({
                 </div>
               )}
             </form.Field>
-
             <form.Field name="bathrooms">
               {(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Bathrooms</Label>
-
                   <Input
                     id={field.name}
                     type="number"
@@ -160,12 +143,10 @@ export default function PropertiesUpdate({
                 </div>
               )}
             </form.Field>
-
             <form.Field name="beds">
               {(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Beds</Label>
-
                   <Input
                     id={field.name}
                     type="number"
@@ -179,12 +160,10 @@ export default function PropertiesUpdate({
                 </div>
               )}
             </form.Field>
-
             <form.Field name="guestCapacity">
               {(field) => (
                 <div className="space-y-2">
                   <Label htmlFor={field.name}>Maximum guests</Label>
-
                   <Input
                     id={field.name}
                     type="number"
@@ -199,13 +178,11 @@ export default function PropertiesUpdate({
               )}
             </form.Field>
           </div>
-
-          {/* Structure */}
+          { }
           <form.Field name="structure">
             {(field) => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Structure</Label>
-
                 <Input
                   id={field.name}
                   value={field.state.value}
@@ -218,13 +195,11 @@ export default function PropertiesUpdate({
               </div>
             )}
           </form.Field>
-
-          {/* Privacy type */}
+          { }
           <form.Field name="privacyType">
             {(field) => (
               <div className="space-y-2">
                 <Label htmlFor={field.name}>Privacy type</Label>
-
                 <Input
                   id={field.name}
                   value={field.state.value}
@@ -237,8 +212,7 @@ export default function PropertiesUpdate({
               </div>
             )}
           </form.Field>
-
-          {/* Actions */}
+          { }
           <div className="flex justify-end gap-3 border-t pt-4">
             <Button
               type="button"
@@ -248,7 +222,6 @@ export default function PropertiesUpdate({
             >
               Cancel
             </Button>
-
             <form.Subscribe
               selector={(state) => [
                 state.canSubmit,
@@ -276,4 +249,3 @@ export default function PropertiesUpdate({
     </Dialog>
   );
 }
-

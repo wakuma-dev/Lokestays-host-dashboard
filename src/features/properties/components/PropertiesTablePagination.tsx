@@ -6,7 +6,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
 type PropertiesTablePaginationProps = {
   pageIndex: number;
   pageSize: number;
@@ -16,7 +15,6 @@ type PropertiesTablePaginationProps = {
   onNextPage: () => void;
   onPreviousPage: () => void;
 };
-
 export function PropertiesTablePagination({
   pageIndex,
   pageSize,
@@ -28,15 +26,12 @@ export function PropertiesTablePagination({
 }: PropertiesTablePaginationProps) {
   const startRow =
     rowCount === 0 ? 0 : pageIndex * pageSize + 1;
-
   const endRow = pageIndex * pageSize + rowCount;
-
   return (
     <div className="flex w-full items-center justify-between p-2">
       <p className="text-sm text-muted-foreground">
         Showing {startRow} to {endRow} properties
       </p>
-
       <Pagination className="mx-0 w-auto justify-end">
         <PaginationContent>
           <PaginationItem>
@@ -50,26 +45,22 @@ export function PropertiesTablePagination({
               }
               onClick={(event) => {
                 event.preventDefault();
-
                 if (pageIndex > 0 && !isFetching) {
                   onPreviousPage();
                 }
               }}
             />
           </PaginationItem>
-
           <PaginationItem>
             <span className="px-3 text-sm font-medium">
               {pageIndex + 1}
             </span>
           </PaginationItem>
-
           {hasNextPage && (
             <PaginationItem>
               <PaginationEllipsis />
             </PaginationItem>
           )}
-
           <PaginationItem>
             <PaginationNext
               href="#"
@@ -81,7 +72,6 @@ export function PropertiesTablePagination({
               }
               onClick={(event) => {
                 event.preventDefault();
-
                 if (hasNextPage && !isFetching) {
                   onNextPage();
                 }

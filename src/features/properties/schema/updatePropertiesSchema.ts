@@ -8,5 +8,4 @@ export const updatePropertySchema = z.object({
   beds: z.number().int().min(0),
   bathrooms: z.number().int().min(0),
 });
-
 export type UpdatePropertyFormValues = z.infer<typeof updatePropertySchema>;

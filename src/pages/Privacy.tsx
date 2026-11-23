@@ -2,22 +2,18 @@ import { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useOnboardingStore } from "../features/onboarding/store/onboardingStore";
 import { PRIVACY_TYPE_OPTIONS } from "@/features/onboarding/constants/privacy.constants";
-
 function PrivacyComponent() {
   const privacyType = useOnboardingStore(
     (state) => state.privacyType,
   );
-
   const setPrivacyType = useOnboardingStore(
     (state) => state.setPrivacyType,
   );
-
   function handlePrivacySelection(
     value: (typeof PRIVACY_TYPE_OPTIONS)[number]["value"],
   ) {
     setPrivacyType(value);
   }
-
   return (
     <main
       className="flex flex-1 h-full min-h-full overflow-hidden overscroll-none w-full flex-col justify-start md:items-center md:justify-center
@@ -30,26 +26,21 @@ function PrivacyComponent() {
           name="description"
           content="Choose the type of accommodation your guests will have."
         />
-        <html className="overflow-hidden overscroll-none h-dvh" />
         <body className="overflow-hidden overscroll-none h-dvh" />
       </Helmet>
-
       <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-6 md:items-center md:gap-8">
         <header className="flex flex-col items-start space-y-1">
           <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             What type of place will guests have?
           </h1>
-
           <p className="text-[16px] leading-[20px] md:text-[18px] md:leading-[24px] text-[#6c6c6c] font-normal">
             Choose the type of accommodation you want to offer.
           </p>
         </header>
-
         <div className="flex w-full flex-col gap-4">
           {PRIVACY_TYPE_OPTIONS.map((option) => {
             const Icon = option.icon;
             const isSelected = privacyType === option.value;
-
             return (
               <button
                 key={option.value}
@@ -68,12 +59,10 @@ function PrivacyComponent() {
                   <h2 className="text-[18px] leading-[24px] text-[#222222] font-medium tracking-normal">
                     {option.label}
                   </h2>
-
                   <p className="max-w-sm text-[14px] leading-[18px] text-[#717171] dark:text-[#A1A1AA]">
                     {option.description}
                   </p>
                 </div>
-
                 <Icon
                   size={32}
                   strokeWidth={1.6}
@@ -88,7 +77,5 @@ function PrivacyComponent() {
     </main>
   );
 }
-
 export const Privacy = memo(PrivacyComponent);
-
 export default Privacy;

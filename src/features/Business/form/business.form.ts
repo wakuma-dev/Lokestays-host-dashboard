@@ -24,7 +24,6 @@ export const DEFAULT_BUSINESS_DRAFT_VALUES: BusinessDraftValues = {
     registrationNumber: "",
   },
 };
-
 export function useBusinessForm(
   initialValues: BusinessDraftValues = DEFAULT_BUSINESS_DRAFT_VALUES
 ) {
@@ -39,5 +38,4 @@ export function useBusinessForm(
     },
   });
 }
-
 export type BusinessFormApi = ReturnType<typeof useBusinessForm>;

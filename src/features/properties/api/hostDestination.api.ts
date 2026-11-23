@@ -1,18 +1,13 @@
 import { z } from "zod";
 import { hasHostProperties } from "@/features/properties";
-
 export type HostDestinationRoute = "/en" | "/properties/about";
-
 const HostIdSchema = z.string().min(1, { message: "Host ID cannot be empty or whitespace" });
-
 export async function getHostDestination(hostId: unknown): Promise<HostDestinationRoute> {
   const validationResult = HostIdSchema.safeParse(hostId);
   if (!validationResult.success) {
     throw new Error(`[ValidationError] Invalid hostId parameter provided to routing layer: ${validationResult.error.message}`);
   }
-
   const sanitizedHostId = validationResult.data.trim();
-
   try {
     const hasProperties = await hasHostProperties(sanitizedHostId);
     return hasProperties ? "/en" : "/properties/about";

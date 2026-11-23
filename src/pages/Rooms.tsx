@@ -30,20 +30,16 @@ import {
   WavesLadder,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-
 import { useOnboardingStore } from "@/features/onboarding/store/onboardingStore";
 import type { RoomAmenities } from "@/features/onboarding/types/onboarding.types";
-
 interface AmenityOption {
   readonly title: RoomAmenities;
   readonly icon: LucideIcon;
 }
-
 interface AmenityCategory {
   readonly title: string;
   readonly amenities: readonly AmenityOption[];
 }
-
 const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
   {
     title: "Basics",
@@ -104,20 +100,17 @@ const AMENITY_CATEGORIES: readonly AmenityCategory[] = [
     ],
   },
 ];
-
 interface AmenityCardProps {
   readonly amenity: AmenityOption;
   readonly isSelected: boolean;
   readonly onToggle: (amenity: RoomAmenities) => void;
 }
-
 const AmenityCard = memo(function AmenityCard({
   amenity,
   isSelected,
   onToggle,
 }: AmenityCardProps) {
   const Icon = amenity.icon;
-
   return (
     <button
       type="button"
@@ -139,30 +132,25 @@ const AmenityCard = memo(function AmenityCard({
         strokeWidth={1.7}
         className="text-[#222222] dark:text-white"
       />
-
       <span className="mt-4 text-[14px] leading-[20px] font-medium leading-5 text-[#222222] dark:text-white">
         {amenity.title}
       </span>
     </button>
   );
 });
-
 function RoomsComponent() {
   const roomAmenities = useOnboardingStore(
     (state) => state.roomAmenities,
   );
-
   const toggleRoomAmenity = useOnboardingStore(
     (state) => state.toggleRoomAmenity,
   );
-
   const handleToggle = useCallback(
     (amenity: RoomAmenities) => {
       toggleRoomAmenity(amenity);
     },
     [toggleRoomAmenity],
   );
-
   return (
     <main className="min-h-0 w-full overflow-x-hidden bg-[#FDFDFD] p-4 text-[#201b15] dark:bg-[#0A0A0A] dark:text-white">
       <Helmet>
@@ -172,18 +160,15 @@ function RoomsComponent() {
           content="Select the amenities available at your property."
         />
       </Helmet>
-
       <div className="mx-auto flex w-full max-w-2xl flex-col items-start gap-6 md:gap-8">
         <header className="flex w-full flex-col items-start space-y-2">
           <h1 className="text-[26px] font-semibold leading-[30px] tracking-tight md:text-[32px] md:leading-[36px]">
             Tell guests which amenities they'll find at your place
           </h1>
-
           <p className="text-[16px] font-normal leading-[20px] text-[#6c6c6c] md:text-[18px] md:leading-[24px]">
             You can add more amenities after you publish your listing.
           </p>
         </header>
-
         <div className="flex w-full flex-col pb-44 md:pb-40 gap-8">
           {AMENITY_CATEGORIES.map((category) => (
             <section
@@ -193,7 +178,6 @@ function RoomsComponent() {
               <h2 className="text-[16px] leading-[24px] font-semibold tracking-tight">
                 {category.title}
               </h2>
-
               <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
                 {category.amenities.map((amenity) => (
                   <AmenityCard
@@ -207,7 +191,6 @@ function RoomsComponent() {
             </section>
           ))}
         </div>
-
         <p className="text-sm text-[#6c6c6c]">
           {roomAmenities.length} amenities selected
         </p>
@@ -215,7 +198,5 @@ function RoomsComponent() {
     </main>
   );
 }
-
 export const Rooms = memo(RoomsComponent);
-
 export default Rooms;

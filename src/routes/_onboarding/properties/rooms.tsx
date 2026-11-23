@@ -3,5 +3,3 @@ import Rooms from '@/pages/Rooms'
 export const Route = createFileRoute('/_onboarding/properties/rooms')({
   component: Rooms,
 })
-
-

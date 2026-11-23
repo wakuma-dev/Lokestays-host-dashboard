@@ -17,7 +17,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import PropertiesStatusBadge from "./PropertiesStatusBadge";
-
 const columnHelper = createColumnHelper<typeof propertiesTableFeatures, Properties>();
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -41,7 +40,6 @@ export default function usePropertiesTableColumns(){
             aria-label="Select all properties"
           />
         ),
-
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
@@ -51,7 +49,6 @@ export default function usePropertiesTableColumns(){
             aria-label={`Select ${row.original.structure ?? "property"}`}
           />
         ),
-
         enableSorting: false,
      }),
      columnHelper.accessor("structure", {
@@ -79,7 +76,6 @@ export default function usePropertiesTableColumns(){
           >
         <PropertiesStatusBadge status={getValue()} />
         </button>
-
      )
      }),
      columnHelper.accessor("createdAt", {
@@ -93,14 +89,12 @@ export default function usePropertiesTableColumns(){
         },
         sortFn: "datetime",
       }),
-
       columnHelper.display({
         id: "actions",
         header: "Actions",
         cell: ({ row, table }) => {
           const property = row.original;
           const tableMeta = table.options.meta;
-
           return (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -115,7 +109,6 @@ export default function usePropertiesTableColumns(){
                   </Button>
                 }
               />
-
               <DropdownMenuContent
                 align="end"
                 className="min-w-40"
@@ -127,7 +120,6 @@ export default function usePropertiesTableColumns(){
                   <Eye className="h-4 w-4 shrink-0" />
                   View details
                 </DropdownMenuItem>
-
                 <DropdownMenuItem
                   className="flex items-center gap-2 whitespace-nowrap"
                   onClick={() => tableMeta?.onEdit?.(property)}
@@ -135,7 +127,6 @@ export default function usePropertiesTableColumns(){
                   <Pencil className="h-4 w-4 shrink-0" />
                   Edit status
                 </DropdownMenuItem>
-
                 <DropdownMenuItem
                   className="flex items-center gap-2 whitespace-nowrap text-destructive"
                   onClick={() => tableMeta?.onDelete?.(property)}
@@ -152,4 +143,3 @@ export default function usePropertiesTableColumns(){
     [],
   );
 }
-

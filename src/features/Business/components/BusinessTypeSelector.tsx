@@ -1,25 +1,21 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
 import { Building2, UserRound, type LucideIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import {
   BUSINESS_TYPE_VALUES,
   type BusinessType,
 } from "../types/business.types";
-
 export type BusinessTypeSelectorProps = Readonly<{
   value: BusinessType;
   onChange: (nextValue: BusinessType) => void;
   isDisabled?: boolean;
 }>;
-
 type BusinessTypeOption = Readonly<{
   value: BusinessType;
   label: string;
   description: string;
   icon: LucideIcon;
 }>;
-
 const BUSINESS_TYPE_OPTIONS: readonly BusinessTypeOption[] = [
   {
     value: "individual",
@@ -34,62 +30,49 @@ const BUSINESS_TYPE_OPTIONS: readonly BusinessTypeOption[] = [
     icon: Building2,
   },
 ] as const satisfies readonly BusinessTypeOption[];
-
 export default function BusinessTypeSelector({
   value,
   onChange,
   isDisabled = false,
 }: BusinessTypeSelectorProps) {
   const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
-
   const handleSelectOption = useCallback(
     (nextValue: BusinessType, optionIndex: number) => {
       if (isDisabled) {
         return;
       }
-
-      // Focus the newly selected option so keyboard users track active selection cleanly.
       optionRefs.current[optionIndex]?.focus();
-
       if (nextValue !== value) {
         onChange(nextValue);
       }
     },
     [isDisabled, onChange, value]
   );
-
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>, currentIndex: number) => {
       if (isDisabled) {
         return;
       }
-
       const totalOptions = BUSINESS_TYPE_OPTIONS.length;
       const isNextKey = event.key === "ArrowRight" || event.key === "ArrowDown";
       const isPrevKey = event.key === "ArrowLeft" || event.key === "ArrowUp";
-
       if (!isNextKey && !isPrevKey) {
         return;
       }
-
       event.preventDefault();
-
       const delta = isNextKey ? 1 : -1;
       const nextIndex = (currentIndex + delta + totalOptions) % totalOptions;
       const nextOption = BUSINESS_TYPE_OPTIONS[nextIndex];
-
       if (nextOption) {
         handleSelectOption(nextOption.value, nextIndex);
       }
     },
     [handleSelectOption, isDisabled]
   );
-
   const isValidBusinessType = (BUSINESS_TYPE_VALUES as readonly string[]).includes(
     value
   );
   const activeValue: BusinessType = isValidBusinessType ? value : "individual";
-
   return (
     <fieldset
       disabled={isDisabled}
@@ -97,7 +80,6 @@ export default function BusinessTypeSelector({
       className="space-y-3"
     >
       <legend className="text-sm font-medium">Business type</legend>
-
       <div
         role="radiogroup"
         aria-label="Business type"
@@ -106,7 +88,6 @@ export default function BusinessTypeSelector({
         {BUSINESS_TYPE_OPTIONS.map((option, index) => {
           const OptionIcon = option.icon;
           const isSelected = activeValue === option.value;
-
           return (
             <button
               key={option.value}
@@ -138,10 +119,9 @@ export default function BusinessTypeSelector({
               >
                 <OptionIcon className="size-5" aria-hidden="true" />
               </div>
-
-              <div className="min-w-0 space-y-1">
-                <p className="text-sm font-semibold">{option.label}</p>
-                <p className="text-xs leading-relaxed text-muted-foreground">
+              <div className="min-w-0 -space-y-1">
+                <p className="text-[18px] leading-[26px] text-[#111111] dark:text-[#ffffff] font-medium">{option.label}</p>
+                <p className="text-[14px] leading-[20px] font-normal dark:text-[#cec8b2] text-[#3e3529]">
                   {option.description}
                 </p>
               </div>

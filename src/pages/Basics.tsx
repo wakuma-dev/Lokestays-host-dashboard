@@ -2,7 +2,6 @@ import { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Minus, Plus } from "lucide-react";
 import { useOnboardingStore } from "@/features/onboarding/store/onboardingStore";
-
 interface CounterConfig {
   readonly key: "guestCapacity" | "bedrooms" | "beds" | "bathrooms";
   readonly label: string;
@@ -10,7 +9,6 @@ interface CounterConfig {
   readonly min: number;
   readonly max: number;
 }
-
 const COUNTERS: readonly CounterConfig[] = [
   {
     key: "guestCapacity",
@@ -37,7 +35,6 @@ const COUNTERS: readonly CounterConfig[] = [
     max: 50,
   },
 ];
-
 function BasicsComponent() {
   const {
     guestCapacity,
@@ -46,37 +43,29 @@ function BasicsComponent() {
     bathrooms,
     setPropertyBasics,
   } = useOnboardingStore();
-
   const basics = {
     guestCapacity,
     bedrooms,
     beds,
     bathrooms,
   };
-
   function handleCounterChange(
     key: CounterConfig["key"],
     direction: "increment" | "decrement",
   ) {
     const config = COUNTERS.find((counter) => counter.key === key);
-
     if (!config) return;
-
     const currentValue = basics[key];
-
     const nextValue =
       direction === "increment"
         ? Math.min(currentValue + 1, config.max)
         : Math.max(currentValue - 1, config.min);
-
     if (nextValue === currentValue) return;
-
     setPropertyBasics({
       ...basics,
       [key]: nextValue,
     });
   }
-
   return (
     <main
       className="
@@ -89,37 +78,29 @@ function BasicsComponent() {
     >
       <Helmet>
         <title>Select the total guest | Lokestays</title>
-
         <meta
           name="description"
           content="Tell us about the guest capacity, bedrooms, beds and bathrooms of your property."
         />
-
-        <html className="overflow-hidden overscroll-none h-dvh" />
-        <body className="overflow-hidden overscroll-none h-dvh" />
+           <body className="overflow-hidden overscroll-none h-dvh" />
       </Helmet>
-
       <div className="mx-auto flex w-full max-w-xl flex-col items-start gap-6 md:gap-8">
         <header className="flex flex-col items-start space-y-1">
           <h1 className="text-[26px] leading-[30px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             Share some basics about your place
           </h1>
-
           <p className="text-[16px] leading-[20px] md:text-[18px] md:leading-[24px] text-[#6c6c6c] font-normal">
             You'll add more details later, like bed types.
           </p>
         </header>
-
         <section
           aria-label="Property basics"
           className="flex w-full max-w-2xl mx-auto flex-col"
         >
           {COUNTERS.map((counter, index) => {
             const value = basics[counter.key];
-
             const isMinimum = value <= counter.min;
             const isMaximum = value >= counter.max;
-
             return (
               <div
                 key={counter.key}
@@ -138,7 +119,6 @@ function BasicsComponent() {
                     {counter.label}
                   </span>
                 </div>
-
                 <div className="flex shrink-0 items-center gap-2.5">
                   <button
                     type="button"
@@ -161,7 +141,6 @@ function BasicsComponent() {
                   >
                     <Minus size={16} strokeWidth={1.8} />
                   </button>
-
                   <output
                     aria-live="polite"
                     aria-label={`${counter.label}: ${value}`}
@@ -172,7 +151,6 @@ function BasicsComponent() {
                   >
                     {value}
                   </output>
-
                   <button
                     type="button"
                     aria-label={`Increase ${counter.label}`}
@@ -203,7 +181,5 @@ function BasicsComponent() {
     </main>
   );
 }
-
 export const Basics = memo(BasicsComponent);
-
 export default Basics;

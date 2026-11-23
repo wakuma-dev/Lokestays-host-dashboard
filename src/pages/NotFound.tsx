@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 export default function NotFound(){
-  
     return(
     <main
      aria-labelledby="not-found-title"

@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast";
 import bgBanner from "../assets/21623311c7ad4b1db37c519b394f0eeb.jpg";
-
 const bgStyle: React.CSSProperties = {
    backgroundImage: `
   linear-gradient(
@@ -27,12 +26,10 @@ const bgStyle: React.CSSProperties = {
     width: "100vw",
     height: "100vh"
 }
-
 const AUTO_COMPLETE: Record<keyof LoginDataType, string> = {
   email: "email",
   password: "current-password"
 };
-
 function getFirebaseLoginError(error: FirebaseError): string {
   switch(error.code){
     case "auth/invalid-credential":
@@ -58,13 +55,11 @@ function getFirebaseLoginError(error: FirebaseError): string {
       return "Something went wrong. Please try again.";
   }
 }
-
 export default function Login(){
   const navigate = useNavigate();
   const loginMutation = useLogin();
   const { add } = useToast();
   const [loginError, setLoginError] = useState("");
-
   const form = useForm({
     defaultValues: {
       email: "",
@@ -83,7 +78,6 @@ export default function Login(){
           title: "Success",
           description: "User login successfully"
         });
-
         await navigate({
           to: "/en",
           replace: true
@@ -103,7 +97,6 @@ export default function Login(){
       }
     }
   });
-
   return (
     <main className="w-full fixed inset-0 h-dvh flex items-center justify-center
                      overflow-hidden overscroll-none"

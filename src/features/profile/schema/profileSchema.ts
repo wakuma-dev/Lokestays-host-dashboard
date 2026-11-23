@@ -15,12 +15,9 @@ export const profileSchema = z.object({
     .toLowerCase()
     .trim(),
 });
-
 export const updateProfileSchema = profileSchema
   .pick({
     fullName: true,
     email: true,
   })
   .partial();
-
-

@@ -1,113 +1,75 @@
 import { type ReactElement, memo, useState } from "react";
-
 import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
-
 import { onboardingSteps } from "@/features/onboarding";
 import { Button } from "@/components/ui/button";
-
 import { useOnboardingStore } from "../store/onboardingStore";
-
 import {
   submitPropertyDraft,
   updatePropertyDraft,
 } from "../api/onboarding.api";
-
 import { initializePropertyDraft } from "../lib/initializePropertyDraft";
-
 export interface OnboardingNavigationProps {
   readonly onContinue?: () => void;
   readonly isSubmitting?: boolean;
   readonly isValid?: boolean;
 }
-
 function OnboardingNavigationComponent({
   onContinue,
   isSubmitting: externalSubmitting = false,
   isValid = true,
 }: OnboardingNavigationProps): ReactElement {
   const navigate = useNavigate();
-
   const draftId = useOnboardingStore((state) => state.draftId);
-
   const [isInitializing, setIsInitializing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
   const [navigationError, setNavigationError] = useState<string | null>(
     null,
   );
-
   const pathname = useRouterState({
     select: (state) => state.location.pathname,
   });
-
   const currentIndex = onboardingSteps.findIndex(
     (step) => step.path === pathname,
   );
-
   const safeIndex = currentIndex !== -1 ? currentIndex : 0;
-
   const previousStep = onboardingSteps[safeIndex - 1];
   const nextStep = onboardingSteps[safeIndex + 1];
-
   const isFirstStep = safeIndex === 0;
   const isLastStep = safeIndex === onboardingSteps.length - 1;
-
   const isBusy =
     externalSubmitting || isInitializing || isSubmitting;
-
-  /**
-   * Creates a draft only when one does not already exist.
-   *
-   * Complexity: O(1) application state lookup and O(1) Firestore write.
-   */
   const ensurePropertyDraft = async (): Promise<string> => {
     const existingDraftId = useOnboardingStore.getState().draftId;
-
     if (existingDraftId) {
       return existingDraftId;
     }
-
     setIsInitializing(true);
-
     try {
       const newDraftId = await initializePropertyDraft();
-
       return newDraftId;
     } finally {
       setIsInitializing(false);
     }
   };
-
-  /**
-   * Navigates to the previous onboarding step.
-   */
   const handleBack = (): void => {
     if (!previousStep || isBusy || isSubmitted) {
       return;
     }
-
     setNavigationError(null);
-
     void navigate({
       to: previousStep.path,
     });
   };
-
-  /**
-   * Submits the existing property draft.
-   */
   const handleSubmit = async (): Promise<void> => {
     if (isBusy || !isValid || isSubmitted) {
       return;
     }
-
     setIsSubmitting(true);
     setNavigationError(null);
-
     try {
       const state = useOnboardingStore.getState();
       const currentDraftId = state.draftId ?? (await ensurePropertyDraft());
@@ -124,7 +86,6 @@ function OnboardingNavigationComponent({
               neighborhood: propertyLocation.neighborhood,
             }
           : null;
-
       await updatePropertyDraft(currentDraftId, {
         structure: state.structure,
         privacyType: state.privacyType,
@@ -142,11 +103,8 @@ function OnboardingNavigationComponent({
         currency: state.currency,
         currentStep: "pricing",
       });
-
       await submitPropertyDraft(currentDraftId);
-
       useOnboardingStore.getState().setStatus("pending");
-
       setIsSubmitted(true);
     } catch (error: unknown) {
       setNavigationError(
@@ -158,32 +116,21 @@ function OnboardingNavigationComponent({
       setIsSubmitting(false);
     }
   };
-
-  /**
-   * Creates the initial draft when necessary,
-   * then continues through the onboarding process.
-   */
   const handleContinue = async (): Promise<void> => {
     if (isBusy || !isValid || isSubmitted) {
       return;
     }
-
     setNavigationError(null);
-
     if (isLastStep) {
       await handleSubmit();
       return;
     }
-
     try {
-      // Ensure a Firestore draft exists before saving step data.
       await ensurePropertyDraft();
-
       if (onContinue) {
         onContinue();
         return;
       }
-
       if (nextStep) {
         await navigate({
           to: nextStep.path,
@@ -197,7 +144,6 @@ function OnboardingNavigationComponent({
       );
     }
   };
-
   return (
     <div
       className={`flex w-full items-center pt-2 px-4 md:px-6 ${
@@ -216,7 +162,6 @@ function OnboardingNavigationComponent({
           Back
         </Button>
       )}
-
       <Button
         type="button"
         disabled={!isValid || isBusy || isSubmitted}
@@ -240,7 +185,6 @@ function OnboardingNavigationComponent({
                     ? "Submit property"
                     : "Continue"}
       </Button>
-
       {navigationError && (
         <p
           role="alert"
@@ -249,7 +193,6 @@ function OnboardingNavigationComponent({
           {navigationError}
         </p>
       )}
-
       {isSubmitted && (
         <p
           role="status"
@@ -261,9 +204,7 @@ function OnboardingNavigationComponent({
     </div>
   );
 }
-
 export const OnboardingNavigation = memo(
   OnboardingNavigationComponent,
 );
-
 export default OnboardingNavigation;

@@ -3,4 +3,3 @@ import ReservationsLayout from '@/Layouts/ReservationsLayout';
 export const Route = createFileRoute('/_main/reservations')({
   component: ReservationsLayout,
 });
-

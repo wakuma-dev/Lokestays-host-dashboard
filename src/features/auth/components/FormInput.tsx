@@ -8,7 +8,6 @@ function getErrorMessage(errors: readonly unknown[]): string | undefined {
             if (typeof error === "string") {
                 return error;
             }
-
             if (
                 typeof error === "object" &&
                 error !== null &&
@@ -17,13 +16,10 @@ function getErrorMessage(errors: readonly unknown[]): string | undefined {
             ) {
                 return error.message;
             }
-
             return undefined;
         })
         .filter((message): message is string => Boolean(message));
-
     const unique = [...new Set(messages)];
-
     return unique.length > 0 ? unique.join(", ") : undefined;
 }
 interface FieldApi {

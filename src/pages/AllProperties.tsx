@@ -18,9 +18,7 @@ export default function AllProperties(){
                   {paragraph}
                 </span>
             </div>
-
             <div className="w-full border-b border-b-[#E5E7EB] dark:border-b-[#27272a]" />
-
             <section className="flex flex-col gap-3 p-4">
                 <PropertiesTable />
             </section>

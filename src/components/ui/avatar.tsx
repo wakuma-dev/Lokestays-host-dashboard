@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import { cn } from "cn"
-
 function Avatar({
   className,
   size = "default",
@@ -21,7 +20,6 @@ function Avatar({
     />
   )
 }
-
 function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
   return (
     <AvatarPrimitive.Image
@@ -34,7 +32,6 @@ function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
     />
   )
 }
-
 function AvatarFallback({
   className,
   ...props
@@ -50,7 +47,6 @@ function AvatarFallback({
     />
   )
 }
-
 function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -66,7 +62,6 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
     />
   )
 }
-
 function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -79,7 +74,6 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
     />
   )
 }
-
 function AvatarGroupCount({
   className,
   ...props
@@ -95,7 +89,6 @@ function AvatarGroupCount({
     />
   )
 }
-
 export {
   Avatar,
   AvatarImage,

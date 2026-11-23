@@ -30,7 +30,6 @@ export default function PropertyAmenities({property}: PropertyDetailsParams){
               <p className="text-[#3e3529] dark:text-[#cec8b2] font-medium text-[14px] leading-[18px]">
                 Room amenities
               </p>
-
               {property.roomAmenities?.length ? (
                 <div className="flex flex-wrap gap-2">
                   {property.roomAmenities.map((amenity, index) => (

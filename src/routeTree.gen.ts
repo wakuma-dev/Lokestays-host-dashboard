@@ -26,6 +26,7 @@ import { Route as OnboardingPropertiesAboutRouteImport } from './routes/_onboard
 import { Route as OnboardingPropertiesAmenitiesRouteImport } from './routes/_onboarding/properties/amenities'
 import { Route as OnboardingPropertiesBasicsRouteImport } from './routes/_onboarding/properties/basics'
 import { Route as OnboardingPropertiesLocationRouteImport } from './routes/_onboarding/properties/location'
+import { Route as OnboardingPropertiesPaymentRouteImport } from './routes/_onboarding/properties/payment'
 import { Route as OnboardingPropertiesPhotosRouteImport } from './routes/_onboarding/properties/photos'
 import { Route as OnboardingPropertiesPricingRouteImport } from './routes/_onboarding/properties/pricing'
 import { Route as OnboardingPropertiesPrivacyRouteImport } from './routes/_onboarding/properties/privacy'
@@ -262,6 +263,12 @@ const OnboardingPropertiesLocationRoute =
     path: '/properties/location',
     getParentRoute: () => OnboardingRouteRoute,
   } as any)
+const OnboardingPropertiesPaymentRoute =
+  OnboardingPropertiesPaymentRouteImport.update({
+    id: '/properties/payment',
+    path: '/properties/payment',
+    getParentRoute: () => OnboardingRouteRoute,
+  } as any)
 const OnboardingPropertiesPhotosRoute =
   OnboardingPropertiesPhotosRouteImport.update({
     id: '/properties/photos',
@@ -319,6 +326,7 @@ export interface FileRoutesByFullPath {
   '/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
   '/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/properties/payment': typeof OnboardingPropertiesPaymentRoute
   '/properties/photos': typeof OnboardingPropertiesPhotosRoute
   '/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
@@ -352,6 +360,7 @@ export interface FileRoutesByTo {
   '/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
   '/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/properties/payment': typeof OnboardingPropertiesPaymentRoute
   '/properties/photos': typeof OnboardingPropertiesPhotosRoute
   '/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
@@ -391,6 +400,7 @@ export interface FileRoutesById {
   '/_onboarding/properties/amenities': typeof OnboardingPropertiesAmenitiesRoute
   '/_onboarding/properties/basics': typeof OnboardingPropertiesBasicsRoute
   '/_onboarding/properties/location': typeof OnboardingPropertiesLocationRoute
+  '/_onboarding/properties/payment': typeof OnboardingPropertiesPaymentRoute
   '/_onboarding/properties/photos': typeof OnboardingPropertiesPhotosRoute
   '/_onboarding/properties/pricing': typeof OnboardingPropertiesPricingRoute
   '/_onboarding/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
@@ -428,6 +438,7 @@ export interface FileRouteTypes {
     | '/properties/amenities'
     | '/properties/basics'
     | '/properties/location'
+    | '/properties/payment'
     | '/properties/photos'
     | '/properties/pricing'
     | '/properties/privacy'
@@ -461,6 +472,7 @@ export interface FileRouteTypes {
     | '/properties/amenities'
     | '/properties/basics'
     | '/properties/location'
+    | '/properties/payment'
     | '/properties/photos'
     | '/properties/pricing'
     | '/properties/privacy'
@@ -499,6 +511,7 @@ export interface FileRouteTypes {
     | '/_onboarding/properties/amenities'
     | '/_onboarding/properties/basics'
     | '/_onboarding/properties/location'
+    | '/_onboarding/properties/payment'
     | '/_onboarding/properties/photos'
     | '/_onboarding/properties/pricing'
     | '/_onboarding/properties/privacy'
@@ -738,6 +751,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingPropertiesLocationRouteImport
       parentRoute: typeof OnboardingRouteRoute
     }
+    '/_onboarding/properties/payment': {
+      id: '/_onboarding/properties/payment'
+      path: '/properties/payment'
+      fullPath: '/properties/payment'
+      preLoaderRoute: typeof OnboardingPropertiesPaymentRouteImport
+      parentRoute: typeof OnboardingRouteRoute
+    }
     '/_onboarding/properties/photos': {
       id: '/_onboarding/properties/photos'
       path: '/properties/photos'
@@ -788,6 +808,7 @@ interface OnboardingRouteRouteChildren {
   OnboardingPropertiesAmenitiesRoute: typeof OnboardingPropertiesAmenitiesRoute
   OnboardingPropertiesBasicsRoute: typeof OnboardingPropertiesBasicsRoute
   OnboardingPropertiesLocationRoute: typeof OnboardingPropertiesLocationRoute
+  OnboardingPropertiesPaymentRoute: typeof OnboardingPropertiesPaymentRoute
   OnboardingPropertiesPhotosRoute: typeof OnboardingPropertiesPhotosRoute
   OnboardingPropertiesPricingRoute: typeof OnboardingPropertiesPricingRoute
   OnboardingPropertiesPrivacyRoute: typeof OnboardingPropertiesPrivacyRoute
@@ -800,6 +821,7 @@ const OnboardingRouteRouteChildren: OnboardingRouteRouteChildren = {
   OnboardingPropertiesAmenitiesRoute: OnboardingPropertiesAmenitiesRoute,
   OnboardingPropertiesBasicsRoute: OnboardingPropertiesBasicsRoute,
   OnboardingPropertiesLocationRoute: OnboardingPropertiesLocationRoute,
+  OnboardingPropertiesPaymentRoute: OnboardingPropertiesPaymentRoute,
   OnboardingPropertiesPhotosRoute: OnboardingPropertiesPhotosRoute,
   OnboardingPropertiesPricingRoute: OnboardingPropertiesPricingRoute,
   OnboardingPropertiesPrivacyRoute: OnboardingPropertiesPrivacyRoute,

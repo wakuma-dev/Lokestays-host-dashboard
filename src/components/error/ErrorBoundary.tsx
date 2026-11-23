@@ -27,7 +27,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     }
     private resetErrorBoundary = (): void => {
         this.setState({hasError: false, error: null});
-
     }
     public override render(): ReactNode {
         if(!this.state.hasError){

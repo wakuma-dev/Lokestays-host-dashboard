@@ -30,19 +30,16 @@ export default function Profile(){
       {isError ? (
            <section className="min-h-[50vh] flex flex-col items-center justify-center gap-4">
             <AlertCircle className="size-10 text-destructive" />
-
             <div className="flex flex-col items-center gap-2 text-center">
               <h2 className="text-[18px] leading-[24px] font-medium">
                 Unable to load property
               </h2>
-
               <p className="text-[14px] leading-[20px] text-muted-foreground">
                 {error instanceof Error
                   ? error.message
                   : "Something went wrong while loading this property."}
               </p>
             </div>
-
             <Button
               type="button"
               onClick={() => refetch()}

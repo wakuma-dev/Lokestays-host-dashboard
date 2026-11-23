@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const registerSchema = z.object({
     fullName: z.string().trim().min(1, {message: "Full name is required"}),
     email: z.string().trim().superRefine((value, context) => {

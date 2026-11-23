@@ -2,7 +2,6 @@ import { useMenuStore } from "./sidebar.store";
 import SidebarMenu from "./SidebarMenu";
 import { motion } from "framer-motion";
 import Logo from "./Logo";
-
 export default function Sidebar(){
       const isCollapsed = useMenuStore((state) => state.isCollapsed);
     return(

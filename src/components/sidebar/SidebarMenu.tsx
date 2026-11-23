@@ -26,12 +26,6 @@ import {
   Settings,
   Headset,
 } from "lucide-react";
-
-/**
- * @constant sidebarLinks
- * @description Centralized navigation configuration structured with correct semantic mappings 
- * (label for display, path for route resolution) and hierarchical sub-links.
- */
 const sidebarLinks: readonly LinkItem[] = [
   {
     path: "/dashboard",
@@ -157,34 +151,20 @@ const sidebarLinks: readonly LinkItem[] = [
     icon: Headset,
   },
 ];
-
 interface SidebarMenuProps {
   readonly onItemClick?: () => void;
   readonly variant?: "desktop" | "mobile";
 }
-
-/**
- * @component SidebarMenu
- * @description Production-grade navigation menu supporting responsive collapsing, 
- * active route matching, and recursive expandable sub-navigation groups.
- * 
- * Algorithmic Complexity:
- * - Tree traversal & path matching: O(N + M) where N is top-level items and M is total sub-links.
- */
 export default function SidebarMenu({ onItemClick, variant }: SidebarMenuProps): JSX.Element {
   const router = useRouterState();
   const currentPath = router.location.pathname;
   const isMobile = variant === "mobile";
   const isCollapsed = useMenuStore((state) => state.isCollapsed) && !isMobile;
-
-  // Track expanded accordion state for parent items containing subLinks
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
-
   const toggleExpand = (label: string) => {
-    if (isCollapsed) return; // Prevent expansion when sidebar is collapsed
+    if (isCollapsed) return; 
     setExpandedItems((prev) => ({ ...prev, [label]: !prev[label] }));
   };
-
   return (
     <nav aria-label="Main navigation" className="flex flex-col gap-1.5 px-4 py-2">
       {sidebarLinks.map((link) => {
@@ -193,7 +173,6 @@ export default function SidebarMenu({ onItemClick, variant }: SidebarMenuProps):
         const isChildActive = hasSubLinks && link.subLinks?.some((sub) => currentPath === sub.path);
         const isActive = currentPath === link.path || isChildActive;
         const isExpanded = expandedItems[link.label] || isChildActive;
-
         return (
           <div key={link.label} className="flex flex-col">
             {hasSubLinks ? (
@@ -270,7 +249,6 @@ export default function SidebarMenu({ onItemClick, variant }: SidebarMenuProps):
                 </AnimatePresence>
               </Link>
             )}
-
             {/* Sub-links / Accordion tree */}
             {hasSubLinks && !isCollapsed && (
               <AnimatePresence>

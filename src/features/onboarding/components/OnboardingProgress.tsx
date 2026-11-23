@@ -18,12 +18,10 @@ function OnboardingProgressComponent(): ReactElement {
         <span className="font-medium">
           {activeTitle}
         </span>
-
         <span className="text-muted-foreground">
           Step {currentStep} of {totalSteps}
         </span>
       </div>
-
       <div className="h-1.5 w-full overflow-hidden  bg-muted">
         <div
           className="h-full rounded-full bg-primary transition-all duration-300 ease-in-out"
@@ -33,6 +31,5 @@ function OnboardingProgressComponent(): ReactElement {
     </div>
   );
 }
-
 export const OnboardingProgress = memo(OnboardingProgressComponent);
 export default OnboardingProgress;

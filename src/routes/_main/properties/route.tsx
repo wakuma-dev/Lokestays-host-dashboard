@@ -3,5 +3,3 @@ import PropertiesLayout from '@/Layouts/PropertiesLayout'
 export const Route = createFileRoute('/_main/properties')({
   component: PropertiesLayout,
 });
-
-

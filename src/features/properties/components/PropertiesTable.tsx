@@ -20,7 +20,6 @@ import {
 } from "@/features/properties";
 import PropertiesUpdate from "./PropertiesUpdate";
 import { Table, TableBody, TableHead, TableHeader, TableCell, TableRow } from "@/components/ui/table";
-
 const PAGE_SIZE = 8;
 function SortIcon({direction,}: {direction: false | "asc" | "desc";}) {
   if (direction === "asc") {
@@ -61,13 +60,10 @@ export default function PropertiesTable(){
     const selectedProperty = properties.find((property) => property.id === selectedPropertyId) ?? null;
     async function handleDeleteProperty(property: Properties) {
     if (deletePropertyMutation.isPending) return;
-
     try {
       await deletePropertyMutation.mutateAsync(property.id);
-
       setPageIndex(0);
       setPageCursors([null]);
-
       if (selectedProperty?.id === property.id) {
         setSelectedPropertyId(null);
         setIsUpdateOpen(false);
@@ -88,7 +84,6 @@ export default function PropertiesTable(){
       onEdit: handleEditProperty,
       onDelete: handleDeleteProperty
      }
-
     });
     function handleNextPage() {
     if (
@@ -98,28 +93,20 @@ export default function PropertiesTable(){
     ) {
       return;
     }
-
     setPageCursors((previous) => {
       const next = previous.slice(0, pageIndex + 1);
-
       next[pageIndex + 1] = data.lastDocument;
-
       return next;
     });
-
     setPageIndex((previous) => previous + 1);
   }
-
   function handlePreviousPage() {
     if (pageIndex === 0 || isFetching) return;
-
     setPageIndex((previous) => previous - 1);
   }
-
   if (isPending) {
     return <PropertiesTableSkeleton />;
   }
-
   if (isError) {
     return (
       <div className="p-4 text-destructive">
@@ -127,7 +114,6 @@ export default function PropertiesTable(){
       </div>
     );
   }
-   
     return(
      <>
        {selectedProperty ? (
@@ -148,16 +134,13 @@ export default function PropertiesTable(){
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const sorted = header.column.getIsSorted();
-
                   const canSorted = header.column.getCanSort();
-
                   const ariaSort =
                     sorted === "asc"
                       ? "ascending"
                       : sorted === "desc"
                         ? "descending"
                         : "none";
-
                   return (
                     <TableHead
                       key={header.id}
@@ -172,7 +155,6 @@ export default function PropertiesTable(){
                             className="group flex select-none items-center gap-1.5 p-1"
                           >
                             <FlexRender header={header} />
-
                             <SortIcon direction={sorted} />
                           </button>
                         ) : (
@@ -184,7 +166,6 @@ export default function PropertiesTable(){
               </TableRow>
             ))}
           </TableHeader>
-
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
@@ -208,7 +189,6 @@ export default function PropertiesTable(){
             )}
           </TableBody>
         </Table>
-
         <PropertiesTablePagination
           pageIndex={pageIndex}
           pageSize={PAGE_SIZE}

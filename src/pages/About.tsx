@@ -1,27 +1,22 @@
 import { type ReactElement, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import image from "../assets/image.png";
-
 export interface AboutProps {
     readonly stepNumber?: number;
     readonly title?: string;
     readonly description?: string;
 }
-
 const DEFAULT_STEP = 1;
 const DEFAULT_TITLE = "Tell us about your place";
 const DEFAULT_DESCRIPTION =
     "In this step, we’ll ask you which type of property you have and if guests will book the entire place or just a room. Then let us know the location and how many guests can stay.";
-
 function AboutComponent({
     stepNumber = DEFAULT_STEP,
     title = DEFAULT_TITLE,
     description = DEFAULT_DESCRIPTION,
 }: AboutProps): ReactElement {
-    
     const stepLabel = `Step ${stepNumber}`;
     const metaTitle = `Step ${stepNumber}: ${title}`;
-
     return (
         <main className="fixed inset-0 overscroll-none overflow-hidden h-dvh
          w-full flex-col justify-between bg-[#FDFDFD] p-4  text-[#201b15] dark:bg-[#0A0A0A] dark:text-[#ffffff] md:pb-4">
@@ -57,6 +52,5 @@ function AboutComponent({
         </main>
     );
 }
-
 export const About = memo(AboutComponent);
 export default About;

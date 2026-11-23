@@ -5,7 +5,6 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
   timeStyle: "short",
 });
-
 function formatDate(value: Properties["createdAt"]): string {
   if (!value || typeof value.toDate !== "function") {
     return "—";
@@ -39,12 +38,10 @@ export default function PropertySubmissionInfo({property}: PropertyDetailsParams
                 label="Created"
                 value={formatDate(property.createdAt)}
               />
-
               <DetailItem
                 label="Last updated"
                 value={formatDate(property.updatedAt)}
               />
-
               <DetailItem
                 label="Submitted"
                 value={

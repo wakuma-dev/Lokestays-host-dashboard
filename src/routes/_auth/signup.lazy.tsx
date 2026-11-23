@@ -3,5 +3,3 @@ import Signup from '@/pages/Signup'
 export const Route = createLazyFileRoute('/_auth/signup')({
   component: Signup,
 });
-
-

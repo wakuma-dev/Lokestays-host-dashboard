@@ -37,7 +37,6 @@ export default function PropertyRooms({property}: PropertyDetailsParams){
                  icon={Users}
                  title="Guest Capacity"
                  desc={property.guestCapacity} />
-                
              </div>
         </section>
     )

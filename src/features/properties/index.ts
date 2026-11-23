@@ -16,4 +16,3 @@ export { default as PropertiesToolbar } from "./components/PropertiesToolbar"
 export { default as PropertiesStatusBadge} from "./components/PropertiesStatusBadge"
 export { default as PropertiesTableSkeleton} from "./components/PropertiesTableSkeleton"
 export { default as PropertiesDetailsDialogue } from "./components/PropertiesDetailsDialogue"
-

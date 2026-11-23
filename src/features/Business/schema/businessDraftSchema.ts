@@ -5,11 +5,9 @@ import {
   emailSchema,
   phoneSchema,
 } from "./businessSchema";
-
 const optionalDraftField = <TSchema extends z.ZodType<string>>(
   schema: TSchema
 ) => z.union([z.literal(""), schema]);
-
 const draftAddressSchema = z
   .object({
     country: z.string().trim().max(100),
@@ -18,7 +16,6 @@ const draftAddressSchema = z
     streetAddress: z.string().trim().max(150),
   })
   .strict();
-
 const draftLegalSchema = z
   .object({
     legalStructure: z.enum(LEGAL_STRUCTURES).nullable(),
@@ -26,19 +23,16 @@ const draftLegalSchema = z
     registrationNumber: z.string().trim().max(150),
   })
   .strict();
-
 const draftContactSchema = z
   .object({
     email: optionalDraftField(emailSchema),
     phone: optionalDraftField(phoneSchema),
   })
   .strict();
-
 const draftDescriptionSchema = z
   .string()
   .trim()
   .max(500, "Description cannot exceed 500 characters.");
-
 export const businessDraftSchema = z
   .object({
     businessType: z.enum(BUSINESS_TYPE_VALUES),
@@ -51,7 +45,6 @@ export const businessDraftSchema = z
   .strict()
   .superRefine((data, ctx) => {
     const isIndividual = data.businessType === "individual";
-
     if (isIndividual) {
       if (data.legal.legalStructure !== null) {
         ctx.addIssue({
@@ -60,7 +53,6 @@ export const businessDraftSchema = z
           message: "Individual businesses cannot set a legal structure.",
         });
       }
-
       if (data.legal.registeredName.length > 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -68,7 +60,6 @@ export const businessDraftSchema = z
           message: "Individual businesses cannot set a registered name.",
         });
       }
-
       if (data.legal.registrationNumber.length > 0) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -78,5 +69,4 @@ export const businessDraftSchema = z
       }
     }
   });
-
 export type BusinessDraftValues = z.infer<typeof businessDraftSchema>;

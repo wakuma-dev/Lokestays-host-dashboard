@@ -21,7 +21,6 @@ export default function ProfileCard({fullName, userId, targetSectionId = PROFILE
           .map((part) => part.charAt(0).toUpperCase())
           .join("")
       : "";
-
     return {
       initials: extractedInitials,
       backgroundColor: getProfileAvatarBackgroundColor(userId.trim() || cleanName),
@@ -39,7 +38,6 @@ export default function ProfileCard({fullName, userId, targetSectionId = PROFILE
    const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     targetElement.scrollIntoView({
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",

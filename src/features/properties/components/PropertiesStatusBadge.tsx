@@ -26,7 +26,6 @@ const STATUS_CONFIG: Record<Properties["status"],
     className: "border-red-500/30 bg-red-500/10 text-red-600",
   },
 };
-
 export default function PropertiesStatusBadge({status,}: PropertiesStatusBadgeProps) {
   const config = STATUS_CONFIG[status];
   return (

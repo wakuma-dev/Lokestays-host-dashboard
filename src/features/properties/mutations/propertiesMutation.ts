@@ -20,19 +20,15 @@ export function useUpdatePropertyMutation() {
       await queryClient.cancelQueries({
         queryKey: ["propertyDrafts"],
       });
-
       const previousPages =
         queryClient.getQueriesData<PropertiesPage>({
           queryKey: ["propertyDrafts"],
         });
-
       const { propertyDraftId, ...updates } = params;
       for (const [queryKey, page] of previousPages) {
         if (!page) continue;
-
         queryClient.setQueryData<PropertiesPage>(queryKey, {
           ...page,
-
           properties: page.properties.map((property) =>
             property.id === propertyDraftId
               ? {
@@ -43,10 +39,8 @@ export function useUpdatePropertyMutation() {
           ),
         });
       }
-
       return { previousPages };
     },
-
     onError: (_error, _params, context) => {
       for (const [queryKey, page] of context?.previousPages ?? []) {
         if (page) {
@@ -54,7 +48,6 @@ export function useUpdatePropertyMutation() {
         }
       }
     },
-
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["propertyDrafts"],
@@ -71,14 +64,11 @@ export function useDeletePropertyMutation() {
       await queryClient.cancelQueries({
     queryKey: ["propertyDrafts"],
       });
-
       const previousPages = queryClient.getQueriesData<PropertiesPage>({
     queryKey: ["propertyDrafts"],
       });
-
       for (const [queryKey, page] of previousPages) {
     if (!page) continue;
-
     queryClient.setQueryData<PropertiesPage>(queryKey, {
       ...page,
       properties: page.properties.filter(
@@ -86,7 +76,6 @@ export function useDeletePropertyMutation() {
       ),
     });
       }
-
       return { previousPages };
     },
     onError: (_error, _propertyDraftId, context) => {

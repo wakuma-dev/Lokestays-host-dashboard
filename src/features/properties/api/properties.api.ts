@@ -38,11 +38,9 @@ export async function getPropertyById(propertyId: string): Promise<Properties>{
     ...propertySnapshot.data(),
     id: propertySnapshot.id,
   }) as Properties;
-
   if (claims.admin !== true && property.hostId !== currentUser.uid) {
     throw new Error("You are not authorized to access this property.");
   }
-
   return property;
 }
 export async function deleteProperty(propertyDraftId: string): Promise<void>{
@@ -100,7 +98,6 @@ export async function getAllProperties({pageSize, lastDocument}: GetAllPropertie
       ...document.data(),
       id: document.id,
     }) as Properties;
-
     return parsedProperty;
   });
   return {
@@ -108,7 +105,6 @@ export async function getAllProperties({pageSize, lastDocument}: GetAllPropertie
     lastDocument: pageDocuments.at(-1) ?? null,
     hasNextPage,
   }
-      
 }
 const hostIdSchema = z.string().min(1, {message: "Host ID cannot be empty or whitespace"})
 export async function hasHostProperties(hostId: unknown): Promise<boolean>{

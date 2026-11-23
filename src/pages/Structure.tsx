@@ -23,16 +23,13 @@ import {
   Wind,
   type LucideIcon,
 } from "lucide-react";
-
 import type { PropertyStructure } from "@/features/onboarding";
 import { useOnboardingStore } from "@/features/onboarding/store/onboardingStore";
-
 interface PropertyStructureOption {
   readonly value: PropertyStructure;
   readonly label: string;
   readonly icon: LucideIcon;
 }
-
 const propertyStructureOptions: readonly PropertyStructureOption[] = [
   { value: "House", label: "House", icon: House },
   { value: "Apartment", label: "Apartment", icon: Building2 },
@@ -65,11 +62,9 @@ const propertyStructureOptions: readonly PropertyStructureOption[] = [
   { value: "Windmill", label: "Windmill", icon: Wind },
   { value: "Yurt", label: "Yurt", icon: Tent },
 ];
-
 function StructureComponent() {
   const structure = useOnboardingStore((state) => state.structure);
   const setStructure = useOnboardingStore((state) => state.setStructure);
-
   return (
     <main className="min-h-dvh w-full bg-[#FDFDFD] p-4 text-[#201b15] dark:bg-[#0A0A0A] dark:text-white">
       <Helmet>
@@ -79,20 +74,17 @@ function StructureComponent() {
           content="Choose the type of property you want to list on Lokestays."
         />
       </Helmet>
-
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 md:gap-8">
-        {/* Page heading */}
+        { }
         <header className="flex flex-col items-start md:items-center space-y-1 text-left md:text-center">
           <h1 className="text-[24px] leading-[28px] tracking-tight font-semibold md:text-[32px] md:leading-[36px]">
             Which of these best describes your place?
           </h1>
-
           <p className="text-[16px] leading-[20px] md:text-[18px] md:leading-[24px] text-[#6c6c6c] font-normal">
             Select the property type you want to host.
           </p>
         </header>
-
-        {/* Property structure options */}
+        { }
         <div
           role="group"
           aria-label="Property structure"
@@ -101,7 +93,6 @@ function StructureComponent() {
           {propertyStructureOptions.map((option) => {
             const Icon = option.icon;
             const isSelected = structure === option.value;
-
             return (
               <button
                 key={option.value}
@@ -128,7 +119,6 @@ function StructureComponent() {
                   aria-hidden="true"
                   className="shrink-0"
                 />
-
                 <span className="text-[16px] leading-[20px] font-medium">
                   {option.label}
                 </span>
@@ -140,7 +130,5 @@ function StructureComponent() {
     </main>
   );
 }
-
 export const Structure = memo(StructureComponent);
-
 export default Structure;

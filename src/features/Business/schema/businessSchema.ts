@@ -1,25 +1,21 @@
 import { z } from "zod";
 import {BUSINESS_TYPE_VALUES, LEGAL_STRUCTURES} from "../types/business.types";
-
 export const businessNameSchema = z
   .string()
   .trim()
   .min(2, "Business name must contain at least 2 characters.")
   .max(100, "Business name cannot exceed 100 characters.");
-
 export const descriptionSchema = z
   .string()
   .trim()
   .max(500, "Description cannot exceed 500 characters.")
   .default("");
-
 export const emailSchema = z
   .string()
   .trim()
   .toLowerCase()
   .email("Enter a valid business email address.")
   .max(254, "Email address is too long.");
-
 export const phoneSchema = z
   .string()
   .trim()
@@ -28,13 +24,11 @@ export const phoneSchema = z
     "Enter a valid international phone number.")
   .min(7, "Enter a valid phone number.")
   .max(20, "Phone number is too long.");
-
 const nullableTrimmedFieldSchema = z
   .string()
   .trim()
   .max(150, "Value cannot exceed 150 characters.")
   .nullable();
-
 const addressSchema = z
   .object({
     country: z.string().trim().min(1, "Country is required.").max(100),
@@ -47,14 +41,12 @@ const addressSchema = z
       .default(""),
   })
   .strict();
-
 const contactSchema = z
   .object({
     email: emailSchema,
     phone: phoneSchema,
   })
   .strict();
-
 const legalSchema = z
   .object({
     legalStructure: z.enum(LEGAL_STRUCTURES).nullable(),
@@ -62,7 +54,6 @@ const legalSchema = z
     registrationNumber: nullableTrimmedFieldSchema,
   })
   .strict();
-
 export const businessSchema = z
   .object({
     ownerId: z.string().trim().min(1, "Owner ID is required.").max(128),
@@ -77,7 +68,6 @@ export const businessSchema = z
   .superRefine((data, ctx) => {
     const isIndividual = data.businessType === "individual";
     const isRegistered = data.businessType === "registered";
-
     if (isIndividual) {
       if (data.legal.legalStructure !== null) {
         ctx.addIssue({
@@ -104,7 +94,6 @@ export const businessSchema = z
         });
       }
     }
-
     if (isRegistered) {
       if (data.legal.legalStructure === null) {
         ctx.addIssue({
@@ -113,7 +102,6 @@ export const businessSchema = z
           message: "Select a legal business structure.",
         });
       }
-
       if (!data.legal.registeredName || data.legal.registeredName.length === 0) {
         ctx.addIssue({
           code: "custom",
@@ -121,7 +109,6 @@ export const businessSchema = z
           message: "Registered business name is required.",
         });
       }
-
       if (
         !data.legal.registrationNumber ||
         data.legal.registrationNumber.length === 0
@@ -134,5 +121,4 @@ export const businessSchema = z
       }
     }
   });
-
 export type BusinessFormValues = z.infer<typeof businessSchema>;

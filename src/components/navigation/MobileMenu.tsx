@@ -4,7 +4,6 @@ import { createPortal } from "react-dom";
 import SidebarMenu from "../sidebar/SidebarMenu";
 import { useMenuStore } from "../sidebar/sidebar.store";
 import { Button } from "../ui/button";
-
 interface MobileMenuProps {
   readonly isOpen: boolean;
   readonly onOpenChange: (open: boolean) => void;
@@ -14,10 +13,9 @@ export function MobileMenu({
   onOpenChange,
 }: MobileMenuProps): React.JSX.Element {
   const toggleSidebar = useMenuStore((state) => state.toggleCollapse);
-
   return (
     <>
-      {/* Desktop sidebar toggle */}
+      { }
       <Button
         type="button"
         variant="ghost"
@@ -36,8 +34,7 @@ export function MobileMenu({
       >
         <Menu className="size-5" aria-hidden="true" />
       </Button>
-
-      {/* Mobile sidebar toggle */}
+      { }
       <div className="lg:hidden">
         <Button
           type="button"
@@ -53,7 +50,6 @@ export function MobileMenu({
         >
           <Menu className="size-5" aria-hidden="true" />
         </Button>
-
       </div>
       {createPortal(
         <AnimatePresence>

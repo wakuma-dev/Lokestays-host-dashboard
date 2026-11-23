@@ -1,7 +1,6 @@
 import { initializeApp, getApp, getApps,  type FirebaseApp} from "firebase/app"
 import { type Analytics, getAnalytics, isSupported} from "firebase/analytics"
 import {env} from "./env"
-
 const firebaseConfig = {
      apiKey: env.firebase.apiKey,
     authDomain: env.firebase.authDomain,
