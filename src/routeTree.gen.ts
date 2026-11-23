@@ -38,6 +38,9 @@ const MainNotificationsLazyRouteImport = createFileRoute(
   '/_main/notifications',
 )()
 const MainSettingsLazyRouteImport = createFileRoute('/_main/settings')()
+const MainAccountBusinessDetailsLazyRouteImport = createFileRoute(
+  '/_main/account/businessDetails',
+)()
 const MainAccountProfileLazyRouteImport = createFileRoute(
   '/_main/account/profile',
 )()
@@ -144,6 +147,14 @@ const MainTermsOfServicesRoute = MainTermsOfServicesRouteImport.update({
   path: '/terms-of-services',
   getParentRoute: () => MainRoute,
 } as any)
+const MainAccountBusinessDetailsLazyRoute =
+  MainAccountBusinessDetailsLazyRouteImport.update({
+    id: '/account/businessDetails',
+    path: '/account/businessDetails',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/account/businessDetails.lazy').then((d) => d.Route),
+  )
 const MainAccountProfileLazyRoute = MainAccountProfileLazyRouteImport.update({
   id: '/account/profile',
   path: '/account/profile',
@@ -313,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
+  '/account/businessDetails': typeof MainAccountBusinessDetailsLazyRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
   '/account/verification': typeof MainAccountVerificationLazyRoute
   '/finance/earnings': typeof MainFinanceEarningsLazyRoute
@@ -345,6 +357,7 @@ export interface FileRoutesByTo {
   '/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/properties/structure': typeof OnboardingPropertiesStructureRoute
+  '/account/businessDetails': typeof MainAccountBusinessDetailsLazyRoute
   '/account/profile': typeof MainAccountProfileLazyRoute
   '/account/verification': typeof MainAccountVerificationLazyRoute
   '/finance/earnings': typeof MainFinanceEarningsLazyRoute
@@ -383,6 +396,7 @@ export interface FileRoutesById {
   '/_onboarding/properties/privacy': typeof OnboardingPropertiesPrivacyRoute
   '/_onboarding/properties/rooms': typeof OnboardingPropertiesRoomsRoute
   '/_onboarding/properties/structure': typeof OnboardingPropertiesStructureRoute
+  '/_main/account/businessDetails': typeof MainAccountBusinessDetailsLazyRoute
   '/_main/account/profile': typeof MainAccountProfileLazyRoute
   '/_main/account/verification': typeof MainAccountVerificationLazyRoute
   '/_main/finance/earnings': typeof MainFinanceEarningsLazyRoute
@@ -419,6 +433,7 @@ export interface FileRouteTypes {
     | '/properties/privacy'
     | '/properties/rooms'
     | '/properties/structure'
+    | '/account/businessDetails'
     | '/account/profile'
     | '/account/verification'
     | '/finance/earnings'
@@ -451,6 +466,7 @@ export interface FileRouteTypes {
     | '/properties/privacy'
     | '/properties/rooms'
     | '/properties/structure'
+    | '/account/businessDetails'
     | '/account/profile'
     | '/account/verification'
     | '/finance/earnings'
@@ -488,6 +504,7 @@ export interface FileRouteTypes {
     | '/_onboarding/properties/privacy'
     | '/_onboarding/properties/rooms'
     | '/_onboarding/properties/structure'
+    | '/_main/account/businessDetails'
     | '/_main/account/profile'
     | '/_main/account/verification'
     | '/_main/finance/earnings'
@@ -607,6 +624,13 @@ declare module '@tanstack/react-router' {
       path: '/terms-of-services'
       fullPath: '/terms-of-services'
       preLoaderRoute: typeof MainTermsOfServicesRouteImport
+      parentRoute: typeof MainRoute
+    }
+    '/_main/account/businessDetails': {
+      id: '/_main/account/businessDetails'
+      path: '/account/businessDetails'
+      fullPath: '/account/businessDetails'
+      preLoaderRoute: typeof MainAccountBusinessDetailsLazyRouteImport
       parentRoute: typeof MainRoute
     }
     '/_main/account/profile': {
@@ -857,6 +881,7 @@ interface MainRouteChildren {
   MainMessagesLazyRoute: typeof MainMessagesLazyRoute
   MainNotificationsLazyRoute: typeof MainNotificationsLazyRoute
   MainSettingsLazyRoute: typeof MainSettingsLazyRoute
+  MainAccountBusinessDetailsLazyRoute: typeof MainAccountBusinessDetailsLazyRoute
   MainAccountProfileLazyRoute: typeof MainAccountProfileLazyRoute
   MainAccountVerificationLazyRoute: typeof MainAccountVerificationLazyRoute
   MainFinanceEarningsLazyRoute: typeof MainFinanceEarningsLazyRoute
@@ -873,6 +898,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainMessagesLazyRoute: MainMessagesLazyRoute,
   MainNotificationsLazyRoute: MainNotificationsLazyRoute,
   MainSettingsLazyRoute: MainSettingsLazyRoute,
+  MainAccountBusinessDetailsLazyRoute: MainAccountBusinessDetailsLazyRoute,
   MainAccountProfileLazyRoute: MainAccountProfileLazyRoute,
   MainAccountVerificationLazyRoute: MainAccountVerificationLazyRoute,
   MainFinanceEarningsLazyRoute: MainFinanceEarningsLazyRoute,

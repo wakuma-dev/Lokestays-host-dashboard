@@ -135,7 +135,7 @@ const sidebarLinks: readonly LinkItem[] = [
         icon: UserRound,
       },
       {
-        path: "/account/business",
+        path: "/account/businessDetails",
         label: "Business Details",
         icon: BriefcaseBusiness,
       },
