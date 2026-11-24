@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-WkwZ5CU--v2.js";import{T as t,a as n,i as r,m as i,n as a}from"./fileRoute-C3dsVi0N-v2.js";import{I as o,in as s,j as c,yt as l}from"./label-BvBjAckx-v2.js";import{a as u,c as d,d as f,f as p,h as m,m as h,n as g,p as _,s as v,t as y,u as b}from"./auth-0SAyBzAb-v2.js";import{r as x,t as S}from"./index-Dl6pjucg.js";var C=e(t(),1),w=i(),T={fullName:`name`,email:`email`,password:`new-password`,confirmPassword:`new-password`,agreeTerms:`off`},E={backgroundImage:`
+import{n as e}from"./rolldown-runtime-WkwZ5CU--v2.js";import{T as t,a as n,i as r,m as i,n as a}from"./fileRoute-C3dsVi0N-v2.js";import{I as o,in as s,j as c,yt as l}from"./label-BvBjAckx-v2.js";import{a as u,c as d,d as f,f as p,h as m,m as h,n as g,p as _,s as v,t as y,u as b}from"./auth-0SAyBzAb-v2.js";import{r as x,t as S}from"./index-DvmqTAbY.js";var C=e(t(),1),w=i(),T={fullName:`name`,email:`email`,password:`new-password`,confirmPassword:`new-password`,agreeTerms:`off`},E={backgroundImage:`
   linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.6) 0%,
