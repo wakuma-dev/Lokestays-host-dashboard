@@ -23,9 +23,16 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
 });
-export default function usePropertiesTableColumns(){
-    return useMemo(() => [
-     columnHelper.display({
+type PropertiesTableColumnsOptions = {
+  hideCheckbox?: boolean;
+  hideActions?: boolean;
+};
+export default function usePropertiesTableColumns({
+  hideCheckbox = false,
+  hideActions = false,
+}: PropertiesTableColumnsOptions = {}) {
+    return useMemo(() => {
+     const checkboxColumn = columnHelper.display({
       id: "select",
       header: ({ table }) => (
           <Checkbox
@@ -50,7 +57,8 @@ export default function usePropertiesTableColumns(){
           />
         ),
         enableSorting: false,
-     }),
+     });
+     const propertyColumns = [
      columnHelper.accessor("structure", {
       id: "structure",
       header: "Property Name",
@@ -89,7 +97,7 @@ export default function usePropertiesTableColumns(){
         },
         sortFn: "datetime",
       }),
-      columnHelper.display({
+     ...(hideActions ? [] : [columnHelper.display({
         id: "actions",
         header: "Actions",
         cell: ({ row, table }) => {
@@ -138,8 +146,10 @@ export default function usePropertiesTableColumns(){
             </DropdownMenu>
           );
         },
-      }),
-    ],
-    [],
+      })]),
+     ];
+     return hideCheckbox ? propertyColumns : [checkboxColumn, ...propertyColumns];
+    },
+    [hideCheckbox, hideActions],
   );
 }

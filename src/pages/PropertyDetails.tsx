@@ -29,7 +29,8 @@ export default function PropertyDetails() {
     return <PropertyDetailsSkeleton />;
   }
   return (
-    <main className="p-4 min-w-0 min-h-screen h-auto text-[#111] dark:text-[#fff] bg-[#ffffff] dark:bg-[#141A15]">
+    <main className="p-4 md:px-6 h-auto min-w-0 bg-[#ffffff] text-[#201b15]
+     dark:bg-[#0A0A0A] dark:text-[#FFFFFF]">
       <Helmet>
         <title>Property Details | Lokestays</title>
         <meta

@@ -20,7 +20,14 @@ import {
 } from "@/features/properties";
 import PropertiesUpdate from "./PropertiesUpdate";
 import { Table, TableBody, TableHead, TableHeader, TableCell, TableRow } from "@/components/ui/table";
-const PAGE_SIZE = 8;
+type PropertiesTableProps = {
+  hideCheckbox?: boolean;
+  hidePagination?: boolean;
+  hideSearch?: boolean;
+  hideActions?: boolean;
+  hideSorting?: boolean;
+  pageSize?: number;
+};
 function SortIcon({direction,}: {direction: false | "asc" | "desc";}) {
   if (direction === "asc") {
     return <ChevronUp className="h-3.5 w-3.5 text-[#0f766e]" />;
@@ -32,7 +39,14 @@ function SortIcon({direction,}: {direction: false | "asc" | "desc";}) {
     <ChevronsUpDown className="h-3.5 w-3.5 opacity-100" />
   );
 }
-export default function PropertiesTable(){
+export default function PropertiesTable({
+  hideCheckbox = false,
+  hidePagination = false,
+  hideSearch = false,
+  hideActions = false,
+  hideSorting = false,
+  pageSize = 8,
+}: PropertiesTableProps = {}){
     const navigate = useNavigate();
     const [selectedPropertyId, setSelectedPropertyId] =
     useState<string | null>(null);
@@ -42,10 +56,10 @@ export default function PropertiesTable(){
     const deletePropertyMutation = useDeletePropertyMutation();
     const lastDocument = pageCursors[pageIndex] ?? null;
     const {data, isPending, isError, error, isFetching} = usePropertiesQuery({
-        pageSize: PAGE_SIZE,
+        pageSize,
         lastDocument
     });
-    const columns = usePropertiesTableColumns() as ColumnDef<typeof propertiesTableFeatures, Properties, any>[]
+    const columns = usePropertiesTableColumns({ hideCheckbox, hideActions }) as ColumnDef<typeof propertiesTableFeatures, Properties, any>[]
     function handleViewProperty(property: Properties) {
     void navigate({
       to: "/properties/$propertyId",
@@ -105,7 +119,15 @@ export default function PropertiesTable(){
     setPageIndex((previous) => previous - 1);
   }
   if (isPending) {
-    return <PropertiesTableSkeleton />;
+    return (
+      <PropertiesTableSkeleton
+        hideCheckbox={hideCheckbox}
+        hideActions={hideActions}
+        hidePagination={hidePagination}
+        hideSearch={hideSearch}
+        pageSize={pageSize}
+      />
+    );
   }
   if (isError) {
     return (
@@ -124,9 +146,11 @@ export default function PropertiesTable(){
           onOpenChange={setIsUpdateOpen}
         />
       ) : null}
-     <div className="w-full flex justify-end">
-        <PropertiesToolbar table={table} />
-     </div>
+     {!hideSearch ? (
+       <div className="w-full flex justify-end">
+          <PropertiesToolbar table={table} />
+       </div>
+     ) : null}
      <div className="w-full overflow-x-auto rounded-lg border border-[#E5E7EB] dark:border-[#27272a]">
         <Table>
             <TableHeader>
@@ -134,7 +158,7 @@ export default function PropertiesTable(){
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const sorted = header.column.getIsSorted();
-                  const canSorted = header.column.getCanSort();
+                  const canSorted = !hideSorting && header.column.getCanSort();
                   const ariaSort =
                     sorted === "asc"
                       ? "ascending"
@@ -189,15 +213,17 @@ export default function PropertiesTable(){
             )}
           </TableBody>
         </Table>
-        <PropertiesTablePagination
-          pageIndex={pageIndex}
-          pageSize={PAGE_SIZE}
-          rowCount={properties.length}
-          hasNextPage={data?.hasNextPage ?? false}
-          isFetching={isFetching}
-          onNextPage={handleNextPage}
-          onPreviousPage={handlePreviousPage}
-        />
+        {!hidePagination ? (
+          <PropertiesTablePagination
+            pageIndex={pageIndex}
+            pageSize={pageSize}
+            rowCount={properties.length}
+            hasNextPage={data?.hasNextPage ?? false}
+            isFetching={isFetching}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        ) : null}
       </div>
       </>
       );
