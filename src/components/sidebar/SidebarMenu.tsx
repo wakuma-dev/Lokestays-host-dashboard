@@ -41,14 +41,14 @@ const sidebarLinks: readonly LinkItem[] = [
     path: "/properties",
     label: "Properties",
     icon: House,
-    subLinks: [
+      subLinks: [
       {
         path: "/properties",
         label: "All Properties",
         icon: House,
       },
       {
-        path: "/properties/about",
+        path: "/properties/",
         label: "Add Property",
         icon: Plus,
       },
@@ -58,6 +58,7 @@ const sidebarLinks: readonly LinkItem[] = [
         icon: CalendarDays,
       },
     ],
+ 
   },
   {
     path: "/reservations",

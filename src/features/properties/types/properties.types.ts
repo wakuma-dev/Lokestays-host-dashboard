@@ -49,3 +49,7 @@ export interface Properties {
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
+export interface PropertyHost {
+  id: string;
+  fullName: string;
+}

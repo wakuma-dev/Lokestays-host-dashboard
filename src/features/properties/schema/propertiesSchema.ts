@@ -9,7 +9,25 @@ const firestoreTimestampSchema = z.union([
   z.date(),
   serializedTimestampSchema,
   z.string().datetime(), 
-]);
+]).transform((value) => {
+  if (value instanceof Timestamp) {
+    return value;
+  }
+
+  if (value instanceof Date) {
+    return Timestamp.fromDate(value);
+  }
+
+  if (typeof value === "string") {
+    return Timestamp.fromDate(new Date(value));
+  }
+
+  return new Timestamp(value.seconds, value.nanoseconds);
+});
+export const propertyHostSchema = z.object({
+  id: z.string().min(1, "Host Id is required"),
+  fullName: z.string().trim().min(1, "Host name is required")
+});
 const propertyPhotoSchema = z.object({
   id: z.string().min(1, "Photo ID is required"),
   url: z.string().url("Invalid photo URL format"),

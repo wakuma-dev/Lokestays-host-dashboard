@@ -57,8 +57,7 @@ const submissionRequirementsSchema = z.object({
   pricePerNight: z.number().int().min(1).max(1_000_000_000),
   currency: z.literal("ETB"),
   paymentProvider: z.enum(PAYMENT_PROVIDERS),
-  paymentStatus: z.literal("successful"),
-  paymentReference: z.string().trim().min(1),
+  paymentAccount: z.string().trim().min(1),
 });
 export interface CreatePropertyDraftInput {
   readonly hostId: string;
@@ -188,6 +187,7 @@ export async function createPropertyDraft({
     pricePerNight: 0,
     currency: "ETB" as const,
     paymentProvider: null,
+    paymentAccount: null,
     paymentStatus: "unpaid" as const,
     paymentReference: null,
     currentStep: validatedStep,

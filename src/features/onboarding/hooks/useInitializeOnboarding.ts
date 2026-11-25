@@ -53,6 +53,8 @@ export function useInitializeOnboarding(
         structure: hydratedDraft.structure,
         privacyType: hydratedDraft.privacyType,
         location: hydratedDraft.location,
+        paymentProvider: hydratedDraft.paymentProvider,
+        paymentAccount: hydratedDraft.paymentAccount,
         currentStep: hydratedDraft.currentStep,
         status: hydratedDraft.status,
       });

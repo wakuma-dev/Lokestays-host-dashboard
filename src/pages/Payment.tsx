@@ -1,7 +1,6 @@
 import {
   memo,
   useCallback,
-  useState,
   type ChangeEvent,
 } from "react";
 import { Helmet } from "react-helmet-async";
@@ -76,7 +75,12 @@ function PaymentComponent() {
     (state) => state.setPaymentProvider,
   );
 
-  const [accountNumber, setAccountNumber] = useState("");
+  const accountNumber = useOnboardingStore(
+    (state) => state.paymentAccount,
+  );
+  const setPaymentAccount = useOnboardingStore(
+    (state) => state.setPaymentAccount,
+  );
 
   const selectedProvider = paymentProvider
     ? paymentProviderDetails[paymentProvider]
@@ -91,16 +95,16 @@ function PaymentComponent() {
       }
 
       setPaymentProvider(provider as PaymentProvider);
-      setAccountNumber("");
+      setPaymentAccount("");
     },
-    [setPaymentProvider],
+    [setPaymentProvider, setPaymentAccount],
   );
 
   const handleAccountChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      setAccountNumber(event.target.value);
+      setPaymentAccount(event.target.value);
     },
-    [],
+    [setPaymentAccount],
   );
 
   return (
@@ -180,6 +184,7 @@ function PaymentComponent() {
                 value={accountNumber}
                 onChange={handleAccountChange}
                 placeholder={selectedProvider.placeholder}
+                required
                 autoComplete="off"
                 maxLength={50}
                 className="h-12 w-full rounded-xl border border-[#D4D4D4]
@@ -193,7 +198,8 @@ function PaymentComponent() {
 
               <p className="text-sm text-[#777777] dark:text-[#A1A1AA]">
                 Enter the account number or phone number associated with
-                your selected payment provider.
+                your selected payment provider. This is required to submit
+                your property.
               </p>
             </div>
           )}

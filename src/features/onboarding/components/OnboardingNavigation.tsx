@@ -23,6 +23,12 @@ function OnboardingNavigationComponent({
 }: OnboardingNavigationProps): ReactElement {
   const navigate = useNavigate();
   const draftId = useOnboardingStore((state) => state.draftId);
+  const paymentProvider = useOnboardingStore(
+    (state) => state.paymentProvider,
+  );
+  const paymentAccount = useOnboardingStore(
+    (state) => state.paymentAccount,
+  );
   const [isInitializing, setIsInitializing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -40,6 +46,8 @@ function OnboardingNavigationComponent({
   const nextStep = onboardingSteps[safeIndex + 1];
   const isFirstStep = safeIndex === 0;
   const isLastStep = safeIndex === onboardingSteps.length - 1;
+  const paymentDetailsReady =
+    paymentProvider !== null && paymentAccount.trim().length > 0;
   const isBusy =
     externalSubmitting || isInitializing || isSubmitting;
   const ensurePropertyDraft = async (): Promise<string> => {
@@ -97,6 +105,8 @@ function OnboardingNavigationComponent({
         amenities: [...state.amenities],
         roomAmenities: [...state.roomAmenities],
         photos: [...state.photos],
+        paymentProvider: state.paymentProvider,
+        paymentAccount: state.paymentAccount,
         ...(state.pricePerNight > 0
           ? { pricePerNight: state.pricePerNight }
           : {}),
@@ -164,7 +174,12 @@ function OnboardingNavigationComponent({
       )}
       <Button
         type="button"
-        disabled={!isValid || isBusy || isSubmitted}
+        disabled={
+          !isValid ||
+          (isLastStep && !paymentDetailsReady) ||
+          isBusy ||
+          isSubmitted
+        }
         onClick={() => {
           void handleContinue();
         }}

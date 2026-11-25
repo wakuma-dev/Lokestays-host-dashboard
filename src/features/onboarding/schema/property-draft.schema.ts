@@ -133,6 +133,7 @@ export const propertyDraftSchema = z.object({
     .default(0),
   currency: z.literal("ETB").default("ETB"),
   paymentProvider: paymentProviderSchema.nullable().default(null),
+  paymentAccount: z.string().trim().min(1).nullable().default(null),
   paymentStatus: paymentStatusSchema.default("unpaid"),
   paymentReference: z.string().trim().min(1).nullable().default(null),
   currentStep: z.string().trim().min(1),
@@ -151,11 +152,8 @@ export const propertySubmissionSchema = propertyDraftSchema.extend({
   pricePerNight: propertyPricingSchema.shape.pricePerNight,
   currency: z.literal("ETB"),
   paymentProvider: paymentProviderSchema,
-  paymentStatus: z.literal("successful", {
-    error: "Property listing payment must be completed.",
-  }),
-  paymentReference: z.string().trim().min(1, {
-    message: "Verified payment reference is required.",
+  paymentAccount: z.string().trim().min(1, {
+    message: "Payment account is required.",
   }),
   status: z.literal("draft"),
   submittedAt: z.null(),

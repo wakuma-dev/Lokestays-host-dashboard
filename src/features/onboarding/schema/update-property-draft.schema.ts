@@ -35,6 +35,7 @@ export const updatePropertyDraftSchema = z
     currency: z.literal("ETB").optional(),
     currentStep: z.string().trim().min(1).optional(),
     paymentProvider: paymentProviderSchema.nullable().optional(),
+    paymentAccount: z.string().trim().min(1).nullable().optional(),
   })
   .strict()
   .refine(

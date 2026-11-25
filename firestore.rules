@@ -1,22 +1,668 @@
-rules_version = "2";
-service cloud.firestore {
-    match /databases/{database}/documents {
-        function isAuthenticated(){
-            return request.auth != null
-        }
-        function isAdmin(){
-            return isAuthenticated() && request.auth.token.admin == true
-        }
-        function isHost(){
-            return isAuthenticated() && request.auth.uid == resource.data.hostId
-        }
-        function isOwner({userId}){
-            return request.auth.uid == userId
-        }
+// Updated property draft security rules 
+rules_version = '2';
 
-        match /propertyDrafts/{propertyDraftId} {
-            allow get, list: if isAdmin()
-                || (isAuthenticated() && request.auth.uid == resource.data.hostId);
-        }
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================
+    // AUTHENTICATION & AUTHORIZATION
+    // =========================================
+
+    function isAuthenticated() {
+      return request.auth != null;
     }
+
+    function isOwner(userId) {
+      return isAuthenticated()
+        && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated()
+        && request.auth.token.get('admin', false) == true;
+    }
+
+    function isHost() {
+      return isAuthenticated()
+        && request.auth.uid == resource.data.hostId;
+    }
+
+
+    // =========================================
+    // USER VALIDATION
+    // =========================================
+
+    function hasValidUserRoles(data) {
+      return data.roles is list
+        && data.roles.size() >= 1
+        && data.roles.size() <= 2
+        && data.roles.hasOnly(['guest', 'host']);
+    }
+
+    function hasValidFullName(data) {
+      return !('fullName' in data)
+        || (
+          data.fullName is string
+          && data.fullName.size() >= 1
+          && data.fullName.size() <= 100
+        );
+    }
+
+    function canCreateUserProfile(userId) {
+      return isOwner(userId)
+        && request.resource.data.keys().hasAll([
+          'uid',
+          'email',
+          'roles',
+          'status',
+          'suspension',
+          'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'uid',
+          'email',
+          'fullName',
+          'roles',
+          'status',
+          'suspension',
+          'createdAt'
+        ])
+        && request.resource.data.uid == userId
+        && request.resource.data.email == request.auth.token.email
+        && hasValidUserRoles(request.resource.data)
+        && hasValidFullName(request.resource.data)
+        && request.resource.data.status == 'active'
+        && request.resource.data.suspension == null
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.createdAt == request.time;
+    }
+
+    function canUpdateUserProfile(userId) {
+      return isOwner(userId)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.status == resource.data.status
+        && request.resource.data.suspension == resource.data.suspension
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'fullName',
+            'roles',
+            'createdAt'
+          ])
+        && hasValidUserRoles(request.resource.data)
+        && hasValidFullName(request.resource.data)
+        && (
+          !('createdAt' in resource.data)
+          ? request.resource.data.createdAt is timestamp
+            && request.resource.data.createdAt == request.time
+          : request.resource.data.createdAt == resource.data.createdAt
+        );
+    }
+
+
+    // =========================================
+    // ADMIN PROFILE VALIDATION
+    // =========================================
+
+    function canCreateAdminProfile(userId) {
+      return isAdmin()
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll([
+          'uid',
+          'email',
+          'fullName',
+          'role',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'uid',
+          'email',
+          'fullName',
+          'role',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.uid == userId
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.fullName is string
+        && request.resource.data.fullName.size() >= 1
+        && request.resource.data.fullName.size() <= 100
+        && request.resource.data.role == 'admin'
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function canUpdateAdminProfile(userId) {
+      return isAdmin()
+        && request.auth.uid == userId
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.role == 'admin'
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.fullName is string
+        && request.resource.data.fullName.size() >= 1
+        && request.resource.data.fullName.size() <= 100
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'fullName',
+            'updatedAt'
+          ]);
+    }
+
+
+    // =========================================
+    // BUSINESS VALIDATION
+    // =========================================
+
+    function hasValidBusinessType(data) {
+      return data.businessType in [
+        'individual',
+        'registered'
+      ];
+    }
+
+    function hasValidBusinessIdentity(data) {
+      return data.businessName is string
+        && data.businessName.size() <= 100
+        && data.description is string
+        && data.description.size() <= 500;
+    }
+
+    function hasValidBusinessContact(data) {
+      return data.contact is map
+        && data.contact.email is string
+        && data.contact.phone is string;
+    }
+
+    function hasValidBusinessAddress(data) {
+      return data.address is map
+        && data.address.country is string
+        && data.address.city is string
+        && data.address.subCity is string
+        && data.address.streetAddress is string;
+    }
+
+    function hasValidBusinessLegal(data) {
+      return data.legal is map
+        && (
+          data.businessType == 'individual'
+          || (
+            data.businessType == 'registered'
+            && data.legal.legalStructure in [
+              'sole_proprietorship',
+              'partnership',
+              'private_limited_company'
+            ]
+            && data.legal.registeredName is string
+            && data.legal.registeredName.size() <= 120
+            && data.legal.registrationNumber is string
+            && data.legal.registrationNumber.size() <= 60
+          )
+        );
+    }
+
+    function hasValidBusinessDetails(data) {
+      return data.keys().hasAll([
+        'businessType',
+        'businessName',
+        'description',
+        'contact',
+        'address',
+        'legal'
+      ])
+        && hasValidBusinessType(data)
+        && hasValidBusinessIdentity(data)
+        && hasValidBusinessContact(data)
+        && hasValidBusinessAddress(data)
+        && hasValidBusinessLegal(data);
+    }
+
+    function hasValidBusinessMetadata(data, userId) {
+      return data.ownerId is string
+        && data.ownerId == userId
+        && data.status in [
+          'draft',
+          'complete',
+          'pending_verification'
+        ]
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function canCreateBusiness(userId) {
+      return isOwner(userId)
+        && request.resource.data.keys().hasAll([
+          'ownerId',
+          'status',
+          'createdAt',
+          'updatedAt',
+          'businessType',
+          'businessName',
+          'description',
+          'contact',
+          'address',
+          'legal'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'ownerId',
+          'status',
+          'createdAt',
+          'updatedAt',
+          'businessType',
+          'businessName',
+          'description',
+          'contact',
+          'address',
+          'legal'
+        ])
+        && hasValidBusinessDetails(request.resource.data)
+        && hasValidBusinessMetadata(request.resource.data, userId)
+        && request.resource.data.status == 'draft'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function canUpdateBusiness(userId) {
+      return isOwner(userId)
+        && resource.data.ownerId == userId
+        && resource.data.status != 'pending_verification'
+        && request.resource.data.ownerId == resource.data.ownerId
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.status in [
+          'draft',
+          'complete',
+          'pending_verification'
+        ]
+        && (
+          request.resource.data.status == resource.data.status
+          || (
+            resource.data.status == 'draft'
+            && request.resource.data.status == 'complete'
+          )
+        )
+        && hasValidBusinessDetails(request.resource.data)
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'businessType',
+            'businessName',
+            'description',
+            'contact',
+            'address',
+            'legal',
+            'status',
+            'updatedAt'
+          ]);
+    }
+
+
+    // =========================================
+    // PROPERTY DRAFT VALIDATION
+    // =========================================
+
+    function hasValidPaymentProvider(data) {
+      return !('paymentProvider' in data)
+        || data.paymentProvider == null
+        || data.paymentProvider in [
+          'telebirr',
+          'mpesa',
+          'cbe',
+          'awash',
+          'dashen',
+          'abyssinia'
+        ];
+    }
+
+    function hasValidPaymentStatus(data) {
+      return data.paymentStatus in [
+        'unpaid',
+        'pending',
+        'successful',
+        'failed'
+      ];
+    }
+
+    function hasValidInitialPayment(data) {
+      return data.paymentProvider == null
+        && data.paymentAccount == null
+        && data.paymentStatus == 'unpaid'
+        && data.paymentReference == null;
+    }
+
+    function hasImmutableDraftFields() {
+      return request.resource.data.hostId == resource.data.hostId
+        && request.resource.data.get('createdAt', null)
+          == resource.data.get('createdAt', null);
+    }
+
+
+    // =========================================
+    // PROPERTY DRAFT CREATION
+    // =========================================
+
+    function canCreatePropertyDraft() {
+      let data = request.resource.data;
+
+      return isAuthenticated()
+
+        && data.keys().hasAll([
+          'hostId',
+          'structure',
+          'privacyType',
+          'location',
+          'guestCapacity',
+          'bedrooms',
+          'beds',
+          'bathrooms',
+          'amenities',
+          'roomAmenities',
+          'photos',
+          'pricePerNight',
+          'currency',
+          'paymentProvider',
+          'paymentAccount',
+          'paymentStatus',
+          'paymentReference',
+          'currentStep',
+          'status',
+          'submittedAt',
+          'createdAt',
+          'updatedAt'
+        ])
+
+        && data.keys().hasOnly([
+          'hostId',
+          'structure',
+          'privacyType',
+          'location',
+          'guestCapacity',
+          'bedrooms',
+          'beds',
+          'bathrooms',
+          'amenities',
+          'roomAmenities',
+          'photos',
+          'pricePerNight',
+          'currency',
+          'paymentProvider',
+          'paymentAccount',
+          'paymentStatus',
+          'paymentReference',
+          'currentStep',
+          'status',
+          'submittedAt',
+          'createdAt',
+          'updatedAt'
+        ])
+
+        && data.hostId == request.auth.uid
+
+        && data.structure == null
+        && data.privacyType == null
+        && data.location == null
+
+        && data.guestCapacity == 1
+        && data.bedrooms == 0
+        && data.beds == 0
+        && data.bathrooms == 0
+
+        && data.amenities is list
+        && data.amenities.size() == 0
+
+        && data.roomAmenities is list
+        && data.roomAmenities.size() == 0
+
+        && data.photos is list
+        && data.photos.size() == 0
+
+        && data.pricePerNight == 0
+        && data.currency == 'ETB'
+
+        && hasValidInitialPayment(data)
+
+        && data.currentStep is string
+        && data.currentStep.size() > 0
+
+        && data.status == 'draft'
+        && data.submittedAt == null
+
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp
+
+        && data.createdAt == request.time
+        && data.updatedAt == request.time;
+    }
+
+
+    // =========================================
+    // PROPERTY DRAFT UPDATE
+    // =========================================
+
+    function canUpdateDraft() {
+      return isAuthenticated()
+        && request.resource.data.status == resource.data.status
+
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'structure',
+            'privacyType',
+            'location',
+            'guestCapacity',
+            'bedrooms',
+            'beds',
+            'bathrooms',
+            'amenities',
+            'roomAmenities',
+            'photos',
+            'pricePerNight',
+            'currency',
+            'currentStep',
+            'paymentProvider',
+            'paymentAccount',
+            'updatedAt'
+          ])
+
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time
+
+        && hasValidPaymentProvider(request.resource.data)
+
+        && hasImmutableDraftFields();
+    }
+
+
+    // =========================================
+    // PROPERTY DRAFT SUBMISSION
+    // =========================================
+
+    function canSubmitDraft() {
+      return resource.data.status == 'draft'
+        && request.resource.data.status == 'pending'
+        && request.resource.data.paymentProvider in [
+          'telebirr',
+          'mpesa',
+          'cbe',
+          'awash',
+          'dashen',
+          'abyssinia'
+        ]
+        && request.resource.data.paymentAccount is string
+        && request.resource.data.paymentAccount.size() > 0
+        && request.resource.data.paymentStatus == 'unpaid'
+        && request.resource.data.paymentReference == null
+        && request.resource.data.paymentProvider == resource.data.paymentProvider
+        && request.resource.data.paymentAccount == resource.data.paymentAccount
+        && request.resource.data.paymentStatus == resource.data.paymentStatus
+        && request.resource.data.paymentReference == resource.data.paymentReference
+        && request.resource.data.submittedAt is timestamp
+        && request.resource.data.submittedAt == request.time
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.structure is string
+        && request.resource.data.privacyType is string
+        && request.resource.data.location is map
+        && request.resource.data.location.latitude is number
+        && request.resource.data.location.longitude is number
+        && request.resource.data.location.address is string
+        && request.resource.data.location.city is string
+        && request.resource.data.photos is list
+        && request.resource.data.photos.size() >= 1
+        && request.resource.data.photos.size() <= 20
+        && request.resource.data.pricePerNight is int
+        && request.resource.data.pricePerNight >= 1
+        && request.resource.data.pricePerNight <= 1000000000
+        && request.resource.data.currency == 'ETB'
+        && request.resource.data.guestCapacity is int
+        && request.resource.data.guestCapacity >= 1
+        && request.resource.data.guestCapacity <= 16
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'status',
+            'submittedAt',
+            'updatedAt'
+          ]);
+    }
+
+
+    // =========================================
+    // ADMIN PROPERTY MANAGEMENT
+    // =========================================
+
+    function canAdminUpdateDraft() {
+      return isAdmin()
+
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'status',
+            'updatedAt'
+          ])
+
+        && request.resource.data.status in [
+          'draft',
+          'pending',
+          'approved',
+          'rejected'
+        ]
+
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+
+
+    // =========================================
+    // USERS COLLECTION
+    // =========================================
+
+    match /users/{userId} {
+
+      allow get: if isOwner(userId) || isAdmin();
+
+      allow list: if isAdmin();
+
+      allow create: if
+        canCreateUserProfile(userId)
+        || canCreateAdminProfile(userId);
+
+      allow update: if
+        canUpdateUserProfile(userId)
+        || canUpdateAdminProfile(userId);
+
+      allow delete: if isAdmin();
+    }
+
+
+    // =========================================
+    // BUSINESSES COLLECTION
+    // =========================================
+
+    match /businesses/{userId} {
+
+      allow get: if isOwner(userId) || isAdmin();
+
+      allow list: if isAdmin();
+
+      allow create: if canCreateBusiness(userId);
+
+      allow update: if canUpdateBusiness(userId);
+
+      allow delete: if isAdmin()
+        || (
+          isOwner(userId)
+          && resource.data.ownerId == userId
+          && resource.data.status != 'pending_verification'
+        );
+    }
+
+
+    // =========================================
+    // PROPERTY DRAFTS COLLECTION
+    // =========================================
+
+    match /propertyDrafts/{propertyDraftId} {
+
+      // READ
+      allow get, list: if
+        isAdmin()
+        || (
+          isAuthenticated()
+          && resource.data.hostId == request.auth.uid
+        );
+
+
+      // CREATE
+      allow create: if
+        isAdmin()
+        || canCreatePropertyDraft();
+
+
+      // UPDATE
+      allow update: if
+
+        canAdminUpdateDraft()
+
+        || (
+
+          isHost()
+
+          && hasImmutableDraftFields()
+
+          && (
+            canUpdateDraft()
+            || canSubmitDraft()
+          )
+        );
+
+
+      // DELETE
+      allow delete: if
+        isAdmin()
+        || (
+          isHost()
+          && resource.data.status == 'draft'
+        );
+    }
+
+
+    // =========================================
+    // DEFAULT DENY
+    // =========================================
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+  }
 }

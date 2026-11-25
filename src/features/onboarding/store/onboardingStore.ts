@@ -38,6 +38,7 @@ interface HydratePropertyDraft {
   readonly pricePerNight?: number;
   readonly currency?: "ETB";
   readonly paymentProvider?: PaymentProvider | null;
+  readonly paymentAccount?: string | null;
   readonly currentStep: string;
   readonly status: PropertyDraftStatus;
 }
@@ -58,6 +59,7 @@ interface OnboardingState {
   readonly pricePerNight: number;
   readonly currency: "ETB";
   readonly paymentProvider: PaymentProvider | null;
+  readonly paymentAccount: string;
   readonly setDraftId: (draftId: string) => void;
   readonly setPhotos: (photos: readonly PropertyPhoto[]) => void;
   readonly removePhoto: (photoId: string) => void;
@@ -77,6 +79,7 @@ interface OnboardingState {
   readonly setPaymentProvider: (
     paymentProvider: PaymentProvider | null,
   ) => void;
+  readonly setPaymentAccount: (paymentAccount: string) => void;
   readonly hydrateDraft: (draft: HydratePropertyDraft) => void;
   readonly setStatus: (status: PropertyDraftStatus) => void;
   readonly resetOnboarding: () => void;
@@ -100,7 +103,8 @@ const initialState = {
   roomAmenities: [],
   pricePerNight: 0,
   currency: "ETB" as const,
-  paymentProvider: null,
+  paymentProvider: "telebirr" as const,
+  paymentAccount: "",
 };
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
@@ -162,6 +166,8 @@ export const useOnboardingStore = create<OnboardingState>()(
         }),
       setPaymentProvider: (paymentProvider) =>
         set({ paymentProvider }),
+      setPaymentAccount: (paymentAccount) =>
+        set({ paymentAccount }),
       hydrateDraft: (draft) =>
         set({
           draftId: draft.id,
@@ -179,7 +185,8 @@ export const useOnboardingStore = create<OnboardingState>()(
           photos: [...(draft.photos ?? [])],
           pricePerNight: draft.pricePerNight ?? 0,
           currency: draft.currency ?? "ETB",
-          paymentProvider: draft.paymentProvider ?? null,
+          paymentProvider: draft.paymentProvider ?? "telebirr",
+          paymentAccount: draft.paymentAccount ?? "",
           currentStep: draft.currentStep,
           status: draft.status,
         }),

@@ -3,7 +3,7 @@ import { getAllProperties, getPropertyById } from "@/features/properties"
 import type { GetAllProperties } from "../types/properties.types";
 export function usePropertiesQuery({pageSize, lastDocument}: GetAllProperties){
     return useQuery({
-        queryKey: ["propertyDrafts", pageSize, lastDocument?.id ?? null],
+        queryKey: ["propertyDrafts", "list", pageSize, lastDocument?.id ?? null],
         queryFn: () => {
             return getAllProperties({pageSize, lastDocument})
         },
