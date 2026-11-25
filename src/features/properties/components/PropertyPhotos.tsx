@@ -1,5 +1,4 @@
 import { ImageIcon } from "lucide-react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { PropertyDetailsParams } from "../types/propertyDetails.types";
 export default function Photos({property}: PropertyDetailsParams){
     return(
@@ -16,16 +15,17 @@ export default function Photos({property}: PropertyDetailsParams){
                   .slice()
                   .sort((a, b) => a.position - b.position)
                   .map((photo, index) => (
-                    <AspectRatio ratio={1/1}
-                                 key={`${photo.id}-${photo.publicId}-${photo.position}-${index}`}
-                                 className="w-full bg-muted rounded-lg max-w-[14rem]">
-                    <img 
-                      src={photo.url}
-                      alt={`Property photo ${photo.position + 1}`}
-                      loading="eager"
-                      className="rounded-lg object-cover"
+                    <div
+                      key={`${photo.id}-${photo.publicId}-${photo.position}-${index}`}
+                      className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted max-w-[14rem]"
+                    >
+                      <img
+                        src={photo.url}
+                        alt={`Property photo ${photo.position + 1}`}
+                        loading="eager"
+                        className="h-full w-full rounded-lg object-cover"
                       />
-                    </AspectRatio>
+                    </div>
                   ))}
                 </div>
                 ) : (

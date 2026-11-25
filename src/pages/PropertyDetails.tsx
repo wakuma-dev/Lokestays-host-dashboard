@@ -12,6 +12,7 @@ import {
   PropertyDetailsSkeleton,
   PropertySubmissionInfo,
   PropertyBasicInfo,
+  PropertyPayment
 } from "@/features/properties";
 export default function PropertyDetails() {
   const { propertyId } = useParams({
@@ -82,6 +83,7 @@ export default function PropertyDetails() {
             <PropertyLocation property={property} />
             <PropertyAmenities property={property} />
             <PropertySubmissionInfo property={property} />
+            <PropertyPayment property={property} />
           </>
         )}
       </div>

@@ -2,6 +2,7 @@ import { type DocumentData,
          Timestamp,
          QueryDocumentSnapshot
  } from "firebase/firestore";
+import type { PaymentProvider } from "@/features/onboarding/types/payment.types";
 export interface GetAllProperties {
     pageSize: number;
     lastDocument: QueryDocumentSnapshot<DocumentData> | null
@@ -43,6 +44,8 @@ export interface Properties {
   }[];
   pricePerNight: number;
   currency: "ETB";
+  paymentProvider: PaymentProvider | null;
+  paymentAccount: string | null;
   currentStep: string;
   status: PropertiesStatus;
   submittedAt: Timestamp | null;

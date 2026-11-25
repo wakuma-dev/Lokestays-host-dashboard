@@ -1,11 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
 export default function PropertyDetailsSkeleton() {
   return (
-    <div className="w-full flex flex-col space-y-6 md:space-y-8">
+    <div className="w-full p-4 md:px-6 flex flex-col space-y-6 md:space-y-8">
       { }
       <header className="w-full flex flex-col gap-4">
         <div className="flex items-start gap-3">
-          <Skeleton className="h-9 w-36" />
+          <Skeleton className="h-9 w-36" /> 
           <div className="flex flex-col items-start space-y-2">
             <Skeleton className="h-6 w-36" />
             <Skeleton className="h-5 w-64 max-w-full" />

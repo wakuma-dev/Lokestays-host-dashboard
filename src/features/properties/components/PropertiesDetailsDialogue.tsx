@@ -6,6 +6,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { Properties } from "../types/properties.types";
+import type { PaymentProvider } from "@/features/onboarding/types/payment.types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   MapPin,
@@ -31,6 +32,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
   timeStyle: "short",
 });
+const paymentProviderLabels: Record<PaymentProvider, string> = {
+  telebirr: "Telebirr",
+  mpesa: "M-Pesa",
+  cbe: "Commercial Bank of Ethiopia",
+  awash: "Awash Bank",
+  dashen: "Dashen Bank",
+  abyssinia: "Bank of Abyssinia",
+};
 function formatDate(value: Properties["createdAt"]): string {
   if (!value || typeof value.toDate !== "function") {
     return "—";
@@ -113,6 +122,18 @@ if(!property) return null;
                 <DetailItem label="Property type" value={property.structure} />
                 <DetailItem label="Privacy type" value={property.privacyType} />
                 <DetailItem label="Status" value={property.status} />
+                <DetailItem
+                  label="Payment method"
+                  value={
+                    property.paymentProvider
+                      ? paymentProviderLabels[property.paymentProvider]
+                      : null
+                  }
+                />
+                <DetailItem
+                  label="Payment account"
+                  value={property.paymentAccount}
+                />
                 <DetailItem label="Price per night"
                  value={
                   property.pricePerNight != null

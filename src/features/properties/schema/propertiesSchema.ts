@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Timestamp } from "firebase/firestore";
+import { PAYMENT_PROVIDERS } from "@/features/onboarding/types/payment.types";
 const serializedTimestampSchema = z.object({
   seconds: z.number().int(),
   nanoseconds: z.number().int(),
@@ -60,6 +61,8 @@ export const propertiesSchema = z.object({
   photos: z.array(propertyPhotoSchema).max(50, "Maximum 50 photos allowed per property"),
   pricePerNight: z.number().int().nonnegative("Price per night cannot be negative"),
   currency: z.literal("ETB"),
+  paymentProvider: z.enum(PAYMENT_PROVIDERS).nullable().default(null),
+  paymentAccount: z.string().nullable().default(null),
   currentStep: z.string(),
   status: z.enum([
     "draft",

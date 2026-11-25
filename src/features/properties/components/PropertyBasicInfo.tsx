@@ -1,4 +1,15 @@
 import type { PropertyDetailsParams } from "../types/propertyDetails.types"
+import type { PaymentProvider } from "@/features/onboarding/types/payment.types";
+
+const paymentProviderLabels: Record<PaymentProvider, string> = {
+    telebirr: "Telebirr",
+    mpesa: "M-Pesa",
+    cbe: "Commercial Bank of Ethiopia",
+    awash: "Awash Bank",
+    dashen: "Dashen Bank",
+    abyssinia: "Bank of Abyssinia",
+};
+
 interface DetailItemProps {
     label: string;
     value: string | number | null | undefined;
@@ -20,6 +31,18 @@ export default function PropertyBasicInfo({property}: PropertyDetailsParams){
                 <DetailItem label="Property type" value={property.structure} />
                 <DetailItem label="Privacy type" value={property.privacyType} />
                 <DetailItem label="Status" value={property.status} />
+                <DetailItem
+                  label="Payment method"
+                  value={
+                    property.paymentProvider
+                      ? paymentProviderLabels[property.paymentProvider]
+                      : null
+                  }
+                />
+                <DetailItem
+                  label="Payment account"
+                  value={property.paymentAccount}
+                />
                 <DetailItem label="Price per night"
                  value={
                   property.pricePerNight != null
