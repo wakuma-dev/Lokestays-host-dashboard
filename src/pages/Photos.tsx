@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Helmet } from "react-helmet-async";
 import { Camera, ImagePlus, X } from "lucide-react";
+import { useToast } from "@/components/ui/toast";
 import { useOnboardingStore } from "@/features/onboarding/store/onboardingStore";
 import { updatePropertyDraft } from "@/features/onboarding/api/onboarding.api";
 import {
@@ -35,7 +36,7 @@ function PhotosComponent() {
   const [localPhotos, setLocalPhotos] = useState<LocalPhoto[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { add } = useToast();
   const [uploadedByLocalId, setUploadedByLocalId] = useState<
     Map<string, PropertyPhoto>
   >(new Map());
@@ -56,12 +57,15 @@ function PhotosComponent() {
   const handleFiles = useCallback(
     (files: FileList | File[]) => {
       if (isUploading) return;
-      setError(null);
       const selectedFiles = Array.from(files);
       if (selectedFiles.length === 0) return;
       const remainingSlots = MAX_PHOTOS - totalPhotos;
       if (remainingSlots <= 0) {
-        setError(`You can upload a maximum of ${MAX_PHOTOS} photos.`);
+        add({
+          type: "error",
+          title: "Photo limit reached",
+          description: `You can upload a maximum of ${MAX_PHOTOS} photos.`,
+        });
         return;
       }
       const validPhotos: LocalPhoto[] = [];
@@ -106,19 +110,31 @@ function PhotosComponent() {
         ]);
       }
       if (errors.length > 0) {
-        setError(errors[0]);
+        add({
+          type: "error",
+          title: "Unable to add photo",
+          description: errors[0],
+        });
       }
       if (validPhotos.length === 0 && errors.length === 0) {
-        setError("These photos have already been selected.");
+        add({
+          type: "error",
+          title: "Photos already selected",
+          description: "These photos have already been selected.",
+        });
       }
     },
-    [isUploading, localPhotos, totalPhotos],
+    [add, isUploading, localPhotos, totalPhotos],
   );
   // Open native file picker.
   const handleOpenPicker = () => {
     if (isUploading) return;
     if (totalPhotos >= MAX_PHOTOS) {
-      setError(`You can upload a maximum of ${MAX_PHOTOS} photos.`);
+      add({
+        type: "error",
+        title: "Photo limit reached",
+        description: `You can upload a maximum of ${MAX_PHOTOS} photos.`,
+      });
       return;
     }
     inputRef.current?.click();
@@ -139,25 +155,35 @@ function PhotosComponent() {
       updated.delete(photoId);
       return updated;
     });
-    setError(null);
   };
   // Upload photos and persist their metadata.
   const handleUploadPhotos = async () => {
     if (isUploading) return;
     if (!draftId) {
-      setError("Property draft not found. Please restart the onboarding process.");
+      add({
+        type: "error",
+        title: "Property draft not found",
+        description: "Please restart the onboarding process.",
+      });
       return;
     }
     if (localPhotos.length === 0) {
-      setError("Please select photos before uploading.");
+      add({
+        type: "error",
+        title: "No photos selected",
+        description: "Please select photos before uploading.",
+      });
       return;
     }
     if (totalPhotos > MAX_PHOTOS) {
-      setError(`You can upload a maximum of ${MAX_PHOTOS} photos.`);
+      add({
+        type: "error",
+        title: "Photo limit reached",
+        description: `You can upload a maximum of ${MAX_PHOTOS} photos.`,
+      });
       return;
     }
     setIsUploading(true);
-    setError(null);
     try {
       const nextUploadedPhotos = new Map(uploadedByLocalId);
       // Only upload files that haven't already succeeded.
@@ -236,19 +262,22 @@ function PhotosComponent() {
         return updated;
       });
       if (localPhotos.length > successfullyUploaded.length) {
-        setError(
-          "Some photos could not be uploaded. Please retry the remaining photos.",
-        );
-      } else {
-        setError(null);
+        add({
+          type: "error",
+          title: "Some photos could not be uploaded",
+          description: "Please retry the remaining photos.",
+        });
       }
     } catch (error: unknown) {
       console.error("Property photo upload failed:", error);
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Failed to upload photos. Please try again.",
-      );
+      add({
+        type: "error",
+        title: "Property photo upload failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to upload photos. Please try again.",
+      });
     } finally {
       setIsUploading(false);
     }
@@ -453,15 +482,6 @@ function PhotosComponent() {
               </button>
             )}
           </section>
-        )}
-        {/* Error message */}
-        {error && (
-          <p
-            role="alert"
-            className="text-sm font-medium text-red-600 dark:text-red-400"
-          >
-            {error}
-          </p>
         )}
         {/* Upload requirements */}
         <p className="text-sm text-[#777777] dark:text-[#A1A1AA]">

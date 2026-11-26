@@ -450,6 +450,7 @@ service cloud.firestore {
 
     function canUpdateDraft() {
       return isAuthenticated()
+        && resource.data.status == 'draft'
         && request.resource.data.status == resource.data.status
 
         && request.resource.data.diff(resource.data)
